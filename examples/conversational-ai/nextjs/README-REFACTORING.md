@@ -104,7 +104,11 @@ export function ConversationalAI() {
   // 200+ lines of mixed responsibilities
   return (
     <div>
-      {/* Complex JSX with inline logic */}
+      {error && <div className="error">{error}</div>}
+      <canvas ref={canvasRef} width={300} height={200} />
+      <button onClick={startConversation} disabled={!canStart}>Start</button>
+      <button onClick={stopConversation} disabled={!canStop}>Stop</button>
+      {/* ... more inline JSX logic */}
     </div>
   );
 }
