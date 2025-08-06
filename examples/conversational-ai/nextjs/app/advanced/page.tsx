@@ -73,13 +73,19 @@ export default function AdvancedPage() {
                                 >
                                     📚 Setup Guide
                                 </a>
-                                <a 
-                                    href="https://elevenlabs.io/app/speech-synthesis/text-to-speech" 
-                                    target="_blank" 
+                                <a
+                                    href="https://elevenlabs.io/app/speech-synthesis/text-to-speech"
+                                    target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 px-3 py-1 bg-white text-blue-600 rounded-lg text-sm border border-blue-200 hover:bg-blue-50 transition-colors"
                                 >
                                     🔑 Get API Key
+                                </a>
+                                <a
+                                    href="/refactored"
+                                    className="inline-flex items-center gap-2 px-3 py-1 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 transition-colors"
+                                >
+                                    🏗️ View Clean Code
                                 </a>
                             </div>
                         </div>
