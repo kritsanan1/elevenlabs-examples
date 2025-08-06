@@ -6,14 +6,14 @@ import { useCallback, useEffect, useState, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useConversation } from "@11labs/react";
 import { cn } from "@/lib/utils";
-import { 
-  Mic, 
-  MicOff, 
-  Download, 
-  Settings, 
-  Play, 
-  Pause, 
-  VolumeX, 
+import {
+  Mic,
+  MicOff,
+  Download,
+  Settings,
+  Play,
+  Pause,
+  VolumeX,
   Volume2,
   BarChart3,
   Brain,
@@ -24,8 +24,10 @@ import {
   Sparkles,
   Waves,
   Eye,
-  EyeOff
+  EyeOff,
+  Command
 } from "lucide-react";
+import { VoiceCommandPanel } from "./VoiceCommandPanel";
 
 // Types
 interface ConversationAnalytics {
@@ -291,6 +293,7 @@ export function AdvancedConversationalAI() {
   const [visualizerMode, setVisualizerMode] = useState<'orb' | 'waveform' | 'spectrum'>('orb');
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showPersonas, setShowPersonas] = useState(false);
+  const [showVoiceCommands, setShowVoiceCommands] = useState(false);
   const [messages, setMessages] = useState<ConversationMessage[]>([]);
   const [analytics, setAnalytics] = useState<ConversationAnalytics>({
     duration: 0,
@@ -514,6 +517,15 @@ export function AdvancedConversationalAI() {
               <Button
                 variant="outline"
                 size="sm"
+                onClick={() => setShowVoiceCommands(!showVoiceCommands)}
+              >
+                <Command className="h-4 w-4 mr-1" />
+                Commands
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={exportConversation}
                 disabled={messages.length === 0}
               >
@@ -539,6 +551,11 @@ export function AdvancedConversationalAI() {
         isVisible={showPersonas}
       />
 
+      {/* Voice Command Panel */}
+      {showVoiceCommands && (
+        <VoiceCommandPanel />
+      )}
+
       {/* Live Transcript */}
       {messages.length > 0 && (
         <Card>
@@ -553,8 +570,8 @@ export function AdvancedConversationalAI() {
               {messages.slice(-10).map((message) => (
                 <div key={message.id} className={cn(
                   "p-2 rounded-lg",
-                  message.speaker === 'user' 
-                    ? "bg-blue-50 text-blue-900 ml-8" 
+                  message.speaker === 'user'
+                    ? "bg-blue-50 text-blue-900 ml-8"
                     : "bg-gray-50 text-gray-900 mr-8"
                 )}>
                   <div className="text-xs text-gray-500 mb-1">
