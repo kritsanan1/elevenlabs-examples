@@ -278,13 +278,41 @@ async function requestMicrophonePermission() {
 }
 
 async function getSignedUrl(): Promise<string> {
-  const response = await fetch("/api/signed-url");
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || "Failed to get signed url");
+  try {
+    console.log("Making request to /api/signed-url");
+    const response = await fetch("/api/signed-url");
+    console.log("Response status:", response.status, response.statusText);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("API error response:", errorData);
+
+      // Provide more specific error messages
+      if (response.status === 400) {
+        throw new Error(errorData.error || "Configuration error - please check your ElevenLabs credentials");
+      } else if (response.status === 500) {
+        throw new Error(errorData.error || "Server error - please try again");
+      } else {
+        throw new Error(errorData.error || `HTTP ${response.status}: Failed to get signed URL`);
+      }
+    }
+
+    const data = await response.json();
+    console.log("API response data:", data);
+
+    if (!data.signedUrl) {
+      throw new Error("No signed URL received from server");
+    }
+
+    return data.signedUrl;
+  } catch (error) {
+    console.error("Error in getSignedUrl:", error);
+    if (error instanceof Error) {
+      throw error;
+    } else {
+      throw new Error("Network error - please check your connection");
+    }
   }
-  const data = await response.json();
-  return data.signedUrl;
 }
 
 export function AdvancedConversationalAI() {
