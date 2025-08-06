@@ -28,6 +28,10 @@ export default function Home() {
                                className="inline-flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-700 rounded text-sm hover:bg-purple-200 transition-colors">
                                 🚀 Try Advanced Features
                             </a>
+                            <a href="/refactored"
+                               className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200 transition-colors">
+                                🏗️ View Clean Architecture
+                            </a>
                         </div>
                     </div>
                 </div>
