@@ -78,18 +78,37 @@ export function ConvAI() {
   async function startConversation() {
     try {
       setError(null);
+      console.log("Starting conversation...");
+
       const hasPermission = await requestMicrophonePermission();
       if (!hasPermission) {
         setError("Microphone permission is required for voice conversations");
         return;
       }
+      console.log("Microphone permission granted");
+
+      console.log("Fetching signed URL...");
       const signedUrl = await getSignedUrl();
+      console.log("Got signed URL:", signedUrl ? "✓" : "✗");
+
+      console.log("Starting conversation session...");
       const conversationId = await conversation.startSession({ signedUrl });
-      console.log(conversationId);
+      console.log("Conversation started with ID:", conversationId);
     } catch (error) {
       console.error("Failed to start conversation:", error);
-      const errorMessage = error instanceof Error ? error.message : "Failed to start conversation";
-      setError(errorMessage);
+
+      // More detailed error handling
+      if (error instanceof Error) {
+        console.error("Error details:", {
+          message: error.message,
+          name: error.name,
+          stack: error.stack
+        });
+        setError(error.message);
+      } else {
+        console.error("Unknown error:", error);
+        setError("An unexpected error occurred while starting the conversation");
+      }
     }
   }
 
