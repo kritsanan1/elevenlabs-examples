@@ -362,17 +362,31 @@ export function AdvancedConversationalAI() {
   
   const conversation = useConversation({
     onConnect: () => {
-      console.log("connected");
+      console.log("Successfully connected to conversation");
       setError(null);
       setIsRecording(true);
     },
     onDisconnect: () => {
-      console.log("disconnected");
+      console.log("Disconnected from conversation");
       setIsRecording(false);
     },
     onError: error => {
-      console.log(error);
-      setError("An error occurred during the conversation");
+      console.error("Conversation error:", error);
+
+      // More detailed error handling for conversation errors
+      let errorMessage = "An error occurred during the conversation";
+
+      if (error && typeof error === 'object') {
+        if ('message' in error) {
+          errorMessage = error.message as string;
+        } else if ('error' in error) {
+          errorMessage = error.error as string;
+        }
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      }
+
+      setError(errorMessage);
       setIsRecording(false);
     },
     onMessage: message => {
