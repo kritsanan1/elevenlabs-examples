@@ -61,7 +61,7 @@ if (allValid) {
 } else {
   console.log('⚠️  Some environment variables need to be configured.');
   console.log('   Please update your .env file with the correct values.');
-  console.log('   
+  console.log();
   console.log('📚 Setup Guide: https://elevenlabs.io/docs/conversational-ai/docs/agent-setup');
   console.log('🔑 Get API Key: https://elevenlabs.io/app/speech-synthesis/text-to-speech');
 }
