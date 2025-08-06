@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import * as React from "react";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useConversation } from "@11labs/react";
+import { useConversation } from "@elevenlabs/react";
 import { cn } from "@/lib/utils";
 import {
   Mic,
