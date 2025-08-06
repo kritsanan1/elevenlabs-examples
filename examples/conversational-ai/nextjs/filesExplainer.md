@@ -80,29 +80,34 @@ convai-demo/
 ### 📁 **Core Directories**
 
 #### `/app` - Next.js App Router
+
 - **Purpose**: Next.js 13+ App Router structure with pages and API routes
 - **Organization**: Feature-based routing with nested layouts
 - **Key Files**: Main pages, API endpoints, and route handlers
 
 #### `/components` - React Components
+
 - **Organization**: Atomic design with core/ui separation
-- **Structure**: 
+- **Structure**:
   - `core/` - Domain-specific reusable components
   - `ui/` - Generic UI components (shadcn/ui)
   - `refactored/` - Clean architecture examples
 - **Convention**: PascalCase naming, `.tsx` extension
 
 #### `/hooks` - Custom React Hooks
+
 - **Purpose**: Reusable state logic and side effects
 - **Pattern**: `use[Feature]` naming convention
 - **Separation**: Business logic extracted from components
 
 #### `/services` - Service Layer
+
 - **Purpose**: API operations and external service integration
 - **Pattern**: Class-based services with singleton pattern
 - **Responsibility**: Data fetching, transformation, and error handling
 
 #### `/types` - TypeScript Definitions
+
 - **Purpose**: Shared type definitions and interfaces
 - **Organization**: Domain-specific type groupings
 - **Convention**: Interface-based type definitions
@@ -110,28 +115,33 @@ convai-demo/
 ### 📁 **Configuration Files**
 
 #### Build & Development
+
 - `next.config.ts` - Next.js configuration with Turbopack
 - `tailwind.config.ts` - Tailwind CSS theming and plugins
 - `tsconfig.json` - TypeScript compiler options
 - `postcss.config.mjs` - PostCSS with Tailwind processing
 
 #### Code Quality
+
 - `.eslintrc.json` - ESLint rules and Next.js configuration
 - `components.json` - shadcn/ui component configuration
 
 #### Environment
+
 - `.env.example` - Environment variable template
 - `.gitignore` - Git exclusion patterns
 
 ## Architecture Patterns
 
 ### 🏗️ **Clean Architecture Implementation**
+
 - **Presentation Layer**: React components in `/components`
 - **Business Logic**: Custom hooks in `/hooks`
 - **Service Layer**: API services in `/services`
 - **Type Safety**: Shared types in `/types`
 
 ### 🎯 **Component Organization**
+
 - **Atomic Design**: Small, reusable components in `/core`
 - **Composition**: Complex features built from atomic components
 - **Separation**: UI components separate from business logic
@@ -154,6 +164,7 @@ Complexity Distribution:
 ## Key Technical Decisions
 
 ### **Framework & Libraries**
+
 - **Next.js 15**: App Router for modern React development
 - **React 19 RC**: Latest React features and performance
 - **TypeScript**: Full type safety across the codebase
@@ -161,11 +172,13 @@ Complexity Distribution:
 - **shadcn/ui**: Consistent, accessible UI components
 
 ### **State Management**
+
 - **Custom Hooks**: Business logic encapsulated in reusable hooks
 - **Service Pattern**: Centralized API operations
 - **Type Safety**: Comprehensive TypeScript interfaces
 
 ### **Development Experience**
+
 - **Turbopack**: Fast development builds
 - **ESLint**: Code quality enforcement
 - **PostCSS**: CSS processing and optimization

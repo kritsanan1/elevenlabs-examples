@@ -7,10 +7,13 @@ Thank you for your interest in contributing to the ElevenLabs Conversational AI 
 By participating in this project, you agree to abide by our Code of Conduct:
 
 ### Our Pledge
+
 We pledge to make participation in our project a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation.
 
 ### Our Standards
+
 Examples of behavior that contributes to creating a positive environment include:
+
 - Using welcoming and inclusive language
 - Being respectful of differing viewpoints and experiences
 - Gracefully accepting constructive criticism
@@ -20,6 +23,7 @@ Examples of behavior that contributes to creating a positive environment include
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 18.17 or later
 - npm 9.0 or later (or yarn/pnpm equivalent)
 - Git
@@ -28,17 +32,20 @@ Examples of behavior that contributes to creating a positive environment include
 ### Development Setup
 
 1. **Fork and Clone**
+
    ```bash
    git clone https://github.com/your-username/elevenlabs-examples.git
    cd elevenlabs-examples/examples/conversational-ai/nextjs
    ```
 
 2. **Install Dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Environment Setup**
+
    ```bash
    cp .env.example .env
    # Fill in your ElevenLabs credentials
@@ -71,6 +78,7 @@ We welcome the following types of contributions:
    - If no issue exists, create one to discuss the proposed change
 
 2. **Create a Branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    # or
@@ -83,6 +91,7 @@ We welcome the following types of contributions:
    - Update documentation as needed
 
 4. **Test Your Changes**
+
    ```bash
    npm run lint          # Check code style
    npm run type-check    # Verify TypeScript
@@ -91,6 +100,7 @@ We welcome the following types of contributions:
    ```
 
 5. **Commit Changes**
+
    ```bash
    git add .
    git commit -m "feat: add voice command feature"
@@ -126,11 +136,11 @@ interface ComponentProps {
 
 export function ComponentName({ title, onAction }: ComponentProps) {
   const [state, setState] = useState<string>('');
-  
+
   const handleClick = useCallback(() => {
     onAction(state);
   }, [state, onAction]);
-  
+
   return (
     <div>
       <h1>{title}</h1>
@@ -144,20 +154,20 @@ export function ComponentName({ title, onAction }: ComponentProps) {
 
 ```typescript
 // 1. React and Next.js imports
-import React from 'react';
-import { useState, useCallback } from 'react';
-import Link from 'next/link';
+import React from "react";
+import { useState, useCallback } from "react";
+import Link from "next/link";
 
 // 2. Third-party library imports
-import { useConversation } from '@elevenlabs/react';
-import { Button } from '@radix-ui/react-button';
+import { useConversation } from "@elevenlabs/react";
+import { Button } from "@radix-ui/react-button";
 
 // 3. Internal imports (using @/ alias)
-import { ConversationService } from '@/services/ConversationService';
-import { AudioVisualizer } from '@/components/core/AudioVisualizer';
+import { ConversationService } from "@/services/ConversationService";
+import { AudioVisualizer } from "@/components/core/AudioVisualizer";
 
 // 4. Type-only imports
-import type { ConversationMessage } from '@/types/conversation';
+import type { ConversationMessage } from "@/types/conversation";
 ```
 
 ### CSS and Styling
@@ -188,13 +198,13 @@ try {
   const result = await riskyOperation();
   return result;
 } catch (error) {
-  console.error('Operation failed:', error);
-  
+  console.error("Operation failed:", error);
+
   if (error instanceof ApiError) {
     throw new Error(`API Error: ${error.message}`);
   }
-  
-  throw new Error('An unexpected error occurred');
+
+  throw new Error("An unexpected error occurred");
 }
 ```
 
@@ -203,16 +213,16 @@ try {
 ### Test Structure
 
 ```typescript
-describe('ComponentName', () => {
+describe("ComponentName", () => {
   beforeEach(() => {
     // Setup before each test
   });
 
-  it('should handle user interaction correctly', () => {
+  it("should handle user interaction correctly", () => {
     // Test implementation
   });
 
-  it('should display error states appropriately', () => {
+  it("should display error states appropriately", () => {
     // Test error scenarios
   });
 });
