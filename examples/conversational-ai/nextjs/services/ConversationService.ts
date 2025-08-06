@@ -57,10 +57,18 @@ export class ConversationService {
       return data.signedUrl;
     } catch (error) {
       console.error("Error in getSignedUrl:", error);
-      if (error instanceof Error) {
+
+      // Enhanced error handling with detailed logging
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error("Network error - unable to connect to the server. Please check your internet connection.");
+      } else if (error instanceof Error) {
         throw error;
       } else {
-        throw new Error("Network error - please check your connection");
+        // Convert any non-Error objects to proper Error with details
+        const errorMsg = typeof error === 'object' && error !== null
+          ? JSON.stringify(error)
+          : String(error);
+        throw new Error(`Unexpected error in ConversationService: ${errorMsg}`);
       }
     }
   }
