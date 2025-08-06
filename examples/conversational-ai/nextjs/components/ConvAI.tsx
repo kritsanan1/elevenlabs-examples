@@ -20,23 +20,27 @@ async function requestMicrophonePermission() {
 async function getSignedUrl(): Promise<string> {
   const response = await fetch("/api/signed-url");
   if (!response.ok) {
-    throw Error("Failed to get signed url");
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to get signed url");
   }
   const data = await response.json();
   return data.signedUrl;
 }
 
 export function ConvAI() {
+  const [error, setError] = React.useState<string | null>(null);
+
   const conversation = useConversation({
     onConnect: () => {
       console.log("connected");
+      setError(null);
     },
     onDisconnect: () => {
       console.log("disconnected");
     },
     onError: error => {
       console.log(error);
-      alert("An error occurred during the conversation");
+      setError("An error occurred during the conversation");
     },
     onMessage: message => {
       console.log(message);
@@ -44,14 +48,21 @@ export function ConvAI() {
   });
 
   async function startConversation() {
-    const hasPermission = await requestMicrophonePermission();
-    if (!hasPermission) {
-      alert("No permission");
-      return;
+    try {
+      setError(null);
+      const hasPermission = await requestMicrophonePermission();
+      if (!hasPermission) {
+        setError("Microphone permission is required for voice conversations");
+        return;
+      }
+      const signedUrl = await getSignedUrl();
+      const conversationId = await conversation.startSession({ signedUrl });
+      console.log(conversationId);
+    } catch (error) {
+      console.error("Failed to start conversation:", error);
+      const errorMessage = error instanceof Error ? error.message : "Failed to start conversation";
+      setError(errorMessage);
     }
-    const signedUrl = await getSignedUrl();
-    const conversationId = await conversation.startSession({ signedUrl });
-    console.log(conversationId);
   }
 
   const stopConversation = useCallback(async () => {
@@ -71,6 +82,18 @@ export function ConvAI() {
                 : "Disconnected"}
             </CardTitle>
           </CardHeader>
+
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-700 text-sm">{error}</p>
+              {error.includes("AGENT_ID") || error.includes("ELEVENLABS_API_KEY") ? (
+                <p className="text-red-600 text-xs mt-2">
+                  Please configure your ElevenLabs credentials in the .env file to use this demo.
+                </p>
+              ) : null}
+            </div>
+          )}
+
           <div className={"flex flex-col gap-y-4 text-center"}>
             <div
               className={cn(
