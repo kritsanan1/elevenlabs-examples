@@ -437,6 +437,7 @@ DEBUG = true;
 
 ## 📚 Documentation
 
+- **[Troubleshooting Guide](TROUBLESHOOTING.md)**: Common issues and solutions
 - **[Architecture Guide](architecture.md)**: System design and patterns
 - **[API Reference](api-reference.md)**: Endpoint documentation
 - **[Component Guide](components.md)**: Component usage examples
