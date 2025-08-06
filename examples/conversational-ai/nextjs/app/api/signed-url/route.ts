@@ -40,11 +40,14 @@ export async function GET() {
 
     // Enhanced error logging and response
     const errorMessage = error instanceof Error ? error.message : String(error);
-    const errorDetails = error instanceof Error ? {
-      name: error.name,
-      message: error.message,
-      stack: error.stack,
-    } : error;
+    const errorDetails =
+      error instanceof Error
+        ? {
+            name: error.name,
+            message: error.message,
+            stack: error.stack,
+          }
+        : error;
 
     console.error("Detailed error info:", errorDetails);
 
@@ -52,12 +55,13 @@ export async function GET() {
       {
         error: "Failed to get signed URL from ElevenLabs",
         details: errorMessage,
-        setup: "Please verify your AGENT_ID and ELEVENLABS_API_KEY are correct.",
+        setup:
+          "Please verify your AGENT_ID and ELEVENLABS_API_KEY are correct.",
         troubleshoot: {
           agentId: agentId ? "Configured" : "Missing",
           apiKey: apiKey ? "Configured" : "Missing",
           errorType: error instanceof Error ? error.name : typeof error,
-        }
+        },
       },
       { status: 500 }
     );

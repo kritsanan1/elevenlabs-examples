@@ -171,18 +171,19 @@ npm run validate-setup
 ```
 
 This script checks:
+
 - ✅ Environment variables are configured
 - ✅ ElevenLabs API connectivity
 - ✅ Required credentials format
 
 ### **Available Scripts**
 
-| Script          | Description                              | Usage                   |
-| --------------- | ---------------------------------------- | ----------------------- |
-| `dev`           | Start development server with Turbopack  | `npm run dev`           |
-| `build`         | Build production application             | `npm run build`         |
-| `start`         | Start production server                  | `npm run start`         |
-| `lint`          | Run ESLint code analysis                 | `npm run lint`          |
+| Script           | Description                             | Usage                    |
+| ---------------- | --------------------------------------- | ------------------------ |
+| `dev`            | Start development server with Turbopack | `npm run dev`            |
+| `build`          | Build production application            | `npm run build`          |
+| `start`          | Start production server                 | `npm run start`          |
+| `lint`           | Run ESLint code analysis                | `npm run lint`           |
 | `validate-setup` | Check environment configuration         | `npm run validate-setup` |
 
 ### **Development Guidelines**

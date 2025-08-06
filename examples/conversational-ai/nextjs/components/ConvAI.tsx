@@ -54,15 +54,18 @@ async function getSignedUrl(): Promise<string> {
     console.error("Error in getSignedUrl:", error);
 
     // Better error handling with detailed logging
-    if (error instanceof TypeError && error.message.includes('fetch')) {
-      throw new Error("Network error - unable to connect to the server. Please check your internet connection.");
+    if (error instanceof TypeError && error.message.includes("fetch")) {
+      throw new Error(
+        "Network error - unable to connect to the server. Please check your internet connection."
+      );
     } else if (error instanceof Error) {
       throw error;
     } else {
       // Convert any non-Error objects to proper Error with details
-      const errorMsg = typeof error === 'object' && error !== null
-        ? JSON.stringify(error)
-        : String(error);
+      const errorMsg =
+        typeof error === "object" && error !== null
+          ? JSON.stringify(error)
+          : String(error);
       throw new Error(`Unexpected error: ${errorMsg}`);
     }
   }
@@ -119,20 +122,31 @@ export function ConvAI() {
         });
 
         // Provide user-friendly error messages
-        if (error.message.includes('AGENT_ID') || error.message.includes('ELEVENLABS_API_KEY')) {
+        if (
+          error.message.includes("AGENT_ID") ||
+          error.message.includes("ELEVENLABS_API_KEY")
+        ) {
           setError(error.message);
-        } else if (error.message.includes('Network error') || error.message.includes('fetch')) {
-          setError("Network connection error. Please check your internet connection and try again.");
-        } else if (error.message.includes('Microphone')) {
-          setError("Microphone access is required. Please grant permission and try again.");
+        } else if (
+          error.message.includes("Network error") ||
+          error.message.includes("fetch")
+        ) {
+          setError(
+            "Network connection error. Please check your internet connection and try again."
+          );
+        } else if (error.message.includes("Microphone")) {
+          setError(
+            "Microphone access is required. Please grant permission and try again."
+          );
         } else {
           setError(`Failed to start conversation: ${error.message}`);
         }
       } else {
         console.error("Unknown error type:", typeof error, error);
-        const errorDetails = typeof error === 'object' && error !== null
-          ? JSON.stringify(error)
-          : String(error);
+        const errorDetails =
+          typeof error === "object" && error !== null
+            ? JSON.stringify(error)
+            : String(error);
         setError(`An unexpected error occurred: ${errorDetails}`);
       }
     }

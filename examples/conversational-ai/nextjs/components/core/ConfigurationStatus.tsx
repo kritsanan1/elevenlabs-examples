@@ -64,7 +64,9 @@ export function ConfigurationStatus() {
         <CardContent className="pt-4">
           <div className="flex items-center gap-2">
             <div className="animate-spin w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
-            <span className="text-blue-700 text-sm">Checking configuration...</span>
+            <span className="text-blue-700 text-sm">
+              Checking configuration...
+            </span>
           </div>
         </CardContent>
       </Card>
@@ -99,21 +101,34 @@ export function ConfigurationStatus() {
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-amber-700 text-sm">
-          To use the Conversational AI demo, please configure your ElevenLabs credentials:
+          To use the Conversational AI demo, please configure your ElevenLabs
+          credentials:
         </p>
 
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <div className={status.agentIdConfigured ? "text-green-500" : "text-red-500"}>
+            <div
+              className={
+                status.agentIdConfigured ? "text-green-500" : "text-red-500"
+              }
+            >
               {status.agentIdConfigured ? "✅" : "❌"}
             </div>
-            <span className="text-sm">Agent ID {status.agentIdConfigured ? "configured" : "missing"}</span>
+            <span className="text-sm">
+              Agent ID {status.agentIdConfigured ? "configured" : "missing"}
+            </span>
           </div>
           <div className="flex items-center gap-2">
-            <div className={status.apiKeyConfigured ? "text-green-500" : "text-red-500"}>
+            <div
+              className={
+                status.apiKeyConfigured ? "text-green-500" : "text-red-500"
+              }
+            >
               {status.apiKeyConfigured ? "✅" : "❌"}
             </div>
-            <span className="text-sm">API Key {status.apiKeyConfigured ? "configured" : "missing"}</span>
+            <span className="text-sm">
+              API Key {status.apiKeyConfigured ? "configured" : "missing"}
+            </span>
           </div>
         </div>
 
