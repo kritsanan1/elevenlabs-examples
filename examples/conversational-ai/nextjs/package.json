@@ -6,10 +6,12 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "validate-setup": "node scripts/validate-setup.js",
+    "setup-check": "npm run validate-setup"
   },
   "dependencies": {
-    "@11labs/react": "^0.0.8",
+    "@elevenlabs/react": "^0.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
