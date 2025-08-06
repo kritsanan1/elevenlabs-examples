@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "validate-setup": "node scripts/validate-setup.js",
+    "setup-check": "npm run validate-setup"
   },
   "dependencies": {
     "@elevenlabs/react": "^0.1.0",
