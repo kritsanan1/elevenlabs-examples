@@ -482,13 +482,38 @@ export function AdvancedConversationalAI() {
           </CardHeader>
           
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-700 text-sm">{error}</p>
-              {error.includes("AGENT_ID") || error.includes("ELEVENLABS_API_KEY") ? (
-                <p className="text-red-600 text-xs mt-2">
-                  Please configure your ElevenLabs credentials in the .env file to use this demo.
-                </p>
-              ) : null}
+            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-start gap-3">
+                <div className="text-red-500 text-lg">⚠️</div>
+                <div className="flex-1">
+                  <p className="text-red-700 text-sm font-medium">{error}</p>
+                  {(error.includes("AGENT_ID") || error.includes("ELEVENLABS_API_KEY") || error.includes("Configuration error")) ? (
+                    <div className="mt-3 space-y-2">
+                      <p className="text-red-600 text-xs">
+                        To experience all advanced features, configure your ElevenLabs credentials:
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <a
+                          href="https://elevenlabs.io/docs/conversational-ai/docs/agent-setup"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition-colors"
+                        >
+                          📚 Setup Guide
+                        </a>
+                        <a
+                          href="https://elevenlabs.io/app/speech-synthesis/text-to-speech"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-2 py-1 bg-white text-red-600 border border-red-200 rounded text-xs hover:bg-red-50 transition-colors"
+                        >
+                          🔑 Get API Key
+                        </a>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+              </div>
             </div>
           )}
           
