@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Collection of ElevenLabs API examples and demos",
   "scripts": {
-    "dev": "cd examples/conversational-ai/nextjs && npm run dev",
+    "dev": "cd examples/conversational-ai/nextjs && npm install --legacy-peer-deps && npm run dev",
     "build": "cd examples/conversational-ai/nextjs && npm run build",
     "start": "cd examples/conversational-ai/nextjs && npm run start"
   },
