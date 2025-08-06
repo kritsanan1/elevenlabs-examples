@@ -1,4 +1,5 @@
 import { ConvAI } from "@/components/ConvAI";
+import { ConfigurationStatus } from "@/components/core/ConfigurationStatus";
 
 export default function Home() {
   return (
@@ -55,6 +56,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <ConfigurationStatus />
         <ConvAI />
       </main>
     </div>
