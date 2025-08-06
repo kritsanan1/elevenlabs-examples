@@ -1,4 +1,5 @@
 import { AdvancedConversationalAI } from "@/components/AdvancedConversationalAI";
+import { FeatureShowcase } from "@/components/FeatureShowcase";
 
 export default function AdvancedPage() {
     return (
@@ -87,6 +88,11 @@ export default function AdvancedPage() {
 
                 {/* Advanced Conversational AI Component */}
                 <AdvancedConversationalAI />
+
+                {/* Feature Showcase */}
+                <div className="mt-16">
+                    <FeatureShowcase />
+                </div>
 
                 {/* Feature Details */}
                 <div className="grid md:grid-cols-2 gap-6 mt-12">
