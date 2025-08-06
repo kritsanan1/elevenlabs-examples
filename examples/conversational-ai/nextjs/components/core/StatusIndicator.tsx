@@ -1,7 +1,7 @@
 "use client";
 
-import React from 'react';
-import { ConversationStatus } from '@/types/conversation';
+import React from "react";
+import { ConversationStatus } from "@/types/conversation";
 
 interface StatusIndicatorProps {
   status: ConversationStatus;
@@ -14,21 +14,21 @@ interface StatusIndicatorProps {
  * Status indicator component
  * Shows current conversation state
  */
-export function StatusIndicator({ 
-  status, 
-  isRecording, 
-  isSpeaking, 
-  selectedPersonaAvatar = '🤖' 
+export function StatusIndicator({
+  status,
+  isRecording,
+  isSpeaking,
+  selectedPersonaAvatar = "🤖",
 }: StatusIndicatorProps) {
   const getStatusText = () => {
     switch (status) {
-      case 'connected':
-        return isSpeaking 
+      case "connected":
+        return isSpeaking
           ? `${selectedPersonaAvatar} Agent is speaking`
           : "🎤 Agent is listening";
-      case 'connecting':
+      case "connecting":
         return "🔄 Connecting...";
-      case 'error':
+      case "error":
         return "❌ Connection failed";
       default:
         return "💭 Ready to connect";
@@ -37,14 +37,14 @@ export function StatusIndicator({
 
   const getStatusColor = () => {
     switch (status) {
-      case 'connected':
-        return 'text-green-700';
-      case 'connecting':
-        return 'text-blue-700';
-      case 'error':
-        return 'text-red-700';
+      case "connected":
+        return "text-green-700";
+      case "connecting":
+        return "text-blue-700";
+      case "error":
+        return "text-red-700";
       default:
-        return 'text-gray-700';
+        return "text-gray-700";
     }
   };
 
@@ -54,12 +54,10 @@ export function StatusIndicator({
         {isRecording && (
           <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
         )}
-        <h3 className={`font-medium ${getStatusColor()}`}>
-          {getStatusText()}
-        </h3>
+        <h3 className={`font-medium ${getStatusColor()}`}>{getStatusText()}</h3>
       </div>
-      
-      {status === 'connecting' && (
+
+      {status === "connecting" && (
         <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto" />
       )}
     </div>

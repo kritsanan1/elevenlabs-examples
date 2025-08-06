@@ -1,4 +1,4 @@
-import { ApiError, SignedUrlResponse } from '@/types/conversation';
+import { ApiError, SignedUrlResponse } from "@/types/conversation";
 
 /**
  * Service responsible for conversation API operations
@@ -8,7 +8,7 @@ export class ConversationService {
   private static instance: ConversationService;
   private baseUrl: string;
 
-  constructor(baseUrl: string = '') {
+  constructor(baseUrl: string = "") {
     this.baseUrl = baseUrl;
   }
 
@@ -27,7 +27,7 @@ export class ConversationService {
       await navigator.mediaDevices.getUserMedia({ audio: true });
       return true;
     } catch (error) {
-      console.error('Microphone permission denied:', error);
+      console.error("Microphone permission denied:", error);
       return false;
     }
   }
@@ -37,30 +37,30 @@ export class ConversationService {
    */
   async getSignedUrl(): Promise<string> {
     try {
-      console.log('Making request to /api/signed-url');
+      console.log("Making request to /api/signed-url");
       const response = await fetch(`${this.baseUrl}/api/signed-url`);
-      console.log('Response status:', response.status, response.statusText);
+      console.log("Response status:", response.status, response.statusText);
 
       if (!response.ok) {
         const errorData: ApiError = await response.json();
-        console.error('API error response:', errorData);
+        console.error("API error response:", errorData);
         throw this.createSpecificError(response.status, errorData);
       }
 
       const data: SignedUrlResponse = await response.json();
-      console.log('API response data:', data);
+      console.log("API response data:", data);
 
       if (!data.signedUrl) {
-        throw new Error('No signed URL received from server');
+        throw new Error("No signed URL received from server");
       }
 
       return data.signedUrl;
     } catch (error) {
-      console.error('Error in getSignedUrl:', error);
+      console.error("Error in getSignedUrl:", error);
       if (error instanceof Error) {
         throw error;
       } else {
-        throw new Error('Network error - please check your connection');
+        throw new Error("Network error - please check your connection");
       }
     }
   }
@@ -71,11 +71,16 @@ export class ConversationService {
   private createSpecificError(status: number, errorData: ApiError): Error {
     switch (status) {
       case 400:
-        return new Error(errorData.error || 'Configuration error - please check your ElevenLabs credentials');
+        return new Error(
+          errorData.error ||
+            "Configuration error - please check your ElevenLabs credentials"
+        );
       case 500:
-        return new Error(errorData.error || 'Server error - please try again');
+        return new Error(errorData.error || "Server error - please try again");
       default:
-        return new Error(errorData.error || `HTTP ${status}: Failed to get signed URL`);
+        return new Error(
+          errorData.error || `HTTP ${status}: Failed to get signed URL`
+        );
     }
   }
 }

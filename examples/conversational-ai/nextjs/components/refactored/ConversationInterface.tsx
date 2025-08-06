@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { useConversationState } from '@/hooks/useConversationState';
-import { AudioVisualizer } from '@/components/core/AudioVisualizer';
-import { ErrorDisplay } from '@/components/core/ErrorDisplay';
-import { ConversationControls } from '@/components/core/ConversationControls';
-import { StatusIndicator } from '@/components/core/StatusIndicator';
-import { VisualizationMode } from '@/types/conversation';
-import { Sparkles, Waves, BarChart3 } from 'lucide-react';
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useConversationState } from "@/hooks/useConversationState";
+import { AudioVisualizer } from "@/components/core/AudioVisualizer";
+import { ErrorDisplay } from "@/components/core/ErrorDisplay";
+import { ConversationControls } from "@/components/core/ConversationControls";
+import { StatusIndicator } from "@/components/core/StatusIndicator";
+import { VisualizationMode } from "@/types/conversation";
+import { Sparkles, Waves, BarChart3 } from "lucide-react";
 
 /**
  * Refactored conversation interface
@@ -21,8 +21,9 @@ import { Sparkles, Waves, BarChart3 } from 'lucide-react';
  * - Dependency Inversion: Depends on abstractions (hooks, services)
  */
 export function ConversationInterface() {
-  const [visualizerMode, setVisualizerMode] = useState<VisualizationMode>('orb');
-  
+  const [visualizerMode, setVisualizerMode] =
+    useState<VisualizationMode>("orb");
+
   const {
     status,
     isRecording,
@@ -34,7 +35,7 @@ export function ConversationInterface() {
     setError,
     canStart,
     canStop,
-    isConnected
+    isConnected,
   } = useConversationState();
 
   const handleDismissError = () => {
@@ -53,14 +54,11 @@ export function ConversationInterface() {
               selectedPersonaAvatar={selectedPersona.avatar}
             />
           </CardHeader>
-          
+
           {error && (
-            <ErrorDisplay 
-              error={error} 
-              onDismiss={handleDismissError}
-            />
+            <ErrorDisplay error={error} onDismiss={handleDismissError} />
           )}
-          
+
           {/* Audio Visualizer */}
           <div className="flex justify-center mb-6">
             <AudioVisualizer
@@ -73,25 +71,25 @@ export function ConversationInterface() {
           {/* Visualizer Mode Selector */}
           <div className="flex justify-center gap-2 mb-6">
             <Button
-              variant={visualizerMode === 'orb' ? 'default' : 'outline'}
+              variant={visualizerMode === "orb" ? "default" : "outline"}
               size="sm"
-              onClick={() => setVisualizerMode('orb')}
+              onClick={() => setVisualizerMode("orb")}
             >
               <Sparkles className="h-4 w-4 mr-1" />
               Orb
             </Button>
             <Button
-              variant={visualizerMode === 'waveform' ? 'default' : 'outline'}
+              variant={visualizerMode === "waveform" ? "default" : "outline"}
               size="sm"
-              onClick={() => setVisualizerMode('waveform')}
+              onClick={() => setVisualizerMode("waveform")}
             >
               <Waves className="h-4 w-4 mr-1" />
               Wave
             </Button>
             <Button
-              variant={visualizerMode === 'spectrum' ? 'default' : 'outline'}
+              variant={visualizerMode === "spectrum" ? "default" : "outline"}
               size="sm"
-              onClick={() => setVisualizerMode('spectrum')}
+              onClick={() => setVisualizerMode("spectrum")}
             >
               <BarChart3 className="h-4 w-4 mr-1" />
               Spectrum
@@ -106,7 +104,7 @@ export function ConversationInterface() {
               isConnected={isConnected}
               onStart={startConversation}
               onStop={stopConversation}
-              disabled={status === 'connecting'}
+              disabled={status === "connecting"}
             />
           </div>
         </CardContent>

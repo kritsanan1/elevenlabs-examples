@@ -1,8 +1,8 @@
 "use client";
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Mic, MicOff } from 'lucide-react';
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Mic, MicOff } from "lucide-react";
 
 interface ConversationControlsProps {
   canStart: boolean;
@@ -23,7 +23,7 @@ export function ConversationControls({
   isConnected,
   onStart,
   onStop,
-  disabled = false
+  disabled = false,
 }: ConversationControlsProps) {
   return (
     <div className="flex justify-center gap-3">
@@ -37,7 +37,7 @@ export function ConversationControls({
         <Mic className="h-5 w-5 mr-2" />
         Start Conversation
       </Button>
-      
+
       <Button
         variant="outline"
         className="rounded-full"

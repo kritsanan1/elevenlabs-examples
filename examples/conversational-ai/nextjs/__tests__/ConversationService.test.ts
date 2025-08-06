@@ -1,14 +1,14 @@
 // Example test file demonstrating improved testability
 // This shows how the refactored code can be easily tested
 
-import { ConversationService } from '@/services/ConversationService';
-import { ConversationExporter } from '@/utils/conversationExport';
-import { ConversationMessage } from '@/types/conversation';
+import { ConversationService } from "@/services/ConversationService";
+import { ConversationExporter } from "@/utils/conversationExport";
+import { ConversationMessage } from "@/types/conversation";
 
 // Mock global fetch for testing
 global.fetch = jest.fn();
 
-describe('ConversationService', () => {
+describe("ConversationService", () => {
   let service: ConversationService;
 
   beforeEach(() => {
@@ -16,68 +16,74 @@ describe('ConversationService', () => {
     jest.clearAllMocks();
   });
 
-  describe('getSignedUrl', () => {
-    it('should return signed URL on successful response', async () => {
+  describe("getSignedUrl", () => {
+    it("should return signed URL on successful response", async () => {
       const mockResponse = {
         ok: true,
         status: 200,
-        json: jest.fn().mockResolvedValue({ signedUrl: 'test-url' })
+        json: jest.fn().mockResolvedValue({ signedUrl: "test-url" }),
       };
-      
+
       (fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       const result = await service.getSignedUrl();
-      
-      expect(result).toBe('test-url');
-      expect(fetch).toHaveBeenCalledWith('/api/signed-url');
+
+      expect(result).toBe("test-url");
+      expect(fetch).toHaveBeenCalledWith("/api/signed-url");
     });
 
-    it('should throw specific error for 400 status', async () => {
+    it("should throw specific error for 400 status", async () => {
       const mockResponse = {
         ok: false,
         status: 400,
-        json: jest.fn().mockResolvedValue({ error: 'Invalid configuration' })
+        json: jest.fn().mockResolvedValue({ error: "Invalid configuration" }),
       };
-      
+
       (fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-      await expect(service.getSignedUrl()).rejects.toThrow('Invalid configuration');
+      await expect(service.getSignedUrl()).rejects.toThrow(
+        "Invalid configuration"
+      );
     });
 
-    it('should throw generic error for missing signed URL', async () => {
+    it("should throw generic error for missing signed URL", async () => {
       const mockResponse = {
         ok: true,
         status: 200,
-        json: jest.fn().mockResolvedValue({})
+        json: jest.fn().mockResolvedValue({}),
       };
-      
+
       (fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-      await expect(service.getSignedUrl()).rejects.toThrow('No signed URL received from server');
+      await expect(service.getSignedUrl()).rejects.toThrow(
+        "No signed URL received from server"
+      );
     });
   });
 
-  describe('requestMicrophonePermission', () => {
-    it('should return true when permission granted', async () => {
+  describe("requestMicrophonePermission", () => {
+    it("should return true when permission granted", async () => {
       // Mock successful permission
-      Object.defineProperty(navigator, 'mediaDevices', {
+      Object.defineProperty(navigator, "mediaDevices", {
         value: {
-          getUserMedia: jest.fn().mockResolvedValue({})
+          getUserMedia: jest.fn().mockResolvedValue({}),
         },
-        writable: true
+        writable: true,
       });
 
       const result = await service.requestMicrophonePermission();
       expect(result).toBe(true);
     });
 
-    it('should return false when permission denied', async () => {
+    it("should return false when permission denied", async () => {
       // Mock permission denial
-      Object.defineProperty(navigator, 'mediaDevices', {
+      Object.defineProperty(navigator, "mediaDevices", {
         value: {
-          getUserMedia: jest.fn().mockRejectedValue(new Error('Permission denied'))
+          getUserMedia: jest
+            .fn()
+            .mockRejectedValue(new Error("Permission denied")),
         },
-        writable: true
+        writable: true,
       });
 
       const result = await service.requestMicrophonePermission();
@@ -86,43 +92,43 @@ describe('ConversationService', () => {
   });
 });
 
-describe('ConversationExporter', () => {
+describe("ConversationExporter", () => {
   const mockMessages: ConversationMessage[] = [
     {
-      id: '1',
-      timestamp: new Date('2024-01-01T10:00:00Z'),
-      speaker: 'user',
-      content: 'Hello',
-      sentiment: 'neutral'
+      id: "1",
+      timestamp: new Date("2024-01-01T10:00:00Z"),
+      speaker: "user",
+      content: "Hello",
+      sentiment: "neutral",
     },
     {
-      id: '2',
-      timestamp: new Date('2024-01-01T10:01:00Z'),
-      speaker: 'agent',
-      content: 'Hi there!',
-      sentiment: 'positive'
-    }
+      id: "2",
+      timestamp: new Date("2024-01-01T10:01:00Z"),
+      speaker: "agent",
+      content: "Hi there!",
+      sentiment: "positive",
+    },
   ];
 
-  describe('getSummary', () => {
-    it('should calculate correct summary statistics', () => {
+  describe("getSummary", () => {
+    it("should calculate correct summary statistics", () => {
       const summary = ConversationExporter.getSummary(mockMessages);
-      
+
       expect(summary.totalMessages).toBe(2);
       expect(summary.userMessages).toBe(1);
       expect(summary.agentMessages).toBe(1);
       expect(summary.wordCount).toBe(3); // "Hello" + "Hi there!"
-      expect(summary.duration).toBe('1 minutes');
+      expect(summary.duration).toBe("1 minutes");
     });
 
-    it('should handle empty messages array', () => {
+    it("should handle empty messages array", () => {
       const summary = ConversationExporter.getSummary([]);
-      
+
       expect(summary.totalMessages).toBe(0);
       expect(summary.userMessages).toBe(0);
       expect(summary.agentMessages).toBe(0);
       expect(summary.wordCount).toBe(0);
-      expect(summary.duration).toBe('0 minutes');
+      expect(summary.duration).toBe("0 minutes");
     });
   });
 });

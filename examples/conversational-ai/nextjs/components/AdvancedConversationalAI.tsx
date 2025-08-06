@@ -25,7 +25,7 @@ import {
   Waves,
   Eye,
   EyeOff,
-  Command
+  Command,
 } from "lucide-react";
 import { VoiceCommandPanel } from "./VoiceCommandPanel";
 
@@ -33,7 +33,7 @@ import { VoiceCommandPanel } from "./VoiceCommandPanel";
 interface ConversationAnalytics {
   duration: number;
   wordCount: number;
-  sentiment: 'positive' | 'neutral' | 'negative';
+  sentiment: "positive" | "neutral" | "negative";
   topics: string[];
   keyPhrases: string[];
 }
@@ -50,38 +50,38 @@ interface VoicePersona {
 interface ConversationMessage {
   id: string;
   timestamp: Date;
-  speaker: 'user' | 'agent';
+  speaker: "user" | "agent";
   content: string;
-  sentiment?: 'positive' | 'neutral' | 'negative';
+  sentiment?: "positive" | "neutral" | "negative";
 }
 
 // Audio Visualization Component
-const AudioVisualizer: React.FC<{ 
-  isActive: boolean; 
-  isSpeaking: boolean; 
-  mode: 'orb' | 'waveform' | 'spectrum' 
+const AudioVisualizer: React.FC<{
+  isActive: boolean;
+  isSpeaking: boolean;
+  mode: "orb" | "waveform" | "spectrum";
 }> = ({ isActive, isSpeaking, mode }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [animationId, setAnimationId] = useState<number | null>(null);
 
   useEffect(() => {
     if (!canvasRef.current) return;
-    
+
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      if (mode === 'orb') {
+
+      if (mode === "orb") {
         drawOrb(ctx, canvas.width / 2, canvas.height / 2, isActive, isSpeaking);
-      } else if (mode === 'waveform') {
+      } else if (mode === "waveform") {
         drawWaveform(ctx, canvas.width, canvas.height, isActive, isSpeaking);
-      } else if (mode === 'spectrum') {
+      } else if (mode === "spectrum") {
         drawSpectrum(ctx, canvas.width, canvas.height, isActive, isSpeaking);
       }
-      
+
       const id = requestAnimationFrame(animate);
       setAnimationId(id);
     };
@@ -93,17 +93,25 @@ const AudioVisualizer: React.FC<{
     };
   }, [isActive, isSpeaking, mode]);
 
-  const drawOrb = (ctx: CanvasRenderingContext2D, x: number, y: number, active: boolean, speaking: boolean) => {
+  const drawOrb = (
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    active: boolean,
+    speaking: boolean
+  ) => {
     const time = Date.now() * 0.005;
     const baseRadius = 40;
-    const pulseRadius = speaking ? baseRadius + Math.sin(time * 3) * 15 : baseRadius;
-    
+    const pulseRadius = speaking
+      ? baseRadius + Math.sin(time * 3) * 15
+      : baseRadius;
+
     // Gradient
     const gradient = ctx.createRadialGradient(x, y, 0, x, y, pulseRadius);
-    gradient.addColorStop(0, active ? '#60a5fa' : '#64748b');
-    gradient.addColorStop(0.7, active ? '#3b82f6' : '#475569');
-    gradient.addColorStop(1, 'transparent');
-    
+    gradient.addColorStop(0, active ? "#60a5fa" : "#64748b");
+    gradient.addColorStop(0.7, active ? "#3b82f6" : "#475569");
+    gradient.addColorStop(1, "transparent");
+
     ctx.fillStyle = gradient;
     ctx.beginPath();
     ctx.arc(x, y, pulseRadius, 0, Math.PI * 2);
@@ -115,25 +123,37 @@ const AudioVisualizer: React.FC<{
         ctx.strokeStyle = `rgba(59, 130, 246, ${0.3 - i * 0.1})`;
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.arc(x, y, pulseRadius + i * 20 + Math.sin(time * 2 + i) * 5, 0, Math.PI * 2);
+        ctx.arc(
+          x,
+          y,
+          pulseRadius + i * 20 + Math.sin(time * 2 + i) * 5,
+          0,
+          Math.PI * 2
+        );
         ctx.stroke();
       }
     }
   };
 
-  const drawWaveform = (ctx: CanvasRenderingContext2D, width: number, height: number, active: boolean, speaking: boolean) => {
+  const drawWaveform = (
+    ctx: CanvasRenderingContext2D,
+    width: number,
+    height: number,
+    active: boolean,
+    speaking: boolean
+  ) => {
     const centerY = height / 2;
     const time = Date.now() * 0.01;
-    
-    ctx.strokeStyle = active ? '#3b82f6' : '#64748b';
+
+    ctx.strokeStyle = active ? "#3b82f6" : "#64748b";
     ctx.lineWidth = 3;
     ctx.beginPath();
-    
+
     for (let x = 0; x < width; x += 2) {
       const amplitude = speaking ? 30 + Math.random() * 20 : 10;
       const frequency = 0.02;
       const y = centerY + Math.sin(x * frequency + time) * amplitude;
-      
+
       if (x === 0) {
         ctx.moveTo(x, y);
       } else {
@@ -143,15 +163,21 @@ const AudioVisualizer: React.FC<{
     ctx.stroke();
   };
 
-  const drawSpectrum = (ctx: CanvasRenderingContext2D, width: number, height: number, active: boolean, speaking: boolean) => {
+  const drawSpectrum = (
+    ctx: CanvasRenderingContext2D,
+    width: number,
+    height: number,
+    active: boolean,
+    speaking: boolean
+  ) => {
     const barCount = 32;
     const barWidth = width / barCount;
-    
+
     for (let i = 0; i < barCount; i++) {
-      const barHeight = speaking ? 
-        (Math.random() * height * 0.8) : 
-        (Math.sin(Date.now() * 0.005 + i * 0.5) * height * 0.2 + height * 0.1);
-      
+      const barHeight = speaking
+        ? Math.random() * height * 0.8
+        : Math.sin(Date.now() * 0.005 + i * 0.5) * height * 0.2 + height * 0.1;
+
       const hue = active ? 210 + i * 5 : 220;
       ctx.fillStyle = `hsl(${hue}, 70%, ${active ? 60 : 40}%)`;
       ctx.fillRect(i * barWidth, height - barHeight, barWidth - 2, barHeight);
@@ -169,7 +195,7 @@ const AudioVisualizer: React.FC<{
 };
 
 // Conversation Analytics Panel
-const AnalyticsPanel: React.FC<{ 
+const AnalyticsPanel: React.FC<{
   analytics: ConversationAnalytics;
   messages: ConversationMessage[];
   isVisible: boolean;
@@ -187,34 +213,51 @@ const AnalyticsPanel: React.FC<{
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600">{Math.floor(analytics.duration / 60)}m</div>
+            <div className="text-2xl font-bold text-blue-600">
+              {Math.floor(analytics.duration / 60)}m
+            </div>
             <div className="text-sm text-gray-600">Duration</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">{analytics.wordCount}</div>
+            <div className="text-2xl font-bold text-green-600">
+              {analytics.wordCount}
+            </div>
             <div className="text-sm text-gray-600">Words</div>
           </div>
           <div className="text-center">
-            <div className={`text-2xl font-bold ${
-              analytics.sentiment === 'positive' ? 'text-green-600' : 
-              analytics.sentiment === 'negative' ? 'text-red-600' : 'text-yellow-600'
-            }`}>
-              {analytics.sentiment === 'positive' ? '😊' : 
-               analytics.sentiment === 'negative' ? '😔' : '😐'}
+            <div
+              className={`text-2xl font-bold ${
+                analytics.sentiment === "positive"
+                  ? "text-green-600"
+                  : analytics.sentiment === "negative"
+                    ? "text-red-600"
+                    : "text-yellow-600"
+              }`}
+            >
+              {analytics.sentiment === "positive"
+                ? "😊"
+                : analytics.sentiment === "negative"
+                  ? "😔"
+                  : "😐"}
             </div>
             <div className="text-sm text-gray-600">Sentiment</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-purple-600">{messages.length}</div>
+            <div className="text-2xl font-bold text-purple-600">
+              {messages.length}
+            </div>
             <div className="text-sm text-gray-600">Messages</div>
           </div>
         </div>
-        
+
         <div>
           <h4 className="font-semibold mb-2">Key Topics</h4>
           <div className="flex flex-wrap gap-2">
             {analytics.topics.map((topic, index) => (
-              <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+              <span
+                key={index}
+                className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+              >
                 {topic}
               </span>
             ))}
@@ -244,14 +287,14 @@ const PersonaSelector: React.FC<{
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {personas.map((persona) => (
+          {personas.map(persona => (
             <button
               key={persona.id}
               onClick={() => onPersonaChange(persona)}
               className={cn(
                 "p-3 rounded-lg border-2 text-left transition-all",
-                selectedPersona.id === persona.id 
-                  ? "border-blue-500 bg-blue-50" 
+                selectedPersona.id === persona.id
+                  ? "border-blue-500 bg-blue-50"
                   : "border-gray-200 hover:border-gray-300"
               )}
             >
@@ -289,11 +332,16 @@ async function getSignedUrl(): Promise<string> {
 
       // Provide more specific error messages
       if (response.status === 400) {
-        throw new Error(errorData.error || "Configuration error - please check your ElevenLabs credentials");
+        throw new Error(
+          errorData.error ||
+            "Configuration error - please check your ElevenLabs credentials"
+        );
       } else if (response.status === 500) {
         throw new Error(errorData.error || "Server error - please try again");
       } else {
-        throw new Error(errorData.error || `HTTP ${response.status}: Failed to get signed URL`);
+        throw new Error(
+          errorData.error || `HTTP ${response.status}: Failed to get signed URL`
+        );
       }
     }
 
@@ -318,7 +366,9 @@ async function getSignedUrl(): Promise<string> {
 export function AdvancedConversationalAI() {
   const [error, setError] = React.useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
-  const [visualizerMode, setVisualizerMode] = useState<'orb' | 'waveform' | 'spectrum'>('orb');
+  const [visualizerMode, setVisualizerMode] = useState<
+    "orb" | "waveform" | "spectrum"
+  >("orb");
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showPersonas, setShowPersonas] = useState(false);
   const [showVoiceCommands, setShowVoiceCommands] = useState(false);
@@ -326,40 +376,40 @@ export function AdvancedConversationalAI() {
   const [analytics, setAnalytics] = useState<ConversationAnalytics>({
     duration: 0,
     wordCount: 0,
-    sentiment: 'neutral',
-    topics: ['AI', 'Technology', 'Conversation'],
-    keyPhrases: []
+    sentiment: "neutral",
+    topics: ["AI", "Technology", "Conversation"],
+    keyPhrases: [],
   });
 
   const personas: VoicePersona[] = [
     {
-      id: 'assistant',
-      name: 'Assistant',
-      description: 'Professional and helpful',
-      voice: 'sarah',
-      personality: 'professional',
-      avatar: '🤖'
+      id: "assistant",
+      name: "Assistant",
+      description: "Professional and helpful",
+      voice: "sarah",
+      personality: "professional",
+      avatar: "🤖",
     },
     {
-      id: 'creative',
-      name: 'Creative',
-      description: 'Artistic and imaginative',
-      voice: 'bella',
-      personality: 'creative',
-      avatar: '🎨'
+      id: "creative",
+      name: "Creative",
+      description: "Artistic and imaginative",
+      voice: "bella",
+      personality: "creative",
+      avatar: "🎨",
     },
     {
-      id: 'scientist',
-      name: 'Scientist',
-      description: 'Analytical and precise',
-      voice: 'adam',
-      personality: 'analytical',
-      avatar: '🔬'
-    }
+      id: "scientist",
+      name: "Scientist",
+      description: "Analytical and precise",
+      voice: "adam",
+      personality: "analytical",
+      avatar: "🔬",
+    },
   ];
 
   const [selectedPersona, setSelectedPersona] = useState(personas[0]);
-  
+
   const conversation = useConversation({
     onConnect: () => {
       console.log("Successfully connected to conversation");
@@ -376,13 +426,13 @@ export function AdvancedConversationalAI() {
       // More detailed error handling for conversation errors
       let errorMessage = "An error occurred during the conversation";
 
-      if (error && typeof error === 'object') {
-        if ('message' in error) {
+      if (error && typeof error === "object") {
+        if ("message" in error) {
           errorMessage = error.message as string;
-        } else if ('error' in error) {
+        } else if ("error" in error) {
           errorMessage = error.error as string;
         }
-      } else if (typeof error === 'string') {
+      } else if (typeof error === "string") {
         errorMessage = error;
       }
 
@@ -395,17 +445,17 @@ export function AdvancedConversationalAI() {
       const newMessage: ConversationMessage = {
         id: Date.now().toString(),
         timestamp: new Date(),
-        speaker: message.source === 'user' ? 'user' : 'agent',
-        content: message.message || '',
-        sentiment: 'neutral' // Would be determined by sentiment analysis
+        speaker: message.source === "user" ? "user" : "agent",
+        content: message.message || "",
+        sentiment: "neutral", // Would be determined by sentiment analysis
       };
       setMessages(prev => [...prev, newMessage]);
-      
+
       // Update analytics
       setAnalytics(prev => ({
         ...prev,
-        wordCount: prev.wordCount + (message.message?.split(' ').length || 0),
-        duration: prev.duration + 1
+        wordCount: prev.wordCount + (message.message?.split(" ").length || 0),
+        duration: prev.duration + 1,
       }));
     },
   });
@@ -437,12 +487,14 @@ export function AdvancedConversationalAI() {
         console.error("Error details:", {
           message: error.message,
           name: error.name,
-          stack: error.stack
+          stack: error.stack,
         });
         setError(error.message);
       } else {
         console.error("Unknown error:", error);
-        setError("An unexpected error occurred while starting the conversation");
+        setError(
+          "An unexpected error occurred while starting the conversation"
+        );
       }
     }
   }
@@ -452,15 +504,18 @@ export function AdvancedConversationalAI() {
   }, [conversation]);
 
   const exportConversation = () => {
-    const transcript = messages.map(msg => 
-      `[${msg.timestamp.toLocaleTimeString()}] ${msg.speaker.toUpperCase()}: ${msg.content}`
-    ).join('\n');
-    
-    const blob = new Blob([transcript], { type: 'text/plain' });
+    const transcript = messages
+      .map(
+        msg =>
+          `[${msg.timestamp.toLocaleTimeString()}] ${msg.speaker.toUpperCase()}: ${msg.content}`
+      )
+      .join("\n");
+
+    const blob = new Blob([transcript], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = `conversation-${new Date().toISOString().split('T')[0]}.txt`;
+    a.download = `conversation-${new Date().toISOString().split("T")[0]}.txt`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -472,7 +527,9 @@ export function AdvancedConversationalAI() {
         <CardContent className="p-6">
           <CardHeader className="px-0 pt-0">
             <CardTitle className="text-center flex items-center justify-center gap-2">
-              {isRecording && <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />}
+              {isRecording && (
+                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+              )}
               {conversation.status === "connected"
                 ? conversation.isSpeaking
                   ? `${selectedPersona.avatar} Agent is speaking`
@@ -480,17 +537,20 @@ export function AdvancedConversationalAI() {
                 : "💭 Ready to connect"}
             </CardTitle>
           </CardHeader>
-          
+
           {error && (
             <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
               <div className="flex items-start gap-3">
                 <div className="text-red-500 text-lg">⚠️</div>
                 <div className="flex-1">
                   <p className="text-red-700 text-sm font-medium">{error}</p>
-                  {(error.includes("AGENT_ID") || error.includes("ELEVENLABS_API_KEY") || error.includes("Configuration error")) ? (
+                  {error.includes("AGENT_ID") ||
+                  error.includes("ELEVENLABS_API_KEY") ||
+                  error.includes("Configuration error") ? (
                     <div className="mt-3 space-y-2">
                       <p className="text-red-600 text-xs">
-                        To experience all advanced features, configure your ElevenLabs credentials:
+                        To experience all advanced features, configure your
+                        ElevenLabs credentials:
                       </p>
                       <div className="flex flex-wrap gap-2">
                         <a
@@ -516,7 +576,7 @@ export function AdvancedConversationalAI() {
               </div>
             </div>
           )}
-          
+
           {/* Audio Visualizer */}
           <div className="flex justify-center mb-6">
             <AudioVisualizer
@@ -529,25 +589,25 @@ export function AdvancedConversationalAI() {
           {/* Visualizer Mode Selector */}
           <div className="flex justify-center gap-2 mb-6">
             <Button
-              variant={visualizerMode === 'orb' ? 'default' : 'outline'}
+              variant={visualizerMode === "orb" ? "default" : "outline"}
               size="sm"
-              onClick={() => setVisualizerMode('orb')}
+              onClick={() => setVisualizerMode("orb")}
             >
               <Sparkles className="h-4 w-4 mr-1" />
               Orb
             </Button>
             <Button
-              variant={visualizerMode === 'waveform' ? 'default' : 'outline'}
+              variant={visualizerMode === "waveform" ? "default" : "outline"}
               size="sm"
-              onClick={() => setVisualizerMode('waveform')}
+              onClick={() => setVisualizerMode("waveform")}
             >
               <Waves className="h-4 w-4 mr-1" />
               Wave
             </Button>
             <Button
-              variant={visualizerMode === 'spectrum' ? 'default' : 'outline'}
+              variant={visualizerMode === "spectrum" ? "default" : "outline"}
               size="sm"
-              onClick={() => setVisualizerMode('spectrum')}
+              onClick={() => setVisualizerMode("spectrum")}
             >
               <BarChart3 className="h-4 w-4 mr-1" />
               Spectrum
@@ -561,18 +621,22 @@ export function AdvancedConversationalAI() {
                 variant="default"
                 className="rounded-full"
                 size="lg"
-                disabled={conversation !== null && conversation.status === "connected"}
+                disabled={
+                  conversation !== null && conversation.status === "connected"
+                }
                 onClick={startConversation}
               >
                 <Mic className="h-5 w-5 mr-2" />
                 Start Conversation
               </Button>
-              
+
               <Button
                 variant="outline"
                 className="rounded-full"
                 size="lg"
-                disabled={conversation === null || conversation.status !== "connected"}
+                disabled={
+                  conversation === null || conversation.status !== "connected"
+                }
                 onClick={stopConversation}
               >
                 <MicOff className="h-5 w-5 mr-2" />
@@ -587,10 +651,14 @@ export function AdvancedConversationalAI() {
                 size="sm"
                 onClick={() => setShowAnalytics(!showAnalytics)}
               >
-                {showAnalytics ? <EyeOff className="h-4 w-4 mr-1" /> : <Eye className="h-4 w-4 mr-1" />}
+                {showAnalytics ? (
+                  <EyeOff className="h-4 w-4 mr-1" />
+                ) : (
+                  <Eye className="h-4 w-4 mr-1" />
+                )}
                 Analytics
               </Button>
-              
+
               <Button
                 variant="outline"
                 size="sm"
@@ -599,7 +667,7 @@ export function AdvancedConversationalAI() {
                 <Users className="h-4 w-4 mr-1" />
                 Personas
               </Button>
-              
+
               <Button
                 variant="outline"
                 size="sm"
@@ -624,12 +692,12 @@ export function AdvancedConversationalAI() {
       </Card>
 
       {/* Advanced Features */}
-      <AnalyticsPanel 
+      <AnalyticsPanel
         analytics={analytics}
         messages={messages}
         isVisible={showAnalytics}
       />
-      
+
       <PersonaSelector
         personas={personas}
         selectedPersona={selectedPersona}
@@ -638,9 +706,7 @@ export function AdvancedConversationalAI() {
       />
 
       {/* Voice Command Panel */}
-      {showVoiceCommands && (
-        <VoiceCommandPanel />
-      )}
+      {showVoiceCommands && <VoiceCommandPanel />}
 
       {/* Live Transcript */}
       {messages.length > 0 && (
@@ -653,15 +719,21 @@ export function AdvancedConversationalAI() {
           </CardHeader>
           <CardContent>
             <div className="max-h-48 overflow-y-auto space-y-2">
-              {messages.slice(-10).map((message) => (
-                <div key={message.id} className={cn(
-                  "p-2 rounded-lg",
-                  message.speaker === 'user'
-                    ? "bg-blue-50 text-blue-900 ml-8"
-                    : "bg-gray-50 text-gray-900 mr-8"
-                )}>
+              {messages.slice(-10).map(message => (
+                <div
+                  key={message.id}
+                  className={cn(
+                    "p-2 rounded-lg",
+                    message.speaker === "user"
+                      ? "bg-blue-50 text-blue-900 ml-8"
+                      : "bg-gray-50 text-gray-900 mr-8"
+                  )}
+                >
                   <div className="text-xs text-gray-500 mb-1">
-                    {message.speaker === 'user' ? '👤 You' : `${selectedPersona.avatar} Agent`} • {message.timestamp.toLocaleTimeString()}
+                    {message.speaker === "user"
+                      ? "👤 You"
+                      : `${selectedPersona.avatar} Agent`}{" "}
+                    • {message.timestamp.toLocaleTimeString()}
                   </div>
                   <div>{message.content}</div>
                 </div>

@@ -2,15 +2,15 @@
 export interface ConversationMessage {
   id: string;
   timestamp: Date;
-  speaker: 'user' | 'agent';
+  speaker: "user" | "agent";
   content: string;
-  sentiment?: 'positive' | 'neutral' | 'negative';
+  sentiment?: "positive" | "neutral" | "negative";
 }
 
 export interface ConversationAnalytics {
   duration: number;
   wordCount: number;
-  sentiment: 'positive' | 'neutral' | 'negative';
+  sentiment: "positive" | "neutral" | "negative";
   topics: string[];
   keyPhrases: string[];
 }
@@ -29,7 +29,7 @@ export interface ConversationSettings {
   voiceCommands: boolean;
   backgroundListening: boolean;
   intelligentPause: boolean;
-  conversationMode: 'standard' | 'focus' | 'presentation';
+  conversationMode: "standard" | "focus" | "presentation";
   responseSpeed: number;
   interruptionHandling: boolean;
 }
@@ -62,7 +62,11 @@ export interface ApiError {
 }
 
 // Conversation state types
-export type ConversationStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
+export type ConversationStatus =
+  | "disconnected"
+  | "connecting"
+  | "connected"
+  | "error";
 
 export interface ConversationState {
   status: ConversationStatus;
@@ -75,7 +79,7 @@ export interface ConversationState {
 }
 
 // Visualization types
-export type VisualizationMode = 'orb' | 'waveform' | 'spectrum';
+export type VisualizationMode = "orb" | "waveform" | "spectrum";
 
 export interface VisualizationConfig {
   mode: VisualizationMode;

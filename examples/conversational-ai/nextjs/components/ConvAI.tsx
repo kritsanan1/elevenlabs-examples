@@ -29,11 +29,16 @@ async function getSignedUrl(): Promise<string> {
 
       // Provide more specific error messages
       if (response.status === 400) {
-        throw new Error(errorData.error || "Configuration error - please check your ElevenLabs credentials");
+        throw new Error(
+          errorData.error ||
+            "Configuration error - please check your ElevenLabs credentials"
+        );
       } else if (response.status === 500) {
         throw new Error(errorData.error || "Server error - please try again");
       } else {
-        throw new Error(errorData.error || `HTTP ${response.status}: Failed to get signed URL`);
+        throw new Error(
+          errorData.error || `HTTP ${response.status}: Failed to get signed URL`
+        );
       }
     }
 
@@ -102,12 +107,14 @@ export function ConvAI() {
         console.error("Error details:", {
           message: error.message,
           name: error.name,
-          stack: error.stack
+          stack: error.stack,
         });
         setError(error.message);
       } else {
         console.error("Unknown error:", error);
-        setError("An unexpected error occurred while starting the conversation");
+        setError(
+          "An unexpected error occurred while starting the conversation"
+        );
       }
     }
   }
@@ -136,10 +143,13 @@ export function ConvAI() {
                 <div className="text-red-500 text-lg">⚠️</div>
                 <div className="flex-1">
                   <p className="text-red-700 text-sm font-medium">{error}</p>
-                  {(error.includes("AGENT_ID") || error.includes("ELEVENLABS_API_KEY") || error.includes("Configuration error")) ? (
+                  {error.includes("AGENT_ID") ||
+                  error.includes("ELEVENLABS_API_KEY") ||
+                  error.includes("Configuration error") ? (
                     <div className="mt-3 space-y-2">
                       <p className="text-red-600 text-xs">
-                        To use this demo, you need to configure your ElevenLabs credentials:
+                        To use this demo, you need to configure your ElevenLabs
+                        credentials:
                       </p>
                       <div className="flex flex-wrap gap-2">
                         <a
@@ -173,8 +183,8 @@ export function ConvAI() {
                 conversation.status === "connected" && conversation.isSpeaking
                   ? "orb-active animate-orb"
                   : conversation.status === "connected"
-                  ? "animate-orb-slow orb-inactive"
-                  : "orb-inactive"
+                    ? "animate-orb-slow orb-inactive"
+                    : "orb-inactive"
               )}
             ></div>
 

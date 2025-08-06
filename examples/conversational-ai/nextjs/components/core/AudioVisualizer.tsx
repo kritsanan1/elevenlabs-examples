@@ -1,8 +1,8 @@
 "use client";
 
-import React from 'react';
-import { useVisualization } from '@/hooks/useVisualization';
-import { VisualizationMode } from '@/types/conversation';
+import React from "react";
+import { useVisualization } from "@/hooks/useVisualization";
+import { VisualizationMode } from "@/types/conversation";
 
 interface AudioVisualizerProps {
   isActive: boolean;
@@ -24,12 +24,12 @@ export function AudioVisualizer({
   mode: initialMode,
   width = 300,
   height = 200,
-  className = ""
+  className = "",
 }: AudioVisualizerProps) {
   const { canvasRef, mode } = useVisualization({
     mode: initialMode,
     isActive,
-    isSpeaking
+    isSpeaking,
   });
 
   return (
