@@ -36,12 +36,28 @@ export async function GET() {
     });
     return NextResponse.json({ signedUrl: response.signed_url });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error getting signed URL:", error);
+
+    // Enhanced error logging and response
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorDetails = error instanceof Error ? {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+    } : error;
+
+    console.error("Detailed error info:", errorDetails);
+
     return NextResponse.json(
       {
-        error: "Failed to get signed URL",
-        details: error instanceof Error ? error.message : "Unknown error",
-        setup: "Please check your AGENT_ID and ELEVENLABS_API_KEY are valid.",
+        error: "Failed to get signed URL from ElevenLabs",
+        details: errorMessage,
+        setup: "Please verify your AGENT_ID and ELEVENLABS_API_KEY are correct.",
+        troubleshoot: {
+          agentId: agentId ? "Configured" : "Missing",
+          apiKey: apiKey ? "Configured" : "Missing",
+          errorType: error instanceof Error ? error.name : typeof error,
+        }
       },
       { status: 500 }
     );
