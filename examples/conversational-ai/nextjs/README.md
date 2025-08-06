@@ -162,6 +162,19 @@ Visit [http://localhost:3000](http://localhost:3000)
 
 ## 🚀 Development
 
+### **Environment Validation**
+
+Before starting development, validate your setup:
+
+```bash
+npm run validate-setup
+```
+
+This script checks:
+- ✅ Environment variables are configured
+- ✅ ElevenLabs API connectivity
+- ✅ Required credentials format
+
 ### **Available Scripts**
 
 | Script  | Description                             | Usage           |
