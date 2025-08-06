@@ -17,14 +17,18 @@ export default function Home() {
                             <li>Set <code className="bg-blue-100 px-1 rounded">AGENT_ID</code> with your conversational AI agent ID</li>
                             <li>Set <code className="bg-blue-100 px-1 rounded">ELEVENLABS_API_KEY</code> with your API key</li>
                         </ul>
-                        <p className="mt-2">
+                        <div className="mt-3 flex flex-wrap gap-2">
                             <a href="https://elevenlabs.io/docs/conversational-ai/docs/agent-setup"
                                target="_blank"
                                rel="noopener noreferrer"
-                               className="text-blue-600 hover:text-blue-800 underline">
-                                View setup guide →
+                               className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 underline text-sm">
+                                📚 Setup guide
                             </a>
-                        </p>
+                            <a href="/advanced"
+                               className="inline-flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-700 rounded text-sm hover:bg-purple-200 transition-colors">
+                                🚀 Try Advanced Features
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <ConvAI/>
