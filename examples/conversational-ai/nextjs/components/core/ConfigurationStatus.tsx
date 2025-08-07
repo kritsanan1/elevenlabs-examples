@@ -85,6 +85,12 @@ export function ConfigurationStatus() {
     }
   };
 
+  const handleSetupComplete = () => {
+    // Refresh configuration status after setup
+    checkConfiguration();
+    setShowSetup(false);
+  };
+
   if (isLoading) {
     return (
       <Card className="mb-4 border-blue-200 bg-blue-50">
