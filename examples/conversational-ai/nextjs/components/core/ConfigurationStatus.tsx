@@ -102,6 +102,11 @@ export function ConfigurationStatus() {
     setShowOnboarding(false);
   };
 
+  const handleAgentSelect = (agent: any) => {
+    setSelectedAgent(agent);
+    setShowAgentSelector(false);
+  };
+
   if (isLoading) {
     return (
       <Card className="mb-4 border-blue-200 bg-blue-50">
