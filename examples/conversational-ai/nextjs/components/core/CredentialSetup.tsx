@@ -177,7 +177,16 @@ export function CredentialSetup({
               <div className={`text-xs flex items-center gap-1 ${
                 validationResults.agentId === "valid" ? "text-green-600" : "text-red-600"
               }`}>
-                {validationResults.agentId === "valid" ? "✅ Valid agent ID" : "❌ Invalid agent ID"}
+                {validationResults.agentId === "valid" ? (
+                  "✅ Valid agent ID"
+                ) : (
+                  <div>
+                    <div>❌ Invalid agent ID</div>
+                    {validationResults.agentIdError && (
+                      <div className="text-red-500 mt-1">{validationResults.agentIdError}</div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
