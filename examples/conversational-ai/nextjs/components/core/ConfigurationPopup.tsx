@@ -128,7 +128,7 @@ export function ConfigurationPopup({
     setShowOnboarding(false);
   };
 
-  const handleAgentSelect = (agent: any) => {
+  const handleAgentSelect = (agent: { id: string; name: string }) => {
     setSelectedAgent(agent);
     setShowAgentSelector(false);
   };
