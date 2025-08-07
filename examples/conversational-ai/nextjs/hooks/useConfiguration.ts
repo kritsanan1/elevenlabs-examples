@@ -29,7 +29,6 @@ export function useConfiguration() {
       const storedCreds = loadCredentials();
       if (storedCreds && storedCreds.agentId && storedCreds.apiKey) {
         // Try to use stored credentials for validation
-        console.log("Found stored credentials, validating...");
       }
 
       const response = await fetch("/api/signed-url");
