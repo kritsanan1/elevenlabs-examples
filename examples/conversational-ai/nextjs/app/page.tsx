@@ -55,7 +55,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <ConfigurationStatus />
         <ConvAI />
       </main>
     </div>
