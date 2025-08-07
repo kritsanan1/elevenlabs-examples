@@ -1,9 +1,6 @@
 import { ConvAI } from "@/components/ConvAI";
-<<<<<<< HEAD
-=======
 import { ConfigurationStatus } from "@/components/core/ConfigurationStatus";
 import { MicrophoneTest } from "@/components/MicrophoneTest";
->>>>>>> origin/main
 
 export default function Home() {
   return (
@@ -60,11 +57,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-<<<<<<< HEAD
-=======
         <ConfigurationStatus />
         <MicrophoneTest />
->>>>>>> origin/main
         <ConvAI />
       </main>
     </div>
