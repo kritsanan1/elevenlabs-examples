@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CredentialSetup } from "./CredentialSetup";
 import { OnboardingWizard } from "./OnboardingWizard";
+import { AgentSelector } from "./AgentSelector";
 
 interface ConfigStatus {
   isConfigured: boolean;
