@@ -259,7 +259,16 @@ export function CredentialSetup({
               <div className={`text-xs flex items-center gap-1 ${
                 validationResults.apiKey === "valid" ? "text-green-600" : "text-red-600"
               }`}>
-                {validationResults.apiKey === "valid" ? "✅ Valid API key" : "❌ Invalid API key"}
+                {validationResults.apiKey === "valid" ? (
+                  "✅ Valid API key"
+                ) : (
+                  <div>
+                    <div>❌ Invalid API key</div>
+                    {validationResults.apiKeyError && (
+                      <div className="text-red-500 mt-1">{validationResults.apiKeyError}</div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
