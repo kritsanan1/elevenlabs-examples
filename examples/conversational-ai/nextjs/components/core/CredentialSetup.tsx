@@ -163,7 +163,16 @@ export function CredentialSetup({
                 variant="outline"
                 size="sm"
                 onClick={() => testCredential("agentId")}
-                disabled={!credentials.agentId.trim() || validationResults.agentId === "testing"}
+                disabled={
+                  !credentials.agentId.trim() ||
+                  !credentials.apiKey.trim() ||
+                  validationResults.agentId === "testing"
+                }
+                title={
+                  !credentials.apiKey.trim()
+                    ? "API key is required to test Agent ID"
+                    : "Test if agent ID is valid and accessible"
+                }
               >
                 {validationResults.agentId === "testing" ? (
                   <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
