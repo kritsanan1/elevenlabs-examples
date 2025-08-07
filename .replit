@@ -18,4 +18,8 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd examples/conversational-ai/nextjs && pnpm install --legacy-peer-deps && pnpm run dev"
+args = "cd examples/conversational-ai/nextjs && pnpm install && pnpm run dev"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
