@@ -46,7 +46,8 @@ export function ConfigurationStatus() {
         });
       }
     } catch (error) {
-      console.error("Configuration check failed:", error);
+      // Log as info since this is expected when configuration is incomplete
+      console.info("Configuration check result:", error);
       setStatus({
         isConfigured: false,
         agentIdConfigured: false,
@@ -163,7 +164,7 @@ export function ConfigurationStatus() {
               onClick={checkConfiguration}
               className="inline-flex items-center gap-1 px-3 py-2 bg-white text-amber-600 border border-amber-300 rounded text-xs hover:bg-amber-50 transition-colors"
             >
-              🔄 Recheck
+              ��� Recheck
             </button>
           </div>
         </div>
