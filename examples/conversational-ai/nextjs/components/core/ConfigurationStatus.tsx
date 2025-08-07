@@ -176,11 +176,17 @@ export function ConfigurationStatus() {
           </div>
 
           <div className="flex flex-wrap gap-2">
+            <Button
+              onClick={() => setShowSetup(true)}
+              className="bg-amber-600 text-white hover:bg-amber-700 text-xs h-8"
+            >
+              🚀 Quick Setup
+            </Button>
             <a
               href="https://elevenlabs.io/docs/conversational-ai/docs/agent-setup"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 px-3 py-2 bg-amber-600 text-white rounded text-xs hover:bg-amber-700 transition-colors"
+              className="inline-flex items-center gap-1 px-3 py-2 bg-white text-amber-600 border border-amber-300 rounded text-xs hover:bg-amber-50 transition-colors"
             >
               📚 Setup Guide
             </a>
