@@ -484,7 +484,7 @@ export function AdvancedConversationalAI() {
 
       // More detailed error handling
       if (error instanceof Error) {
-        console.error("Error details:", {
+        console.warn("Error details:", {
           message: error.message,
           name: error.name,
           stack: error.stack,
