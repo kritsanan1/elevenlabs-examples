@@ -25,7 +25,18 @@ export function ConfigurationStatus() {
     try {
       setIsLoading(true);
       const response = await fetch("/api/signed-url");
-      const data = await response.json();
+
+      // Check if the response is valid before trying to parse JSON
+      if (!response.ok && response.status !== 400) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      let data;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        throw new Error(`Failed to parse response: ${parseError}`);
+      }
 
       if (response.ok) {
         setStatus({
@@ -56,13 +67,14 @@ export function ConfigurationStatus() {
         });
       }
     } catch (error) {
-      // Network or other unexpected errors
-      console.error("Configuration check network error:", error);
+      // Only log network errors or actual unexpected errors
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.warn("Configuration check issue:", errorMessage);
       setStatus({
         isConfigured: false,
         agentIdConfigured: false,
         apiKeyConfigured: false,
-        error: "Unable to check configuration - network error",
+        error: `Configuration check failed: ${errorMessage}`,
       });
     } finally {
       setIsLoading(false);
