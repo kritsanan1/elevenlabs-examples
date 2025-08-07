@@ -93,6 +93,7 @@ async function getSignedUrl(): Promise<string> {
 export function ConvAI() {
   const [error, setError] = React.useState<string | null>(null);
   const config = useConfiguration();
+  const configPopup = useConfigurationPopup();
 
   const conversation = useConversation({
     onConnect: () => {
