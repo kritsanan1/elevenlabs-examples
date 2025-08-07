@@ -378,6 +378,7 @@ async function getSignedUrl(): Promise<string> {
 export function AdvancedConversationalAI() {
   const [error, setError] = React.useState<string | null>(null);
   const config = useConfiguration();
+  const configPopup = useConfigurationPopup();
   const [isRecording, setIsRecording] = useState(false);
   const [visualizerMode, setVisualizerMode] = useState<
     "orb" | "waveform" | "spectrum"
