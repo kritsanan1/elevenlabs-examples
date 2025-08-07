@@ -273,6 +273,14 @@ export function ConfigurationStatus() {
         onComplete={handleOnboardingComplete}
         onClose={() => setShowOnboarding(false)}
       />
+
+      <AgentSelector
+        isVisible={showAgentSelector}
+        selectedAgentId={selectedAgent?.id}
+        onAgentSelect={handleAgentSelect}
+        onClose={() => setShowAgentSelector(false)}
+        apiKey={process.env.ELEVENLABS_API_KEY}
+      />
     </Card>
   );
 }
