@@ -204,9 +204,6 @@ export function ConvAI() {
 
   return (
     <div className="space-y-4">
-      {/* Always show configuration status */}
-      <ConfigurationStatus />
-
       <div className={"flex justify-center items-center gap-x-4"}>
         <Card className={"rounded-3xl"}>
           <CardContent>
