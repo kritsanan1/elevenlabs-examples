@@ -213,6 +213,12 @@ export function ConfigurationStatus() {
           </div>
         )}
       </CardContent>
+
+      <CredentialSetup
+        isVisible={showSetup}
+        onClose={() => setShowSetup(false)}
+        onCredentialsUpdated={handleSetupComplete}
+      />
     </Card>
   );
 }
