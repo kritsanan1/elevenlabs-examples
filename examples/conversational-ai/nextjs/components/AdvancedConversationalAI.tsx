@@ -354,7 +354,7 @@ async function getSignedUrl(): Promise<string> {
 
     return data.signedUrl;
   } catch (error) {
-    console.error("Error in getSignedUrl:", error);
+    console.warn("Error in getSignedUrl:", error);
     if (error instanceof Error) {
       throw error;
     } else {
