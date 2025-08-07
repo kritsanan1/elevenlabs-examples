@@ -38,6 +38,20 @@ export function CredentialSetup({
   }>({});
   const [copied, setCopied] = useState<string | null>(null);
 
+  // Load stored credentials when component mounts
+  useEffect(() => {
+    if (isVisible) {
+      const stored = loadCredentials();
+      if (stored) {
+        setCredentials({
+          agentId: stored.agentId || "",
+          apiKey: stored.apiKey || ""
+        });
+      }
+      setHasStored(hasStoredCredentials());
+    }
+  }, [isVisible]);
+
   if (!isVisible) return null;
 
   const handleInputChange = (field: "agentId" | "apiKey", value: string) => {
