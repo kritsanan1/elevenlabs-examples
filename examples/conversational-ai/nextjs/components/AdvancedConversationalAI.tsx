@@ -648,10 +648,10 @@ export function AdvancedConversationalAI() {
                   isDisabled ||
                   (conversation !== null && conversation.status === "connected")
                 }
-                onClick={startConversation}
+                onClick={config.isConfigured ? startConversation : configPopup.showPopup}
                 title={
                   !config.isConfigured
-                    ? "Please configure your ElevenLabs credentials first"
+                    ? "Click to configure your ElevenLabs credentials"
                     : conversation.status === "connected"
                       ? "Conversation is already active"
                       : "Start a new conversation"
@@ -661,7 +661,7 @@ export function AdvancedConversationalAI() {
                 {config.isLoading
                   ? "Checking configuration..."
                   : !config.isConfigured
-                    ? "Configure to start"
+                    ? "⚙️ Setup Required"
                     : "Start Conversation"}
               </Button>
 
