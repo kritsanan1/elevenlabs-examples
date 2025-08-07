@@ -487,7 +487,7 @@ export function AdvancedConversationalAI() {
       }
 
       const signedUrl = await getSignedUrl();
-      const conversationId = await conversation.startSession({ signedUrl });
+      await conversation.startSession({ signedUrl });
     } catch (error) {
       // Enhanced error handling with better user messages
       if (error instanceof Error) {
