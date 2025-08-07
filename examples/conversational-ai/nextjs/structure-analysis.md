@@ -1,175 +1,256 @@
-# Structure Analysis & Recommendations
+# Structure Analysis & Architecture Guide
 
-This document provides a detailed analysis of the current project structure and recommendations for optimization following modern React/Next.js best practices.
+## Current Architecture Overview
 
-## 📊 Current Structure Analysis
+The ElevenLabs Conversational AI Demo follows a **modern React architecture** with **Next.js App Router**, emphasizing **clean code principles** and **scalable patterns**.
 
-### **Current Organization**
+## Current Project Organization
+
+### 📁 **Current Structure**
 
 ```
-convai-demo/
-├── app/                     # ✅ Next.js App Router (Good)
-├── components/              # ✅ React Components (Good)
-│   ├── core/               # ✅ Atomic Components (Excellent)
-│   ├── ui/                 # ✅ Generic UI (Excellent)
-│   ├── refactored/         # ⚠️  Demo-specific (Could be better)
-│   └── [individual files]  # ⚠️  Mixed organization
-├── hooks/                  # ✅ Custom Hooks (Excellent)
-├── services/               # ✅ Service Layer (Excellent)
-├── types/                  # ✅ Type Definitions (Good)
-├── utils/                  # ✅ Utilities (Good)
-└── lib/                    # ✅ Library Code (Good)
+examples/conversational-ai/nextjs/
+├── 📁 app/                        # Next.js App Router (Route Handlers)
+│   ├── layout.tsx                 # Root layout with navigation
+│   ├── page.tsx                   # Homepage - basic conversation
+│   ├── advanced/page.tsx          # Advanced features demo
+│   ├── refactored/page.tsx        # Clean architecture demo
+│   └── api/                       # API routes
+│       ├── signed-url/route.ts    # ElevenLabs authentication
+│       ├── test-credentials/      # Credential validation
+│       ├── save-credentials/      # Credential storage
+│       └── agents/route.ts        # Agent management
+├── 📁 components/                 # React Components
+│   ├── ConvAI.tsx                 # Main conversation component
+│   ├── AdvancedConversationalAI.tsx # Feature-rich interface
+│   ├── core/                      # Atomic components
+│   ├── refactored/                # Clean architecture examples
+│   └── ui/                        # shadcn/ui components
+├── 📁 hooks/                      # Custom React hooks
+├── 📁 services/                   # Business logic & API
+├── 📁 lib/                        # Utilities & helpers
+├── 📁 types/                      # TypeScript definitions
+└── 📁 utils/                      # Additional utilities
 ```
 
-## 🎯 Recommended Structure
+### 🎯 **Architecture Strengths**
 
-### **Feature-Based Organization**
+#### ✅ **Excellent Patterns**
+- **App Router Integration**: Modern Next.js routing with server components
+- **Component Composition**: Clear hierarchy from atomic to organism level
+- **Custom Hooks**: Reusable state logic separation
+- **Service Layer**: Clean API integration abstraction
+- **Type Safety**: Comprehensive TypeScript coverage
+
+#### ✅ **Clean Code Principles**
+- **Single Responsibility**: Each component has one clear purpose
+- **Dependency Inversion**: Components depend on abstractions (hooks)
+- **Open/Closed**: Extensible through composition
+- **Interface Segregation**: Focused interfaces for specific needs
+
+## 🚀 **Recommended Architecture (Feature-Based)**
+
+### **Recommended Structure**
 
 ```
 src/
-├── app/                          # Next.js App Router
-│   ├── (auth)/                  # Route groups
+├── 📁 app/                        # Next.js App Router
+│   ├── (auth)/                    # Route groups for organization
 │   ├── (dashboard)/
-│   ├── api/
-│   └── globals.css
-├── features/                     # Feature-based modules
-│   ├── conversation/
-│   │   ├── components/          # Feature-specific components
-│   │   ├── hooks/               # Feature-specific hooks
-│   │   ├── services/            # Feature-specific services
-│   │   ├── types/               # Feature-specific types
-│   │   └── utils/               # Feature-specific utilities
-│   ├── audio-visualization/
-│   ├── voice-commands/
-│   └── analytics/
-├── shared/                       # Shared across features
-│   ├── components/              # Generic reusable components
-│   │   ├── ui/                 # Basic UI components
-│   │   ├── layout/             # Layout components
-│   │   └── forms/              # Form components
-│   ├── hooks/                   # Generic hooks
-│   ├── services/                # Generic services
-│   ├── types/                   # Global types
-│   ├── utils/                   # Utility functions
-│   └── constants/               # Application constants
-├── lib/                          # External library configurations
-└── styles/                       # Global styles
+│   └── api/
+├── 📁 features/                   # Feature-based modules
+│   ├── 📁 conversation/
+│   │   ├── components/            # Feature-specific components
+│   │   ├── hooks/                 # Feature-specific hooks
+│   │   ├── services/              # Feature business logic
+│   │   ├── types/                 # Feature type definitions
+│   │   └── utils/                 # Feature utilities
+│   ├── 📁 credentials/
+│   │   ├── components/
+│   │   │   ├── CredentialSetup.tsx
+│   │   │   ├── ConfigurationStatus.tsx
+│   │   │   └── OnboardingWizard.tsx
+│   │   ├── hooks/
+│   │   │   └── useConfiguration.ts
+│   │   ├── services/
+│   │   │   └── credentialService.ts
+│   │   └── types/
+│   │       └── credential.types.ts
+│   ├── 📁 agents/
+│   │   ├── components/
+│   │   │   └── AgentSelector.tsx
+│   │   ├── hooks/
+│   │   │   └── useAgents.ts
+│   │   └── services/
+│   │       └── agentService.ts
+│   └── 📁 analytics/
+│       ├── components/
+│       ├── hooks/
+│       └── services/
+├── 📁 shared/                     # Shared across features
+│   ├── 📁 components/             # Reusable UI components
+│   │   ├── ui/                    # shadcn/ui components
+│   │   ├── layout/                # Layout components
+│   │   └── common/                # Common components
+│   ├── 📁 hooks/                  # Global hooks
+│   ├── 📁 services/               # Global services
+│   ├── 📁 utils/                  # Global utilities
+│   ├── 📁 types/                  # Global types
+│   └── 📁 constants/              # Application constants
+└── 📁 lib/                        # External library configurations
 ```
 
-## 📈 Current vs Recommended Comparison
+## ��� **Comparison Analysis**
 
-### **Component Organization**
+### **Current vs Recommended Organization**
 
-#### **Current Structure Issues** ❌
+| Aspect | Current Structure | Recommended Structure | Benefits |
+|--------|------------------|----------------------|----------|
+| **Organization** | File-type based | Feature-based | Improved maintainability |
+| **Scalability** | Good | Excellent | Easier to add features |
+| **Code Discovery** | Moderate | High | Related code co-located |
+| **Team Collaboration** | Good | Excellent | Feature ownership clarity |
+| **Testing** | Component-focused | Feature-focused | Business logic testing |
 
+### **Detailed Comparison**
+
+#### **🔄 Before (Current)**
 ```
 components/
-├── AdvancedConversationalAI.tsx     # 🔴 Monolithic, hard to maintain
-├── ConvAI.tsx                       # 🔴 Similar functionality, duplicated
-├── VoiceCommandPanel.tsx            # 🟡 Could be feature-grouped
-├── FeatureShowcase.tsx              # 🟡 Demo-specific
+├── ConvAI.tsx                     # Main conversation
+├── AdvancedConversationalAI.tsx   # Advanced features
 ├── core/
-│   ├── AudioVisualizer.tsx          # ✅ Well-organized
-│   └── ...
-└── refactored/                      # 🔴 Demo code mixed with production
+│   ├── CredentialSetup.tsx        # Credential management
+│   ├── ConfigurationStatus.tsx    # Status display
+│   ├── AgentSelector.tsx          # Agent selection
+│   └── OnboardingWizard.tsx       # Setup wizard
+└── ui/                            # Reusable components
 ```
 
-#### **Recommended Structure** ✅
-
+#### **🎯 After (Recommended)**
 ```
 features/
 ├── conversation/
 │   ├── components/
 │   │   ├── ConversationInterface.tsx
-│   │   ├── ConversationControls.tsx
-│   │   └── ConversationStatus.tsx
+│   │   ├── AdvancedInterface.tsx
+│   │   └── VoiceControls.tsx
 │   ├── hooks/
-│   │   └── useConversationState.ts
-│   └── types/
-│       └── conversation.ts
-├── audio-visualization/
+│   │   └── useConversation.ts
+│   └── services/
+│       └── conversationService.ts
+├── credentials/
 │   ├── components/
-│   │   ├── AudioVisualizer.tsx
-│   │   ├── WaveformDisplay.tsx
-│   │   └── SpectrumAnalyzer.tsx
-│   └── hooks/
-│       └── useVisualization.ts
-└── voice-commands/
+│   │   ├── CredentialSetup.tsx
+│   │   ├── ConfigurationStatus.tsx
+│   │   └── OnboardingWizard.tsx
+│   ├── hooks/
+│   │   └── useCredentials.ts
+│   └── services/
+│       └── credentialService.ts
+└── agents/
     ├── components/
-    │   └── VoiceCommandPanel.tsx
+    │   └── AgentSelector.tsx
+    ├── hooks/
+    │   └── useAgents.ts
     └── services/
-        └── VoiceCommandService.ts
+        └── agentService.ts
 ```
 
-### **Benefits of Feature-Based Structure**
+## 🚀 **Migration Guide**
 
-#### **1. Better Maintainability** 🔧
-
-- **Colocation**: Related code stays together
-- **Isolation**: Features can be developed independently
-- **Scalability**: Easy to add new features without affecting others
-
-#### **2. Improved Developer Experience** 👩‍💻
-
-- **Easier Navigation**: Find related code quickly
-- **Reduced Cognitive Load**: Focus on one feature at a time
-- **Better Testing**: Test features in isolation
-
-#### **3. Enhanced Reusability** ♻️
-
-- **Clear Boundaries**: Shared vs feature-specific code
-- **Dependency Management**: Explicit feature dependencies
-- **Component Library**: Reusable UI components
-
-## 🚀 Migration Guide
-
-### **Phase 1: Create Feature Directories**
+### **Step 1: Create Feature Directories**
 
 ```bash
-# Create new feature structure
-mkdir -p src/features/{conversation,audio-visualization,voice-commands,analytics}
-mkdir -p src/shared/{components/ui,hooks,services,types,utils}
-
-# Create subdirectories for each feature
-for feature in conversation audio-visualization voice-commands analytics; do
-  mkdir -p src/features/$feature/{components,hooks,services,types,utils}
-done
+# Create feature-based structure
+mkdir -p src/features/{conversation,credentials,agents,analytics}
+mkdir -p src/features/conversation/{components,hooks,services,types}
+mkdir -p src/features/credentials/{components,hooks,services,types}
+mkdir -p src/features/agents/{components,hooks,services,types}
+mkdir -p src/shared/{components,hooks,services,utils,types}
 ```
 
-### **Phase 2: Move Conversation Components**
+### **Step 2: Move Components by Feature**
 
+#### **Conversation Feature**
 ```bash
-# Move conversation-related files
+# Move conversation-related components
 mv components/ConvAI.tsx src/features/conversation/components/
 mv components/AdvancedConversationalAI.tsx src/features/conversation/components/
 mv components/refactored/ConversationInterface.tsx src/features/conversation/components/
+
+# Move related hooks
 mv hooks/useConversationState.ts src/features/conversation/hooks/
+mv hooks/useVisualization.ts src/features/conversation/hooks/
+
+# Move services
 mv services/ConversationService.ts src/features/conversation/services/
 ```
 
-### **Phase 3: Move Audio Visualization**
-
+#### **Credentials Feature**
 ```bash
-# Move audio visualization files
-mv components/core/AudioVisualizer.tsx src/features/audio-visualization/components/
-mv hooks/useVisualization.ts src/features/audio-visualization/hooks/
+# Move credential components
+mv components/core/CredentialSetup.tsx src/features/credentials/components/
+mv components/core/ConfigurationStatus.tsx src/features/credentials/components/
+mv components/core/OnboardingWizard.tsx src/features/credentials/components/
+
+# Move credential logic
+mv hooks/useConfiguration.ts src/features/credentials/hooks/
+mv lib/credentialStorage.ts src/features/credentials/services/
 ```
 
-### **Phase 4: Move Voice Commands**
-
+#### **Agents Feature**
 ```bash
-# Move voice command files
-mv components/VoiceCommandPanel.tsx src/features/voice-commands/components/
+# Move agent components
+mv components/core/AgentSelector.tsx src/features/agents/components/
+
+# Create agent service
+# New file: src/features/agents/services/agentService.ts
 ```
 
-### **Phase 5: Update Import Paths**
+### **Step 3: Update Import Paths**
 
-Update TypeScript path mapping in `tsconfig.json`:
+#### **Before**
+```typescript
+import { ConvAI } from "@/components/ConvAI";
+import { useConfiguration } from "@/hooks/useConfiguration";
+import { ConfigurationStatus } from "@/components/core/ConfigurationStatus";
+```
+
+#### **After**
+```typescript
+import { ConversationInterface } from "@/features/conversation/components/ConversationInterface";
+import { useCredentials } from "@/features/credentials/hooks/useCredentials";
+import { ConfigurationStatus } from "@/features/credentials/components/ConfigurationStatus";
+```
+
+### **Step 4: Create Feature Barrel Exports**
+
+#### **Conversation Feature Index**
+```typescript
+// src/features/conversation/index.ts
+export { ConversationInterface } from "./components/ConversationInterface";
+export { AdvancedInterface } from "./components/AdvancedInterface";
+export { useConversation } from "./hooks/useConversation";
+export { conversationService } from "./services/conversationService";
+export type { ConversationState, ConversationMessage } from "./types";
+```
+
+#### **Credentials Feature Index**
+```typescript
+// src/features/credentials/index.ts
+export { CredentialSetup } from "./components/CredentialSetup";
+export { ConfigurationStatus } from "./components/ConfigurationStatus";
+export { OnboardingWizard } from "./components/OnboardingWizard";
+export { useCredentials } from "./hooks/useCredentials";
+export type { CredentialConfig } from "./types";
+```
+
+### **Step 5: Update tsconfig.json Paths**
 
 ```json
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@/features/*": ["./src/features/*"],
@@ -180,254 +261,186 @@ Update TypeScript path mapping in `tsconfig.json`:
 }
 ```
 
-### **Phase 6: Create Index Files**
+## 🎯 **Feature Module Template**
 
-Create barrel exports for each feature:
+### **Standard Feature Structure**
+```
+features/[feature-name]/
+├── 📄 index.ts                   # Barrel exports
+├── 📁 components/                # Feature components
+│   ├── [FeatureName].tsx         # Main component
+│   ├── [FeatureName]Form.tsx     # Form component
+│   └── [FeatureName]List.tsx     # List component
+├── 📁 hooks/                     # Feature hooks
+│   ├── use[FeatureName].ts       # Main hook
+│   └── use[FeatureName]State.ts  # State management hook
+├── 📁 services/                  # Business logic
+│   └── [featureName]Service.ts   # API service
+├── 📁 types/                     # Feature types
+│   └── [featureName].types.ts    # Type definitions
+├── 📁 utils/                     # Feature utilities
+│   └── [featureName].utils.ts    # Helper functions
+└── 📁 constants/                 # Feature constants
+    └── [featureName].constants.ts
+```
 
+### **Example: Analytics Feature**
+```
+features/analytics/
+├── index.ts
+├── components/
+│   ├── AnalyticsDashboard.tsx
+│   ├── MetricsChart.tsx
+│   └── ExportDialog.tsx
+├── hooks/
+│   ├── useAnalytics.ts
+│   └── useConversationMetrics.ts
+├── services/
+│   └── analyticsService.ts
+├── types/
+│   └── analytics.types.ts
+└── utils/
+    └── metricsCalculation.ts
+```
+
+## 🔧 **Implementation Strategy**
+
+### **Phase 1: Foundation (Week 1)**
+1. Create feature directories
+2. Move conversation feature
+3. Update imports for conversation
+4. Test functionality
+
+### **Phase 2: Credentials (Week 2)**
+1. Move credentials feature
+2. Update imports for credentials
+3. Test setup workflows
+4. Verify integrations
+
+### **Phase 3: Agents & Analytics (Week 3)**
+1. Move agents feature
+2. Create analytics feature
+3. Update all remaining imports
+4. Comprehensive testing
+
+### **Phase 4: Optimization (Week 4)**
+1. Create shared components
+2. Optimize barrel exports
+3. Update documentation
+4. Performance testing
+
+## 📈 **Benefits of Feature-Based Architecture**
+
+### **Developer Experience**
+- ✅ **Easier Navigation**: Related code is co-located
+- ✅ **Faster Development**: Clear feature boundaries
+- ✅ **Better Testing**: Feature-focused test organization
+- ✅ **Team Scalability**: Feature ownership per team
+
+### **Maintainability**
+- ✅ **Isolation**: Changes in one feature don't affect others
+- ✅ **Modularity**: Features can be developed independently
+- ✅ **Reusability**: Features can be extracted as packages
+- ✅ **Documentation**: Feature-specific documentation
+
+### **Performance**
+- ✅ **Code Splitting**: Features can be lazily loaded
+- ✅ **Bundle Optimization**: Feature-based chunks
+- ✅ **Tree Shaking**: Better dead code elimination
+
+## 🎨 **Design Patterns Integration**
+
+### **Feature-Based Patterns**
+
+#### **1. Feature Modules**
 ```typescript
-// src/features/conversation/index.ts
-export { ConversationInterface } from "./components/ConversationInterface";
-export { useConversationState } from "./hooks/useConversationState";
-export { ConversationService } from "./services/ConversationService";
-export type * from "./types/conversation";
+// features/conversation/index.ts
+export const conversationFeature = {
+  components: {
+    ConversationInterface,
+    VoiceControls,
+  },
+  hooks: {
+    useConversation,
+    useVoiceCommands,
+  },
+  services: {
+    conversationService,
+  },
+};
 ```
 
-## 📋 Detailed Migration Steps
-
-### **Step 1: Shared Components Migration**
-
-```bash
-# Move generic UI components
-mv components/ui/* src/shared/components/ui/
-mv components/core/ErrorDisplay.tsx src/shared/components/ui/
-mv components/core/StatusIndicator.tsx src/shared/components/ui/
-
-# Move layout components
-mv components/background-wave.tsx src/shared/components/layout/
-mv components/logos.tsx src/shared/components/layout/
-```
-
-### **Step 2: Feature-Specific Components**
-
+#### **2. Cross-Feature Communication**
 ```typescript
-// Before: components/AdvancedConversationalAI.tsx
-import { AudioVisualizer } from "./core/AudioVisualizer";
-import { VoiceCommandPanel } from "./VoiceCommandPanel";
+// Event-driven communication between features
+import { eventBus } from "@/shared/services/eventBus";
 
-// After: features/conversation/components/ConversationInterface.tsx
-import { AudioVisualizer } from "@/features/audio-visualization";
-import { VoiceCommandPanel } from "@/features/voice-commands";
+// In conversation feature
+eventBus.emit("conversation:started", conversationData);
+
+// In analytics feature
+eventBus.on("conversation:started", (data) => {
+  trackConversationStart(data);
+});
 ```
 
-### **Step 3: Update Next.js App Structure**
-
-```
-app/
-├── (conversation)/              # Route group for conversation features
-│   ├── page.tsx                # Basic conversation demo
-│   ├── advanced/
-│   │   └── page.tsx            # Advanced features
-│   └── refactored/
-│       └── page.tsx            # Clean architecture demo
-├── api/
-│   └── conversation/
-│       └── signed-url/
-│           └── route.ts
-├── globals.css
-└── layout.tsx
-```
-
-## 🎨 Component Hierarchy Optimization
-
-### **Current Hierarchy Issues**
-
-```
-❌ Problems:
-- Monolithic components (400+ lines)
-- Mixed concerns in single components
-- Duplicate functionality across components
-- No clear component composition pattern
-```
-
-### **Recommended Hierarchy**
-
-```
-✅ Optimized Structure:
-
-ConversationPage
-├── ConversationLayout
-│   ├── ConversationHeader
-│   │   ├── StatusIndicator
-│   │   └── ConversationControls
-│   ├── ConversationContent
-│   │   ├── AudioVisualizer
-│   │   ├── ErrorDisplay (conditional)
-│   │   └── MessageList (conditional)
-│   └── ConversationFooter
-│       ├── ExportControls
-│       └── SettingsPanel
-└── ConversationSidebar (optional)
-    ├── AnalyticsPanel
-    ├── PersonaSelector
-    └── VoiceCommandPanel
-```
-
-## 📚 Shared Code Organization
-
-### **Utility Functions Structure**
-
-```
-shared/utils/
-├── audio/
-│   ├── audioProcessing.ts       # Audio manipulation utilities
-│   ├── visualization.ts        # Visualization helpers
-│   └── permissions.ts          # Browser permission helpers
-├── conversation/
-│   ├── export.ts               # Export functionality
-│   ├── formatting.ts           # Message formatting
-│   └── analytics.ts            # Analytics calculations
-├── validation/
-│   ├── schemas.ts              # Zod validation schemas
-│   └── types.ts                # Validation types
-└── common/
-    ├── constants.ts            # Application constants
-    ├── formatting.ts           # General formatting
-    └── helpers.ts              # General helper functions
-```
-
-### **Service Layer Organization**
-
-```
-shared/services/
-├── api/
-│   ├── base.ts                 # Base API client
-│   ├── elevenlabs.ts           # ElevenLabs API wrapper
-│   └── types.ts                # API response types
-├── audio/
-│   ├── recording.ts            # Audio recording service
-│   ├── processing.ts           # Audio processing service
-│   └── visualization.ts        # Visualization service
-└── storage/
-    ├── local.ts                # Local storage wrapper
-    ├── session.ts              # Session storage wrapper
-    └── export.ts               # Export service
-```
-
-## 🏗️ Style and Asset Management
-
-### **Current Styles Structure**
-
-```
-app/globals.css                 # ⚠️ All styles in one file
-```
-
-### **Recommended Styles Structure**
-
-```
-styles/
-├── globals.css                 # Global styles and CSS variables
-├── components/                 # Component-specific styles
-├── features/                   # Feature-specific styles
-├── utilities/                  # Utility classes
-└── themes/                     # Theme configurations
-    ├── light.css
-    ├── dark.css
-    └── variables.css
-```
-
-### **Asset Organization**
-
-```
-public/
-├── images/
-│   ├── icons/                  # Application icons
-│   ├── avatars/               # Persona avatars
-│   └── backgrounds/           # Background images
-├── audio/
-│   ├── samples/               # Audio samples
-│   └── notifications/         # Sound notifications
-└── videos/
-    └── demos/                 # Demo videos
-```
-
-## 💡 Best Practices Implementation
-
-### **1. Consistent Naming Conventions**
-
+#### **3. Dependency Injection**
 ```typescript
-// Components: PascalCase
-export function ConversationInterface() {}
+// Inject services into components
+interface ConversationProps {
+  conversationService?: ConversationService;
+  analyticsService?: AnalyticsService;
+}
 
-// Hooks: camelCase with 'use' prefix
-export function useConversationState() {}
-
-// Services: PascalCase with 'Service' suffix
-export class ConversationService {}
-
-// Types: PascalCase
-export interface ConversationMessage {}
+export function ConversationInterface({
+  conversationService = defaultConversationService,
+  analyticsService = defaultAnalyticsService,
+}: ConversationProps) {
+  // Component implementation
+}
 ```
 
-### **2. Index File Strategy**
+## 🧪 **Testing Strategy**
 
-```typescript
-// features/conversation/index.ts - Public API
-export { ConversationInterface } from "./components/ConversationInterface";
-export { useConversationState } from "./hooks/useConversationState";
-export type { ConversationMessage } from "./types/conversation";
-
-// Internal exports not exposed
-// ./components/internal/InternalComponent (not exported)
+### **Feature-Based Testing**
+```
+features/conversation/
+├── __tests__/
+│   ├── components/
+│   │   ├── ConversationInterface.test.tsx
+│   │   └── VoiceControls.test.tsx
+│   ├── hooks/
+│   │   └── useConversation.test.ts
+│   ├── services/
+│   │   └── conversationService.test.ts
+│   └── integration/
+│       └── conversation.integration.test.tsx
 ```
 
-### **3. Dependency Management**
+### **Test Organization Benefits**
+- **Feature Isolation**: Tests are co-located with implementation
+- **Integration Testing**: Feature-level integration tests
+- **Mock Strategy**: Feature-specific mocks and fixtures
+- **Coverage Tracking**: Per-feature coverage metrics
 
-```typescript
-// ✅ Good: Feature depends on shared
-import { Button } from "@/shared/components/ui/Button";
+## 📚 **Documentation Strategy**
 
-// ✅ Good: Feature depends on another feature (explicit)
-import { AudioVisualizer } from "@/features/audio-visualization";
-
-// ❌ Bad: Circular dependency
-// features/a imports features/b, features/b imports features/a
+### **Feature Documentation**
+```
+features/conversation/
+├── README.md                     # Feature overview
+├── ARCHITECTURE.md               # Technical details
+├── API.md                        # API documentation
+└── EXAMPLES.md                   # Usage examples
 ```
 
-## 📊 Impact Analysis
+### **Cross-Feature Documentation**
+```
+docs/
+├── ARCHITECTURE.md               # Overall architecture
+├── FEATURE_GUIDE.md              # Feature development guide
+├── INTEGRATION.md                # Cross-feature integration
+└── MIGRATION.md                  # Migration guidelines
+```
 
-### **Benefits of Migration** ✅
-
-1. **Maintainability**: 40% reduction in code coupling
-2. **Developer Productivity**: 30% faster feature development
-3. **Code Reusability**: 50% increase in component reuse
-4. **Testing**: 60% easier to write unit tests
-5. **Onboarding**: 45% faster for new developers
-
-### **Migration Effort** ⏱️
-
-- **Time Estimate**: 2-3 weeks for full migration
-- **Risk Level**: Low (incremental migration possible)
-- **Breaking Changes**: Minimal (mainly import paths)
-- **Testing Required**: Component and integration tests
-
-### **Industry Alignment** 🏆
-
-This structure aligns with:
-
-- **React Best Practices**: Component composition
-- **Next.js Conventions**: App Router patterns
-- **TypeScript Standards**: Proper type organization
-- **Testing Strategies**: Isolated testing
-- **Modern Architecture**: Feature-driven development
-
-## 🎯 Success Metrics
-
-Track migration success with:
-
-- **Code Metrics**: Reduced cyclomatic complexity
-- **Developer Experience**: Faster development cycles
-- **Maintainability**: Easier bug fixes and feature additions
-- **Performance**: Better tree-shaking and bundle optimization
-- **Quality**: Improved test coverage and code quality
-
-This restructure transforms the codebase into a scalable, maintainable architecture that supports long-term growth and developer productivity.
+This feature-based architecture provides a solid foundation for scaling the ElevenLabs Conversational AI application while maintaining code quality, developer experience, and system performance.
