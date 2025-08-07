@@ -9,10 +9,20 @@ import { cn } from "@/lib/utils";
 
 async function requestMicrophonePermission() {
   try {
-    await navigator.mediaDevices.getUserMedia({ audio: true });
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    // Stop the stream immediately as we just need permission
+    stream.getTracks().forEach(track => track.stop());
     return true;
-  } catch {
-    console.error("Microphone permission denied");
+  } catch (error) {
+    console.error("Microphone permission denied:", error);
+    // Provide more specific error information
+    if (error.name === 'NotAllowedError') {
+      console.error("User denied microphone access");
+    } else if (error.name === 'NotFoundError') {
+      console.error("No microphone found");
+    } else if (error.name === 'NotSupportedError') {
+      console.error("HTTPS required for microphone access");
+    }
     return false;
   }
 }
