@@ -390,7 +390,7 @@ export function CredentialSetup({
               Cancel
             </Button>
             <Button
-              onClick={saveCredentials}
+              onClick={saveCredentialsToStorage}
               disabled={!isFormValid || isLoading}
               className="flex-1"
             >
