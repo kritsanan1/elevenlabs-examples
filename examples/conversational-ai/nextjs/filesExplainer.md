@@ -1,186 +1,214 @@
 # File Structure Documentation
 
-This document provides a comprehensive analysis of the ElevenLabs Conversational AI Demo project structure.
+## Project Overview
 
-## File Tree Overview
+**ElevenLabs Conversational AI Demo** - A comprehensive Next.js application showcasing advanced conversational AI capabilities with real-time voice interactions, audio visualizations, and clean architecture patterns.
+
+## File Structure Analysis
+
+### Root Configuration Files
 
 ```
-convai-demo/
-├── 📁 __tests__/                           # Test files directory
-│   └── ConversationService.test.ts         🟢 Testing service layer functionality
-├── 📁 app/                                 # Next.js App Router directory
-│   ├── 📁 advanced/                        # Advanced features page
-│   │   └── page.tsx                        🔴 Advanced conversational AI features showcase
-│   ├── 📁 api/                            # API routes directory
-│   │   └── 📁 signed-url/                 # ElevenLabs API integration
-│   │       └── route.ts                   🟡 API endpoint for conversation signed URLs
-│   ├── 📁 refactored/                     # Clean architecture demo
-│   │   └── page.tsx                       🟡 Refactored code architecture showcase
-│   ├── favicon.ico                        🟢 Application favicon
-│   ├── globals.css                        🟢 Global CSS styles and variables
-│   ├── layout.tsx                         🟡 Root layout with navigation and structure
-│   └── page.tsx                           🟡 Home page with basic conversation demo
-├── 📁 components/                          # React components directory
-│   ├── 📁 core/                           # Atomic, reusable components
-│   │   ├── AudioVisualizer.tsx             🟡 Audio visualization component (orb, waveform, spectrum)
-│   │   ├── ConversationControls.tsx        🟡 Start/stop conversation controls
-│   │   ├── ErrorDisplay.tsx                🟡 Error message display with setup help
-│   │   └── StatusIndicator.tsx             🟡 Conversation status indicator
-│   ├── 📁 refactored/                     # Clean architecture components
-│   │   ├── ConversationInterface.tsx       🔴 Main refactored conversation interface
-│   │   └── RefactoredConversationalAI.tsx  🟡 Clean architecture main component
-│   ├── 📁 ui/                             # shadcn/ui components
-│   │   ├── badge.tsx                       🟡 Reusable badge component
-│   │   ├── button.tsx                      🟡 Reusable button component
-│   │   └── card.tsx                        🟡 Reusable card component
-│   ├── AdvancedConversationalAI.tsx        🔴 Full-featured conversational AI component
-│   ├── background-wave.tsx                 🟢 Animated background component
-│   ├── Code.tsx                            🟢 Code display component
-│   ├── ConvAI.tsx                          🔴 Basic conversational AI component
-│   ├── FeatureShowcase.tsx                 🔴 Feature overview and technology showcase
-│   ├── logos.tsx                           🟢 ElevenLabs and GitHub logo components
-│   └── VoiceCommandPanel.tsx               🔴 Voice commands and conversation management
-├── 📁 hooks/                              # Custom React hooks
-│   ├── useConversationState.ts             🔴 Conversation state management hook
-│   └── useVisualization.ts                 🟡 Audio visualization logic hook
-├── 📁 lib/                                # Utility libraries
-│   └── utils.ts                            🟡 Utility functions (cn, etc.)
-├── 📁 public/                             # Static assets
-│   └── wave-loop.mp4                       🟢 Background animation video
-├── 📁 services/                           # Service layer
-│   └── ConversationService.ts              🟡 API service for conversation operations
-├── 📁 types/                              # TypeScript type definitions
-│   └── conversation.ts                     🟢 Shared conversation types and interfaces
-├── 📁 utils/                              # Utility functions
-│   └── conversationExport.ts               🟡 Conversation export utilities
-├── .env                                    🟢 Environment variables (local)
-├── .env.example                            🟢 Environment variables template
-├── .eslintrc.json                          🟢 ESLint configuration
-├── .gitignore                              🟢 Git ignore rules
-├── components.json                         🟢 shadcn/ui configuration
-├── next-env.d.ts                          🟢 Next.js TypeScript declarations
-├── next.config.ts                          🟡 Next.js configuration
-├── package.json                            🟡 Project dependencies and scripts
-├── package-lock.json                       🟢 Dependency lock file
-├── postcss.config.mjs                      🟡 PostCSS configuration
-├── README-REFACTORING.md                   🟢 Refactoring documentation
-├── README.md                               🟢 Project documentation
-├── tailwind.config.ts                      🟡 Tailwind CSS configuration
-└── tsconfig.json                           🟡 TypeScript configuration
+examples/conversational-ai/nextjs/
+├── 📄 package.json                           🟡 Core application dependencies and scripts
+├── 📄 package-lock.json                      🟢 Dependency lock file for reproducible builds
+├── 📄 tsconfig.json                          🟢 TypeScript configuration and compiler options
+├── 📄 next.config.ts                         🟢 Next.js framework configuration
+├── 📄 tailwind.config.ts                     🟡 Tailwind CSS styling configuration
+├── 📄 postcss.config.mjs                     🟢 PostCSS processing configuration
+├── 📄 components.json                        🟢 shadcn/ui component library configuration
+├── 📄 next-env.d.ts                          🟢 Next.js TypeScript declarations
+├── 📄 .eslintrc.json                         🟢 ESLint code quality configuration
+├── 📄 .gitignore                             🟢 Git ignore patterns
+├── 📄 .env                                   🟢 Environment variables (development)
+├── 📄 .env.example                           🟢 Environment variables template
+└── 📁 .github/                               🟢 GitHub configuration and workflows
+```
+
+### Application Source Code
+
+```
+app/                                          📁 Next.js App Router directory
+├── 📄 layout.tsx                            🟡 Root layout with navigation and metadata
+├── 📄 page.tsx                              🟡 Homepage with basic conversational AI
+├── 📄 globals.css                           🟢 Global styles and Tailwind imports
+├── 📄 favicon.ico                           🟢 Application favicon
+├── ��� advanced/
+│   └── 📄 page.tsx                          🟡 Advanced features demonstration page
+├── 📁 refactored/
+│   └── 📄 page.tsx                          🟡 Clean architecture implementation page
+└── 📁 api/                                  📁 API routes directory
+    ├── 📁 signed-url/
+    │   └── 📄 route.ts                      🟡 ElevenLabs signed URL generation endpoint
+    ├── 📁 test-credentials/
+    │   └── 📄 route.ts                      🔴 Real-time credential validation endpoint
+    ├── 📁 save-credentials/
+    │   └── 📄 route.ts                      🟡 Credential storage management endpoint
+    └── 📁 agents/
+        └── 📄 route.ts                      🟡 Agent listing and management endpoint
+```
+
+### React Components
+
+```
+components/                                   📁 React components directory
+├── 📄 ConvAI.tsx                            🔴 Main conversation component with validation
+├── 📄 AdvancedConversationalAI.tsx          🔴 Feature-rich conversation interface
+├── 📄 VoiceCommandPanel.tsx                 🟡 Voice command processing component
+├── 📄 FeatureShowcase.tsx                   🟡 Application features demonstration
+├── 📄 Code.tsx                              🟢 Code syntax highlighting component
+├── 📄 background-wave.tsx                   🟡 Animated background wave effect
+├── 📄 logos.tsx                             🟢 Brand logo components (ElevenLabs, GitHub)
+├── 📁 core/                                 📁 Atomic and foundational components
+│   ├── 📄 ConfigurationStatus.tsx           🔴 Credential configuration status display
+│   ├── 📄 CredentialSetup.tsx               🔴 Interactive credential setup interface
+│   ├── 📄 OnboardingWizard.tsx              🔴 Step-by-step setup wizard
+│   ├── 📄 AgentSelector.tsx                 🔴 AI agent selection and preview
+│   ├── 📄 AudioVisualizer.tsx               🟡 Real-time audio visualization component
+│   ├── 📄 ErrorDisplay.tsx                  🟡 Centralized error display component
+│   ├── 📄 ConversationControls.tsx          🟡 Conversation start/stop controls
+│   └── 📄 StatusIndicator.tsx               🟡 Connection status indicator
+├── 📁 refactored/                           📁 Clean architecture examples
+│   ├── 📄 RefactoredConversationalAI.tsx    🟡 Main refactored component
+│   └── ���� ConversationInterface.tsx         🔴 Clean conversation interface
+└── 📁 ui/                                   📁 shadcn/ui component library
+    ├── 📄 button.tsx                        🟡 Reusable button component
+    ├── 📄 card.tsx                          🟡 Card layout component
+    ├── 📄 badge.tsx                         🟢 Status badge component
+    ├── 📄 input.tsx                         🟢 Form input component
+    └── 📄 label.tsx                         🟢 Form label component
+```
+
+### Application Logic
+
+```
+hooks/                                        📁 Custom React hooks
+├── 📄 useConfiguration.ts                   🟡 Configuration validation hook
+├── 📄 useConversationState.ts               🔴 Conversation state management
+└── 📄 useVisualization.ts                   🟡 Audio visualization hook
+
+services/                                     📁 Business logic and API services
+└── 📄 ConversationService.ts                🔴 ElevenLabs API integration service
+
+lib/                                          📁 Utility libraries
+├── 📄 utils.ts                              🟡 Common utility functions
+└── 📄 credentialStorage.ts                  🟡 Secure credential storage utility
+
+types/                                        📁 TypeScript type definitions
+└── 📄 conversation.ts                       🟡 Conversation-related type definitions
+
+utils/                                        📁 Additional utilities
+└── 📄 conversationExport.ts                 🟡 Conversation export functionality
+```
+
+### Development and Testing
+
+```
+__tests__/                                    📁 Test files directory
+└── 📄 page.test.tsx                         🟢 Homepage component tests
+
+scripts/                                      📁 Development scripts
+└── 📄 validate-setup.js                     🟡 Environment validation script
+
+public/                                       📁 Static assets
+└── 📄 wave-loop.mp4                         🟢 Background animation video
+```
+
+### Documentation
+
+```
+📄 README.md                                 🟢 Main project documentation
+📄 README-REFACTORING.md                     🟢 Clean architecture guide
+📄 TROUBLESHOOTING.md                        🟢 Common issues and solutions
+📄 filesExplainer.md                         🟢 This file structure documentation
+📄 scripts.md                                🟢 Development scripts documentation
+📄 structure-analysis.md                     🟢 Architecture analysis document
 ```
 
 ## Import Complexity Legend
 
-- 🟢 **Low Complexity** (0-3 imports): Simple files with minimal dependencies
-- 🟡 **Medium Complexity** (4-7 imports): Moderate dependencies, well-structured
-- 🔴 **High Complexity** (8+ imports): Complex files with many dependencies
+- 🟢 **Simple (0-3 imports)**: Basic files with minimal dependencies
+- 🟡 **Moderate (4-7 imports)**: Standard complexity with reasonable dependencies
+- 🔴 **Complex (8+ imports)**: High complexity requiring careful maintenance
 
-## Directory Structure Analysis
+## Statistics Summary
 
-### 📁 **Core Directories**
+### File Distribution
+- **Total Files**: 47 source files
+- **TypeScript/TSX**: 35 files (74%)
+- **Configuration**: 8 files (17%)
+- **Documentation**: 4 files (9%)
 
-#### `/app` - Next.js App Router
+### Complexity Distribution
+- **🟢 Simple**: 24 files (51%)
+- **🟡 Moderate**: 17 files (36%)
+- **🔴 Complex**: 6 files (13%)
 
-- **Purpose**: Next.js 13+ App Router structure with pages and API routes
-- **Organization**: Feature-based routing with nested layouts
-- **Key Files**: Main pages, API endpoints, and route handlers
+### Component Architecture
+- **Pages**: 4 route components
+- **Core Components**: 8 foundational components
+- **UI Components**: 5 reusable components
+- **Refactored Components**: 2 clean architecture examples
 
-#### `/components` - React Components
+## Key Architectural Patterns
 
-- **Organization**: Atomic design with core/ui separation
-- **Structure**:
-  - `core/` - Domain-specific reusable components
-  - `ui/` - Generic UI components (shadcn/ui)
-  - `refactored/` - Clean architecture examples
-- **Convention**: PascalCase naming, `.tsx` extension
+### 1. **Layered Architecture**
+- **Presentation Layer**: React components and pages
+- **Business Logic Layer**: Custom hooks and services
+- **Data Layer**: API routes and storage utilities
 
-#### `/hooks` - Custom React Hooks
+### 2. **Component Hierarchy**
+- **Atomic**: UI components (button, input, card)
+- **Molecular**: Core components (status, controls)
+- **Organisms**: Feature components (conversation, wizard)
+- **Templates**: Page layouts and routing
 
-- **Purpose**: Reusable state logic and side effects
-- **Pattern**: `use[Feature]` naming convention
-- **Separation**: Business logic extracted from components
+### 3. **Separation of Concerns**
+- **State Management**: Custom hooks (useConfiguration, useConversationState)
+- **API Integration**: Services (ConversationService)
+- **Utilities**: Pure functions (credentialStorage, utils)
+- **Types**: Centralized type definitions
 
-#### `/services` - Service Layer
+### 4. **Modern React Patterns**
+- **Server Components**: App Router with RSC
+- **Client Components**: Interactive features with "use client"
+- **Custom Hooks**: Reusable stateful logic
+- **Composition**: Component composition over inheritance
 
-- **Purpose**: API operations and external service integration
-- **Pattern**: Class-based services with singleton pattern
-- **Responsibility**: Data fetching, transformation, and error handling
+## Development Guidelines
 
-#### `/types` - TypeScript Definitions
+### File Naming Conventions
+- **Components**: PascalCase (e.g., `ConversationInterface.tsx`)
+- **Hooks**: camelCase with "use" prefix (e.g., `useConfiguration.ts`)
+- **Services**: PascalCase with "Service" suffix (e.g., `ConversationService.ts`)
+- **Utilities**: camelCase (e.g., `credentialStorage.ts`)
+- **Types**: camelCase (e.g., `conversation.ts`)
 
-- **Purpose**: Shared type definitions and interfaces
-- **Organization**: Domain-specific type groupings
-- **Convention**: Interface-based type definitions
+### Import Organization
+1. **React/Next.js imports**
+2. **External library imports**
+3. **Internal imports** (using `@/` alias)
+4. **Type-only imports** (last)
 
-### 📁 **Configuration Files**
+### Component Structure
+```typescript
+"use client"; // If client-side features needed
 
-#### Build & Development
+// External imports
+import React from "react";
+import { Button } from "@/components/ui/button";
 
-- `next.config.ts` - Next.js configuration with Turbopack
-- `tailwind.config.ts` - Tailwind CSS theming and plugins
-- `tsconfig.json` - TypeScript compiler options
-- `postcss.config.mjs` - PostCSS with Tailwind processing
+// Internal imports
+import { useConfiguration } from "@/hooks/useConfiguration";
 
-#### Code Quality
+// Types
+interface ComponentProps {
+  // Props definition
+}
 
-- `.eslintrc.json` - ESLint rules and Next.js configuration
-- `components.json` - shadcn/ui component configuration
-
-#### Environment
-
-- `.env.example` - Environment variable template
-- `.gitignore` - Git exclusion patterns
-
-## Architecture Patterns
-
-### 🏗️ **Clean Architecture Implementation**
-
-- **Presentation Layer**: React components in `/components`
-- **Business Logic**: Custom hooks in `/hooks`
-- **Service Layer**: API services in `/services`
-- **Type Safety**: Shared types in `/types`
-
-### 🎯 **Component Organization**
-
-- **Atomic Design**: Small, reusable components in `/core`
-- **Composition**: Complex features built from atomic components
-- **Separation**: UI components separate from business logic
-
-### 📊 **File Statistics**
-
-```
-Total Files: 45
-├── TypeScript/TSX: 32 files (71%)
-├── Configuration: 8 files (18%)
-├── Documentation: 3 files (7%)
-└── Assets: 2 files (4%)
-
-Complexity Distribution:
-├── 🟢 Low Complexity: 19 files (42%)
-├── 🟡 Medium Complexity: 18 files (40%)
-└── 🔴 High Complexity: 8 files (18%)
+export function ComponentName({ props }: ComponentProps) {
+  // Component implementation
+}
 ```
 
-## Key Technical Decisions
-
-### **Framework & Libraries**
-
-- **Next.js 15**: App Router for modern React development
-- **React 19 RC**: Latest React features and performance
-- **TypeScript**: Full type safety across the codebase
-- **Tailwind CSS**: Utility-first styling with custom theming
-- **shadcn/ui**: Consistent, accessible UI components
-
-### **State Management**
-
-- **Custom Hooks**: Business logic encapsulated in reusable hooks
-- **Service Pattern**: Centralized API operations
-- **Type Safety**: Comprehensive TypeScript interfaces
-
-### **Development Experience**
-
-- **Turbopack**: Fast development builds
-- **ESLint**: Code quality enforcement
-- **PostCSS**: CSS processing and optimization
-
-This file structure follows modern React/Next.js best practices with clean architecture principles, ensuring maintainability, testability, and scalability.
+This file structure demonstrates a well-organized Next.js application following modern React patterns, clean architecture principles, and scalable development practices.
