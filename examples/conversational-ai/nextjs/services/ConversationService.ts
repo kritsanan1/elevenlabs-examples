@@ -63,7 +63,17 @@ export class ConversationService {
 
       return data.signedUrl;
     } catch (error) {
-      console.error("Error in getSignedUrl:", error);
+      // Use warning level for expected configuration errors
+      const isConfigError = error instanceof Error &&
+        (error.message.includes("AGENT_ID") ||
+         error.message.includes("ELEVENLABS_API_KEY") ||
+         error.message.includes("Configuration error"));
+
+      if (isConfigError) {
+        console.warn("Configuration error (expected):", error);
+      } else {
+        console.error("Unexpected error in getSignedUrl:", error);
+      }
 
       // Enhanced error handling with detailed logging
       if (error instanceof TypeError && error.message.includes("fetch")) {
