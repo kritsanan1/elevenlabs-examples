@@ -21,9 +21,7 @@ async function requestMicrophonePermission() {
 
 async function getSignedUrl(): Promise<string> {
   try {
-    console.log("Making request to /api/signed-url");
     const response = await fetch("/api/signed-url");
-    console.log("Response status:", response.status, response.statusText);
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -52,7 +50,6 @@ async function getSignedUrl(): Promise<string> {
     }
 
     const data = await response.json();
-    console.log("API response data:", data);
 
     if (!data.signedUrl) {
       throw new Error("No signed URL received from server");
@@ -97,25 +94,22 @@ export function ConvAI() {
 
   const conversation = useConversation({
     onConnect: () => {
-      console.log("connected");
       setError(null);
     },
     onDisconnect: () => {
-      console.log("disconnected");
+      // Connection ended
     },
     onError: error => {
-      console.log(error);
       setError("An error occurred during the conversation");
     },
     onMessage: message => {
-      console.log(message);
+      // Message received
     },
   });
 
   async function startConversation() {
     try {
       setError(null);
-      console.log("Starting conversation...");
 
       // Pre-validate configuration
       if (!config.isConfigured) {
@@ -130,15 +124,9 @@ export function ConvAI() {
         setError("Microphone permission is required for voice conversations");
         return;
       }
-      console.log("Microphone permission granted");
 
-      console.log("Fetching signed URL...");
       const signedUrl = await getSignedUrl();
-      console.log("Got signed URL:", signedUrl ? "✓" : "✗");
-
-      console.log("Starting conversation session...");
       const conversationId = await conversation.startSession({ signedUrl });
-      console.log("Conversation started with ID:", conversationId);
     } catch (error) {
       // Enhanced error handling with better user messages
       if (error instanceof Error) {
@@ -243,7 +231,7 @@ export function ConvAI() {
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1 px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition-colors"
                           >
-                            📚 Setup Guide
+                            �� Setup Guide
                           </a>
                           <a
                             href="https://elevenlabs.io/app/speech-synthesis/text-to-speech"
