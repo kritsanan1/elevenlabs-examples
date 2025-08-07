@@ -1,200 +1,283 @@
 # Pull Request
 
-## 📝 Description
+## 📋 Summary
 
-Provide a clear and concise description of what this PR does.
+**Brief description of changes:**
 
-Fixes #(issue number) <!-- If applicable -->
+<!-- Provide a clear and concise description of what this PR does -->
 
-## 🔄 Type of Change
+**Related Issue(s):**
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
-- [ ] Performance improvement
-- [ ] Code refactoring
-- [ ] Test improvements
-- [ ] Configuration changes
+<!-- Link to related issues using: Fixes #123, Closes #456, Relates to #789 -->
 
-## 🚀 Changes Made
+## 🎯 Type of Change
 
-List the specific changes made in this PR:
+- [ ] 🐛 Bug fix (non-breaking change that fixes an issue)
+- [ ] ✨ New feature (non-breaking change that adds functionality)
+- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] 📚 Documentation update (changes to documentation only)
+- [ ] 🎨 Style/UI update (changes that do not affect functionality)
+- [ ] ♻️ Code refactoring (no functional changes, no api changes)
+- [ ] ⚡ Performance improvement
+- [ ] 🧪 Test updates (adding or correcting tests)
+- [ ] 🔧 Build/config changes (changes to build process or configuration)
 
-- [ ] Change 1
-- [ ] Change 2
-- [ ] Change 3
+## 🔄 Changes Made
 
-## 🧪 Testing Steps
+### 📁 **Files Modified:**
 
-Describe how to test your changes:
+<!-- List the main files that were changed -->
 
-### Manual Testing
+- `path/to/file.tsx` - Description of changes
+- `path/to/another.ts` - Description of changes
 
-1. Go to [specific page/component]
-2. Perform [specific action]
-3. Verify [expected behavior]
+### 🛠️ **Technical Changes:**
 
-### Automated Testing
+<!-- Describe the technical implementation -->
 
-- [ ] Unit tests added/updated
-- [ ] Integration tests added/updated
-- [ ] E2E tests added/updated
-- [ ] All existing tests pass
+- [ ] Added new component: `ComponentName`
+- [ ] Modified existing hook: `useHookName`
+- [ ] Updated API endpoint: `POST /api/endpoint`
+- [ ] Enhanced error handling
+- [ ] Improved performance
+- [ ] Added type definitions
 
-## 📱 Browser Testing
+### 🎨 **UI/UX Changes:**
 
-Tested on the following browsers:
+<!-- Describe any visual or user experience changes -->
 
-- [ ] Chrome (version: )
-- [ ] Firefox (version: )
-- [ ] Safari (version: )
-- [ ] Edge (version: )
+- [ ] New visual components
+- [ ] Layout improvements
+- [ ] Responsive design updates
+- [ ] Accessibility enhancements
+- [ ] Animation/transition updates
 
-## 📋 Environment Configuration
+## 🧪 Testing
 
-- [ ] No environment variables changed
+### ✅ **Testing Performed:**
+
+- [ ] ✅ Unit tests pass
+- [ ] ✅ Integration tests pass
+- [ ] ✅ Manual testing completed
+- [ ] ✅ Cross-browser testing
+- [ ] ✅ Mobile responsiveness verified
+- [ ] ✅ Accessibility testing
+- [ ] ✅ Performance testing
+
+### 📝 **Test Scenarios:**
+
+<!-- Describe the scenarios you tested -->
+
+1. **Scenario 1:** Description of test case
+   - Steps: 1, 2, 3
+   - Expected: Expected result
+   - Actual: Actual result ✅
+
+2. **Scenario 2:** Description of test case
+   - Steps: 1, 2, 3
+   - Expected: Expected result
+   - Actual: Actual result ✅
+
+### 🎯 **Test Commands:**
+
+```bash
+# Commands used for testing
+npm run test
+npm run lint
+npm run build
+npm run validate-setup
+```
+
+## 🖼️ Screenshots & Demos
+
+### **Before:**
+
+<!-- Screenshots or description of how it looked/worked before -->
+
+### **After:**
+
+<!-- Screenshots or description of how it looks/works after -->
+
+### **Demo:**
+
+<!-- If applicable, provide a link to a demo or describe how to demo the changes -->
+
+## 🔍 Code Quality
+
+### 📊 **Code Analysis:**
+
+- [ ] ✅ ESLint passes with no errors
+- [ ] ✅ TypeScript compilation successful
+- [ ] ✅ No console errors or warnings
+- [ ] ✅ Code follows project style guidelines
+- [ ] ✅ Proper error handling implemented
+- [ ] ✅ Performance considerations addressed
+
+### 📋 **Code Review Checklist:**
+
+- [ ] ✅ Code is readable and well-commented
+- [ ] ✅ Functions are small and focused
+- [ ] ✅ Proper separation of concerns
+- [ ] ✅ No hardcoded values (uses constants/env vars)
+- [ ] ✅ Error messages are user-friendly
+- [ ] ✅ Loading states are handled appropriately
+
+## 🔧 Dependencies
+
+### 📦 **New Dependencies Added:**
+
+<!-- List any new dependencies and why they were needed -->
+
+- `package-name@version` - Reason for adding
+
+### ⬆️ **Dependencies Updated:**
+
+<!-- List any dependency updates -->
+
+- `package-name`: `old-version` → `new-version`
+
+### 🗑️ **Dependencies Removed:**
+
+<!-- List any dependencies that were removed -->
+
+- `package-name` - Reason for removal
+
+## 🌍 Environment Impact
+
+### 🔑 **Environment Variables:**
+
+- [ ] No new environment variables
 - [ ] New environment variables added (documented in .env.example)
 - [ ] Existing environment variables modified
 
-## 🖼️ Screenshots/Videos
+### 🚀 **Deployment Considerations:**
 
-If applicable, add screenshots or videos demonstrating the changes:
-
-### Before
-
-[Add before screenshots/videos]
-
-### After
-
-[Add after screenshots/videos]
-
-## 📊 Performance Impact
-
-- [ ] No performance impact
-- [ ] Performance improved
-- [ ] Minor performance impact (acceptable)
-- [ ] Significant performance impact (needs review)
-
-Details:
-
-```
-[Add performance metrics if applicable]
-```
-
-## 🔒 Security Considerations
-
-- [ ] No security implications
-- [ ] Security improvements made
-- [ ] Potential security concerns (explain below)
-
-Details:
-
-```
-[Explain any security considerations]
-```
+- [ ] No special deployment steps required
+- [ ] Database migration required
+- [ ] Configuration changes required
+- [ ] Third-party service setup required
 
 ## 📚 Documentation
 
-- [ ] No documentation changes needed
-- [ ] Documentation updated
-- [ ] Documentation needs to be updated (create follow-up issue)
+### 📖 **Documentation Updated:**
 
-## 🔗 Dependencies
+- [ ] README.md updated
+- [ ] API documentation updated
+- [ ] Component documentation added/updated
+- [ ] Architecture documentation updated
+- [ ] Troubleshooting guide updated
 
-List any new dependencies added:
+### 📝 **Documentation Needed:**
 
-- [ ] No new dependencies
-- [ ] New production dependencies: [list]
-- [ ] New development dependencies: [list]
+<!-- What documentation should be created or updated? -->
 
-## ⚠️ Breaking Changes
+- [ ] User guide for new feature
+- [ ] Developer setup instructions
+- [ ] API endpoint documentation
+- [ ] Configuration guide
 
-If this PR introduces breaking changes, list them here:
+## 🔒 Security Considerations
 
-- [ ] No breaking changes
-- [ ] Breaking change 1: [description]
-- [ ] Breaking change 2: [description]
+- [ ] ✅ No sensitive data exposed in code
+- [ ] ✅ API keys/secrets properly managed
+- [ ] ✅ Input validation implemented
+- [ ] ✅ XSS prevention measures in place
+- [ ] ✅ CSRF protection maintained
+- [ ] ✅ Proper authentication/authorization
 
-## 🎯 Review Focus Areas
+## ⚡ Performance Impact
 
-Highlight areas that need special attention during review:
+### 📊 **Performance Metrics:**
 
-- [ ] Algorithm/logic changes
-- [ ] Performance-critical code
-- [ ] Security-sensitive areas
-- [ ] API changes
-- [ ] UI/UX changes
+- Bundle size impact: [+/-X KB]
+- Load time impact: [+/-X ms]
+- Memory usage: [Within acceptable limits]
 
-## ✅ Checklist
+### 🔬 **Performance Testing:**
 
-Before submitting this PR, make sure:
+- [ ] ✅ Page load times tested
+- [ ] ✅ Memory usage profiled
+- [ ] ✅ Network requests optimized
+- [ ] ✅ Core Web Vitals maintained
 
-### Code Quality
+## 🎯 Accessibility
 
-- [ ] Code follows project style guidelines
-- [ ] Self-review of code completed
-- [ ] Code is properly commented (especially complex logic)
-- [ ] No console.log or debug statements left in code
-- [ ] No unused imports or variables
+- [ ] ✅ Keyboard navigation works
+- [ ] ✅ Screen reader compatibility
+- [ ] ✅ Color contrast meets standards
+- [ ] ✅ Focus indicators present
+- [ ] ✅ Alt text for images
+- [ ] ✅ Semantic HTML used
 
-### Testing
+## 📱 Cross-Platform Testing
 
-- [ ] All tests pass locally
-- [ ] New code has appropriate test coverage
-- [ ] Manual testing completed
-- [ ] Cross-browser testing completed (if UI changes)
+### 🖥️ **Desktop Browsers:**
 
-### Documentation
+- [ ] ✅ Chrome (latest)
+- [ ] ✅ Firefox (latest)
+- [ ] ✅ Safari (latest)
+- [ ] ✅ Edge (latest)
 
-- [ ] README updated if needed
-- [ ] API documentation updated if needed
-- [ ] Inline code documentation added/updated
-- [ ] Environment variables documented if changed
+### 📱 **Mobile Testing:**
 
-### Dependencies
+- [ ] ✅ iOS Safari
+- [ ] ✅ Android Chrome
+- [ ] ✅ Responsive design
+- [ ] ✅ Touch interactions
 
-- [ ] Dependencies are necessary and well-maintained
-- [ ] No security vulnerabilities in new dependencies
-- [ ] Bundle size impact is acceptable
+## 🔄 Backwards Compatibility
 
-### Git
+- [ ] ✅ No breaking changes
+- [ ] ⚠️ Breaking changes (documented below)
+- [ ] 🔄 Migration guide provided
 
-- [ ] Commit messages are clear and follow conventions
-- [ ] Branch is up to date with main/develop
-- [ ] No merge conflicts
+### 💥 **Breaking Changes:**
 
-## 🔮 Future Considerations
+<!-- If there are breaking changes, describe them and provide migration steps -->
 
-Are there any follow-up tasks or future improvements related to this PR?
+## 📅 Rollback Plan
 
-- [ ] No follow-up needed
-- [ ] Create issue for: [description]
-- [ ] Consider for future: [description]
+**If this PR causes issues:**
 
-## 📝 Additional Notes
+1. Step to rollback
+2. Alternative solutions
+3. Monitoring to watch
 
-Add any additional notes, context, or considerations for reviewers:
+## 🤝 Review Checklist
+
+### 👨‍💻 **For Author:**
+
+- [ ] ✅ Self-review completed
+- [ ] ✅ Tests added/updated
+- [ ] ✅ Documentation updated
+- [ ] ✅ No merge conflicts
+- [ ] ✅ Branch is up to date with main
+
+### 👥 **For Reviewers:**
+
+- [ ] Code logic is sound
+- [ ] Tests adequately cover changes
+- [ ] Performance impact is acceptable
+- [ ] Security considerations addressed
+- [ ] Documentation is sufficient
+
+## 📞 Additional Notes
+
+<!-- Any additional information that reviewers should know -->
+
+## 🏷️ Post-Merge Tasks
+
+- [ ] Update staging environment
+- [ ] Monitor for errors in production
+- [ ] Update team documentation
+- [ ] Announce new feature (if applicable)
 
 ---
 
-## For Reviewers
+**Reviewer Assignment:**
 
-### Review Checklist
+<!-- @mention specific reviewers if needed -->
 
-- [ ] Code logic is sound and efficient
-- [ ] Tests adequately cover the changes
-- [ ] Documentation is clear and complete
-- [ ] Security considerations are addressed
-- [ ] Performance impact is acceptable
-- [ ] Breaking changes are properly communicated
-- [ ] Code style follows project conventions
+**Estimated Review Time:** [Small/Medium/Large]
 
-### Testing Verification
-
-- [ ] Manual testing performed
-- [ ] Automated tests reviewed and run
-- [ ] Edge cases considered
-- [ ] Error handling tested
-
-Thank you for reviewing this PR! 🙏
+**Priority:** [Low/Medium/High/Critical]

@@ -1,418 +1,495 @@
 # Scripts Documentation
 
-This document provides comprehensive information about all available npm scripts in the ElevenLabs Conversational AI Demo project.
+## Overview
 
-## 📋 Scripts Overview
+This document provides comprehensive documentation for all available npm scripts in the ElevenLabs Conversational AI Demo project. Each script is designed for specific development, build, and maintenance tasks.
 
-| Script  | Description                             | Parameters             | Example         | Troubleshooting                         |
-| ------- | --------------------------------------- | ---------------------- | --------------- | --------------------------------------- |
-| `dev`   | Start development server with Turbopack | `--port`, `--hostname` | `npm run dev`   | [Dev Server Issues](#dev-server-issues) |
-| `build` | Build production application            | `--debug`              | `npm run build` | [Build Issues](#build-issues)           |
-| `start` | Start production server                 | `--port`, `--hostname` | `npm run start` | [Production Issues](#production-issues) |
-| `lint`  | Run ESLint code analysis                | `--fix`, `--ext`       | `npm run lint`  | [Lint Issues](#lint-issues)             |
+## Available Scripts
 
-## 🔧 Detailed Script Information
+| Script           | Description                             | Parameters                             | Example                  | Troubleshooting                             |
+| ---------------- | --------------------------------------- | -------------------------------------- | ------------------------ | ------------------------------------------- |
+| `dev`            | Start development server with Turbopack | `--port <number>`, `--hostname <host>` | `npm run dev`            | Clear `.next` cache if issues occur         |
+| `build`          | Build production application            | `--debug`, `--profile`                 | `npm run build`          | Check for TypeScript errors first           |
+| `start`          | Start production server                 | `--port <number>`, `--hostname <host>` | `npm run start`          | Ensure `build` was run first                |
+| `lint`           | Run ESLint code analysis                | `--fix`, `--ext <extensions>`          | `npm run lint`           | Run `npm run lint -- --fix` for auto-fixes  |
+| `validate-setup` | Check environment configuration         | None                                   | `npm run validate-setup` | Verify `.env` file exists and is configured |
+| `setup-check`    | Alias for validate-setup                | None                                   | `npm run setup-check`    | Same as validate-setup                      |
 
-### `npm run dev`
+## Script Details
 
-**Purpose**: Starts the Next.js development server with Turbopack for fast rebuilds and hot reloading.
+### Development Scripts
 
-**Command**:
+#### `npm run dev`
 
-```bash
-next dev --turbopack
-```
+**Purpose**: Starts the Next.js development server with Turbopack for fast development builds.
+
+**Command**: `next dev --turbopack`
+
+**Features**:
+
+- Hot module replacement (HMR)
+- Fast refresh for React components
+- TypeScript compilation
+- CSS processing with Tailwind
+- Real-time error reporting
 
 **Parameters**:
 
-- `--port <number>` - Specify custom port (default: 3000)
-- `--hostname <string>` - Specify hostname (default: localhost)
-- `--turbo` - Enable Turbopack (already included)
-
-**Examples**:
-
 ```bash
-# Standard development
-npm run dev
-
 # Custom port
 npm run dev -- --port 3001
 
 # Custom hostname
 npm run dev -- --hostname 0.0.0.0
 
-# Both port and hostname
-npm run dev -- --port 8080 --hostname 192.168.1.100
+# Combined
+npm run dev -- --port 3001 --hostname 0.0.0.0
 ```
+
+**Environment Variables**:
+
+- `PORT`: Default port (3000)
+- `HOSTNAME`: Default hostname (localhost)
 
 **Expected Output**:
 
 ```
-▲ Next.js 15.0.2 (Turbopack)
-- Local:        http://localhost:3000
-- Environments: .env
+   ▲ Next.js 15.0.2 (Turbopack)
+   - Local:        http://localhost:3000
+   - Environments: .env
 
-✓ Starting...
-✓ Ready in 1.2s
-○ Compiling / ...
-✓ Compiled / in 890ms
+ ✓ Starting...
+ ✓ Ready in 1.2s
 ```
 
-**Features**:
+**Common Issues**:
 
-- **Hot Reloading**: Automatic page refresh on file changes
-- **Error Overlay**: Visual error display in browser
-- **Fast Refresh**: Preserves component state during updates
-- **Turbopack**: Enhanced build performance
+- **Port already in use**: Use different port with `--port` flag
+- **Turbopack errors**: Fallback to `next dev` without Turbopack
+- **Memory issues**: Increase Node.js heap size with `NODE_OPTIONS="--max-old-space-size=4096"`
 
-### `npm run build`
+**Troubleshooting**:
+
+```bash
+# Clear Next.js cache
+rm -rf .next
+
+# Clear node_modules and reinstall
+rm -rf node_modules package-lock.json
+npm install
+
+# Check for port conflicts
+lsof -ti:3000 | xargs kill -9
+```
+
+#### `npm run validate-setup`
+
+**Purpose**: Validates that all required environment variables and configurations are properly set up.
+
+**Command**: `node scripts/validate-setup.js`
+
+**Validation Checks**:
+
+- ✅ `.env` file exists
+- ✅ `ELEVENLABS_API_KEY` is configured
+- ✅ `AGENT_ID` is configured
+- ✅ API key format validation
+- ✅ ElevenLabs API connectivity test
+- ✅ Agent accessibility verification
+
+**Expected Output**:
+
+```
+🔍 Validating ElevenLabs setup...
+
+✅ Environment file (.env) found
+✅ ELEVENLABS_API_KEY is configured
+✅ AGENT_ID is configured
+✅ API key format is valid
+✅ ElevenLabs API is accessible
+✅ Agent is accessible
+
+🎉 Setup validation complete! You're ready to start developing.
+```
+
+**Error Scenarios**:
+
+```bash
+# Missing .env file
+❌ Environment file (.env) not found
+💡 Copy .env.example to .env and configure your credentials
+
+# Invalid API key
+❌ ELEVENLABS_API_KEY format is invalid
+💡 API key should start with 'sk_'
+
+# API connectivity issues
+❌ Cannot connect to ElevenLabs API
+💡 Check your internet connection and API key validity
+```
+
+**Troubleshooting**:
+
+```bash
+# Create .env from template
+cp .env.example .env
+
+# Test API key manually
+curl -H "xi-api-key: YOUR_API_KEY" https://api.elevenlabs.io/v1/voices
+
+# Verify agent exists
+curl -H "xi-api-key: YOUR_API_KEY" https://api.elevenlabs.io/v1/convai/agents/YOUR_AGENT_ID
+```
+
+### Build Scripts
+
+#### `npm run build`
 
 **Purpose**: Creates an optimized production build of the application.
 
-**Command**:
+**Command**: `next build`
 
-```bash
-next build
-```
+**Build Process**:
+
+1. TypeScript compilation
+2. Component tree shaking
+3. CSS optimization and purging
+4. JavaScript bundling and minification
+5. Image optimization
+6. Static page generation
+7. Route manifest creation
 
 **Parameters**:
 
-- `--debug` - Enable debug mode for build analysis
-- `--profile` - Enable React profiling in production build
-
-**Examples**:
-
 ```bash
-# Standard production build
-npm run build
-
-# Debug build for analysis
+# Debug build information
 npm run build -- --debug
 
-# Build with React profiling
+# Profile build performance
 npm run build -- --profile
+
+# No lint during build
+npm run build -- --no-lint
 ```
 
 **Expected Output**:
 
 ```
-▲ Next.js 15.0.2
+   ▲ Next.js 15.0.2
+   - Environments: .env
 
-✓ Creating an optimized production build...
-✓ Compiled successfully
+   Creating an optimized production build ...
+ ✓ Compiled successfully
 
-Route (app)                              Size     First Load JS
-┌ ○ /                                    142 B          87.2 kB
-├ ○ /advanced                            8.91 kB        96.1 kB
-├ ○ /refactored                          5.23 kB        92.4 kB
-└ ○ /api/signed-url                      0 B                0 B
+   Page                                       Size     First Load JS
+   ┌ ○ /                                      1.2 kB          87.3 kB
+   ├ ○ /advanced                              1.8 kB          89.1 kB
+   ├ ○ /refactored                            1.5 kB          88.8 kB
+   └ ○ /404                                   182 B           85.2 kB
 
-+ First Load JS shared by all            87.1 kB
-  ├ chunks/framework-[hash].js           45.2 kB
-  ├ chunks/main-app-[hash].js           31.5 kB
-  ├ chunks/webpack-[hash].js            10.4 kB
-  └ other shared chunks (total)          0 B
-
-○  (Static)  automatically rendered as static HTML (uses no initial props)
+ ○  (Static)  automatically rendered as static HTML
 ```
 
 **Build Artifacts**:
 
-- `.next/` - Built application files
-- `.next/static/` - Static assets with cache headers
-- `.next/server/` - Server-side code
+- `.next/static/`: Static assets (JS, CSS, images)
+- `.next/server/`: Server-side code
+- `.next/cache/`: Build cache for faster rebuilds
 
-### `npm run start`
-
-**Purpose**: Starts the Next.js production server using the built application.
-
-**Command**:
+**Troubleshooting**:
 
 ```bash
-next start
+# TypeScript errors
+npm run build 2>&1 | grep "Type error"
+
+# Memory issues during build
+NODE_OPTIONS="--max-old-space-size=4096" npm run build
+
+# Clear build cache
+rm -rf .next
+
+# Analyze bundle size
+npm install -g @next/bundle-analyzer
+ANALYZE=true npm run build
 ```
 
-**Prerequisites**: Must run `npm run build` first
+#### `npm run start`
+
+**Purpose**: Starts the production server using the built application.
+
+**Command**: `next start`
+
+**Prerequisites**:
+
+- Must run `npm run build` first
+- `.next` directory must exist with build artifacts
 
 **Parameters**:
 
-- `--port <number>` - Specify port (default: 3000)
-- `--hostname <string>` - Specify hostname
-
-**Examples**:
-
 ```bash
-# Build and start production server
-npm run build && npm run start
-
-# Start on custom port
+# Custom port
 npm run start -- --port 8080
 
-# Start on all interfaces
+# Custom hostname
 npm run start -- --hostname 0.0.0.0
 ```
 
 **Expected Output**:
 
 ```
-▲ Next.js 15.0.2
-- Local:        http://localhost:3000
+   ▲ Next.js 15.0.2
+   - Local:        http://localhost:3000
 
-✓ Ready in 520ms
+ ✓ Ready in 0.5s
 ```
 
-**Production Features**:
-
-- **Optimized Performance**: Minified and compressed assets
-- **Server-Side Rendering**: Enhanced SEO and initial load
-- **Static Generation**: Pre-built pages for faster delivery
-
-### `npm run lint`
-
-**Purpose**: Analyzes code for potential issues, style violations, and best practice adherence.
-
-**Command**:
+**Troubleshooting**:
 
 ```bash
-next lint
+# No build found
+❌ Error: Could not find a production build in the '.next' directory
+
+# Solution: Build first
+npm run build
+npm run start
+
+# Port conflicts
+lsof -ti:3000 | xargs kill -9
+npm run start
 ```
+
+### Code Quality Scripts
+
+#### `npm run lint`
+
+**Purpose**: Runs ESLint to analyze code for potential errors, style issues, and best practices.
+
+**Command**: `next lint`
+
+**Linting Rules**:
+
+- ESLint recommended rules
+- Next.js specific rules
+- React hooks rules
+- TypeScript ESLint rules
+- Custom project rules
 
 **Parameters**:
 
-- `--fix` - Automatically fix fixable issues
-- `--ext <extensions>` - Specify file extensions
-- `--dir <directories>` - Specify directories to lint
-
-**Examples**:
-
 ```bash
-# Standard linting
-npm run lint
-
 # Auto-fix issues
 npm run lint -- --fix
 
-# Lint specific directory
-npm run lint -- --dir components
-
-# Lint specific file types
+# Specific file extensions
 npm run lint -- --ext .ts,.tsx
+
+# Specific directories
+npm run lint -- components/
+
+# Different output format
+npm run lint -- --format=json
 ```
 
 **Expected Output**:
 
-```bash
+```
 ✔ No ESLint warnings or errors
 ```
 
-**Or with issues**:
+**Error Example**:
 
-```bash
-./components/example.tsx
-4:7  Warning: 'useState' is defined but never used  @typescript-eslint/no-unused-vars
-8:12 Error: 'onClick' is missing in props validation  react/prop-types
+```
+./components/ConvAI.tsx
+  45:6  Warning: React Hook useEffect has a missing dependency  react-hooks/exhaustive-deps
+  67:1  Error: 'console' is not defined                        no-console
 
 ✖ 2 problems (1 error, 1 warning)
+  1 error and 0 warnings potentially fixable with the --fix option.
 ```
 
-## 🚨 Troubleshooting
-
-### Dev Server Issues
-
-#### **Port Already in Use**
+**Troubleshooting**:
 
 ```bash
-Error: listen EADDRINUSE: address already in use :::3000
+# Auto-fix common issues
+npm run lint -- --fix
+
+# Check specific file
+npx eslint components/ConvAI.tsx
+
+# Generate detailed report
+npm run lint -- --format=html --output-file=lint-report.html
 ```
 
-**Solutions**:
+## Custom Scripts
 
-```bash
-# Use different port
-npm run dev -- --port 3001
+### Adding New Scripts
 
-# Kill process using port 3000
-lsof -ti:3000 | xargs kill -9
+To add custom scripts to the project:
 
-# Find and kill specific process
-npx kill-port 3000
-```
-
-#### **Turbopack Errors**
-
-```bash
-# Disable Turbopack if issues occur
-npx next dev
-```
-
-#### **Memory Issues**
-
-```bash
-# Increase Node.js memory limit
-NODE_OPTIONS="--max-old-space-size=4096" npm run dev
-```
-
-### Build Issues
-
-#### **Memory Errors During Build**
-
-```bash
-# Increase memory for build
-NODE_OPTIONS="--max-old-space-size=8192" npm run build
-```
-
-#### **TypeScript Errors**
-
-```bash
-# Type check before build
-npx tsc --noEmit
-```
-
-#### **Dependency Issues**
-
-```bash
-# Clear cache and reinstall
-rm -rf node_modules package-lock.json .next
-npm install
-npm run build
-```
-
-### Production Issues
-
-#### **Build Not Found**
-
-```bash
-Error: Could not find a production build in the '.next' directory
-```
-
-**Solution**:
-
-```bash
-npm run build
-npm run start
-```
-
-#### **Environment Variables**
-
-Ensure production environment variables are set:
-
-```bash
-# Check environment variables
-echo $ELEVENLABS_API_KEY
-echo $AGENT_ID
-```
-
-### Lint Issues
-
-#### **Configuration Errors**
-
-```bash
-# Reset ESLint configuration
-rm .eslintcache
-npm run lint
-```
-
-#### **Dependency Conflicts**
-
-```bash
-# Update ESLint dependencies
-npm update eslint @next/eslint-plugin-next
-```
-
-#### **Custom Rules**
-
-Modify `.eslintrc.json`:
-
-```json
-{
-  "extends": ["next/core-web-vitals"],
-  "rules": {
-    "react-hooks/exhaustive-deps": "warn"
-  }
-}
-```
-
-## 🔧 Custom Scripts
-
-### Adding Development Utilities
-
-```json
-{
-  "scripts": {
-    "dev:debug": "NODE_OPTIONS='--inspect' npm run dev",
-    "dev:verbose": "DEBUG=next:* npm run dev",
-    "type-check": "tsc --noEmit",
-    "analyze": "ANALYZE=true npm run build"
-  }
-}
-```
-
-### Testing Scripts
+1. **Add to package.json**:
 
 ```json
 {
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf .next out"
   }
 }
 ```
 
-### Deployment Scripts
+2. **Document in this file**:
 
-```json
-{
-  "scripts": {
-    "deploy": "npm run build && npm run start",
-    "deploy:vercel": "vercel --prod",
-    "deploy:docker": "docker build -t convai-demo ."
-  }
-}
+```markdown
+| `test` | Run Jest tests | `--watch`, `--coverage` | `npm test` | Ensure Jest is configured |
 ```
 
-## 📊 Performance Monitoring
+### Useful Development Scripts
 
-### Build Analysis
+#### Testing Scripts (if added)
 
 ```bash
-# Analyze bundle size
-npm run build -- --debug
+# Run tests
+npm test
+
+# Watch mode
+npm run test:watch
+
+# Coverage report
+npm run test:coverage
 ```
 
-### Development Metrics
+#### Type Checking
 
 ```bash
-# Monitor development server
-DEBUG=next:router npm run dev
+# TypeScript compilation check
+npm run type-check
 ```
 
-## 🛠️ Environment-Specific Commands
+#### Cleanup Scripts
+
+```bash
+# Clean build artifacts
+npm run clean
+
+# Complete reset
+npm run reset
+```
+
+## Environment-Specific Usage
 
 ### Development
 
 ```bash
-# Full development setup
-cp .env.example .env
-npm install
+# Start development
+npm run validate-setup
 npm run dev
+
+# Code quality
+npm run lint
+npm run type-check
 ```
 
 ### Production
 
 ```bash
-# Production deployment
-npm ci --only=production
+# Build and deploy
+npm run validate-setup
+npm run lint
 npm run build
 npm run start
 ```
 
-### Docker
+### CI/CD Pipeline
 
 ```bash
-# Docker development
-docker build -t convai-demo .
-docker run -p 3000:3000 convai-demo
+# Continuous integration
+npm ci
+npm run validate-setup
+npm run lint
+npm run type-check
+npm run build
+npm test  # if tests exist
 ```
 
-This documentation ensures developers can effectively use all available scripts and troubleshoot common issues during development and deployment.
+## Performance Optimization
+
+### Build Performance
+
+```bash
+# Profile build time
+npm run build -- --profile
+
+# Analyze bundle size
+ANALYZE=true npm run build
+
+# Cache optimization
+npm run build -- --experimental-build-cache
+```
+
+### Development Performance
+
+```bash
+# Increase memory limit
+NODE_OPTIONS="--max-old-space-size=4096" npm run dev
+
+# Disable source maps for faster builds
+DISABLE_SOURCE_MAPS=true npm run dev
+```
+
+## Monitoring and Debugging
+
+### Debug Mode
+
+```bash
+# Enable debug output
+DEBUG=* npm run dev
+
+# Next.js specific debugging
+DEBUG=next:* npm run dev
+```
+
+### Performance Monitoring
+
+```bash
+# Profile application
+npm run build -- --profile
+npm run start
+
+# Monitor memory usage
+node --inspect npm run dev
+```
+
+## Automation Examples
+
+### Pre-commit Hooks
+
+```bash
+# Install husky
+npm install --save-dev husky
+
+# Add pre-commit hook
+npx husky add .husky/pre-commit "npm run lint && npm run type-check"
+```
+
+### GitHub Actions
+
+```yaml
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm run validate-setup
+      - run: npm run lint
+      - run: npm run build
+```
+
+This comprehensive scripts documentation ensures developers can effectively use all available tooling for development, building, and maintaining the ElevenLabs Conversational AI application.

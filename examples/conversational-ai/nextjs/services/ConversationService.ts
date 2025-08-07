@@ -37,18 +37,25 @@ export class ConversationService {
    */
   async getSignedUrl(): Promise<string> {
     try {
-      console.log("Making request to /api/signed-url");
       const response = await fetch(`${this.baseUrl}/api/signed-url`);
-      console.log("Response status:", response.status, response.statusText);
 
       if (!response.ok) {
         const errorData: ApiError = await response.json();
-        console.error("API error response:", errorData);
+
+        // Use warning level for expected configuration errors (400)
+        if (response.status === 400) {
+          console.warn(
+            "Configuration issue (expected when not configured):",
+            errorData
+          );
+        } else {
+          console.error("API error response:", errorData);
+        }
+
         throw this.createSpecificError(response.status, errorData);
       }
 
       const data: SignedUrlResponse = await response.json();
-      console.log("API response data:", data);
 
       if (!data.signedUrl) {
         throw new Error("No signed URL received from server");
@@ -56,7 +63,18 @@ export class ConversationService {
 
       return data.signedUrl;
     } catch (error) {
-      console.error("Error in getSignedUrl:", error);
+      // Use warning level for expected configuration errors
+      const isConfigError =
+        error instanceof Error &&
+        (error.message.includes("AGENT_ID") ||
+          error.message.includes("ELEVENLABS_API_KEY") ||
+          error.message.includes("Configuration error"));
+
+      if (isConfigError) {
+        console.warn("Configuration error (expected):", error);
+      } else {
+        console.error("Unexpected error in getSignedUrl:", error);
+      }
 
       // Enhanced error handling with detailed logging
       if (error instanceof TypeError && error.message.includes("fetch")) {

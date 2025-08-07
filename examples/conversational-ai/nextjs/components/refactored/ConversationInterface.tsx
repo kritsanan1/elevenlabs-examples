@@ -10,6 +10,8 @@ import { ConversationControls } from "@/components/core/ConversationControls";
 import { StatusIndicator } from "@/components/core/StatusIndicator";
 import { VisualizationMode } from "@/types/conversation";
 import { Sparkles, Waves, BarChart3 } from "lucide-react";
+import { useConfiguration } from "@/hooks/useConfiguration";
+import { ConfigurationStatus } from "@/components/core/ConfigurationStatus";
 
 /**
  * Refactored conversation interface
@@ -23,6 +25,7 @@ import { Sparkles, Waves, BarChart3 } from "lucide-react";
 export function ConversationInterface() {
   const [visualizerMode, setVisualizerMode] =
     useState<VisualizationMode>("orb");
+  const config = useConfiguration();
 
   const {
     status,
@@ -42,8 +45,13 @@ export function ConversationInterface() {
     setError(null);
   };
 
+  // Determine if conversation controls should be disabled
+  const isDisabled = !config.isConfigured || config.isLoading;
+
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto space-y-4">
+      {/* Always show configuration status */}
+      <ConfigurationStatus />
       <Card className="rounded-3xl">
         <CardContent className="p-6">
           <CardHeader className="px-0 pt-0">
@@ -99,12 +107,12 @@ export function ConversationInterface() {
           {/* Main Controls */}
           <div className="flex flex-col gap-4 text-center">
             <ConversationControls
-              canStart={canStart}
+              canStart={canStart && config.isConfigured}
               canStop={canStop}
               isConnected={isConnected}
               onStart={startConversation}
               onStop={stopConversation}
-              disabled={status === "connecting"}
+              disabled={isDisabled || status === "connecting"}
             />
           </div>
         </CardContent>

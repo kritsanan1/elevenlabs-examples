@@ -2,6 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { CredentialSetup } from "./CredentialSetup";
+import { OnboardingWizard } from "./OnboardingWizard";
+import { AgentSelector } from "./AgentSelector";
 
 interface ConfigStatus {
   isConfigured: boolean;
@@ -16,6 +20,10 @@ interface ConfigStatus {
 export function ConfigurationStatus() {
   const [status, setStatus] = useState<ConfigStatus | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showSetup, setShowSetup] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showAgentSelector, setShowAgentSelector] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState<any>(null);
 
   useEffect(() => {
     checkConfiguration();
@@ -25,7 +33,18 @@ export function ConfigurationStatus() {
     try {
       setIsLoading(true);
       const response = await fetch("/api/signed-url");
-      const data = await response.json();
+
+      // Check if the response is valid before trying to parse JSON
+      if (!response.ok && response.status !== 400) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      let data;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        throw new Error(`Failed to parse response: ${parseError}`);
+      }
 
       if (response.ok) {
         setStatus({
@@ -33,7 +52,8 @@ export function ConfigurationStatus() {
           agentIdConfigured: true,
           apiKeyConfigured: true,
         });
-      } else {
+      } else if (response.status === 400) {
+        // Expected response when credentials are not configured
         // Parse the error to determine what's missing
         const agentIdConfigured = !data.error?.includes("AGENT_ID");
         const apiKeyConfigured = !data.error?.includes("ELEVENLABS_API_KEY");
@@ -44,18 +64,47 @@ export function ConfigurationStatus() {
           apiKeyConfigured,
           error: data.error,
         });
+      } else {
+        // Unexpected error (500, etc.)
+        console.error("Unexpected configuration check error:", data);
+        setStatus({
+          isConfigured: false,
+          agentIdConfigured: false,
+          apiKeyConfigured: false,
+          error: data.error || "Configuration check failed",
+        });
       }
     } catch (error) {
-      console.error("Configuration check failed:", error);
+      // Only log network errors or actual unexpected errors
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      console.warn("Configuration check issue:", errorMessage);
       setStatus({
         isConfigured: false,
         agentIdConfigured: false,
         apiKeyConfigured: false,
-        error: "Unable to check configuration - network error",
+        error: `Configuration check failed: ${errorMessage}`,
       });
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSetupComplete = () => {
+    // Refresh configuration status after setup
+    checkConfiguration();
+    setShowSetup(false);
+  };
+
+  const handleOnboardingComplete = () => {
+    // Refresh configuration status after onboarding
+    checkConfiguration();
+    setShowOnboarding(false);
+  };
+
+  const handleAgentSelect = (agent: any) => {
+    setSelectedAgent(agent);
+    setShowAgentSelector(false);
   };
 
   if (isLoading) {
@@ -81,11 +130,28 @@ export function ConfigurationStatus() {
     return (
       <Card className="mb-4 border-green-200 bg-green-50">
         <CardContent className="pt-4">
-          <div className="flex items-center gap-2">
-            <div className="text-green-500 text-lg">✅</div>
-            <span className="text-green-700 text-sm font-medium">
-              Configuration verified - ready to start conversations!
-            </span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="text-green-500 text-lg">✅</div>
+              <div>
+                <span className="text-green-700 text-sm font-medium">
+                  Configuration verified - ready to start conversations!
+                </span>
+                {selectedAgent && (
+                  <div className="text-xs text-green-600 mt-1">
+                    Selected Agent: {selectedAgent.name}
+                  </div>
+                )}
+              </div>
+            </div>
+            <Button
+              onClick={() => setShowAgentSelector(true)}
+              variant="outline"
+              size="sm"
+              className="text-green-700 border-green-300 hover:bg-green-100"
+            >
+              🤖 Select Agent
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -143,11 +209,32 @@ export function ConfigurationStatus() {
           </div>
 
           <div className="flex flex-wrap gap-2">
+            <Button
+              onClick={() => setShowOnboarding(true)}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 text-xs h-8"
+            >
+              🎯 Guided Setup
+            </Button>
+            <Button
+              onClick={() => setShowSetup(true)}
+              className="bg-amber-600 text-white hover:bg-amber-700 text-xs h-8"
+            >
+              🚀 Quick Setup
+            </Button>
+            {status.agentIdConfigured && status.apiKeyConfigured && (
+              <Button
+                onClick={() => setShowAgentSelector(true)}
+                variant="outline"
+                className="text-amber-700 border-amber-300 hover:bg-amber-50 text-xs h-8"
+              >
+                🤖 Browse Agents
+              </Button>
+            )}
             <a
               href="https://elevenlabs.io/docs/conversational-ai/docs/agent-setup"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 px-3 py-2 bg-amber-600 text-white rounded text-xs hover:bg-amber-700 transition-colors"
+              className="inline-flex items-center gap-1 px-3 py-2 bg-white text-amber-600 border border-amber-300 rounded text-xs hover:bg-amber-50 transition-colors"
             >
               📚 Setup Guide
             </a>
@@ -174,6 +261,26 @@ export function ConfigurationStatus() {
           </div>
         )}
       </CardContent>
+
+      <CredentialSetup
+        isVisible={showSetup}
+        onClose={() => setShowSetup(false)}
+        onCredentialsUpdated={handleSetupComplete}
+      />
+
+      <OnboardingWizard
+        isVisible={showOnboarding}
+        onComplete={handleOnboardingComplete}
+        onClose={() => setShowOnboarding(false)}
+      />
+
+      <AgentSelector
+        isVisible={showAgentSelector}
+        selectedAgentId={selectedAgent?.id}
+        onAgentSelect={handleAgentSelect}
+        onClose={() => setShowAgentSelector(false)}
+        apiKey={process.env.ELEVENLABS_API_KEY}
+      />
     </Card>
   );
 }

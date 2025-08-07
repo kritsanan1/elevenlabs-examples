@@ -7,6 +7,7 @@ import {
   VoicePersona,
 } from "@/types/conversation";
 import { conversationService } from "@/services/ConversationService";
+import { useConfiguration } from "@/hooks/useConfiguration";
 
 // Default personas data
 const DEFAULT_PERSONAS: VoicePersona[] = [
@@ -49,6 +50,7 @@ const DEFAULT_ANALYTICS: ConversationAnalytics = {
  * Encapsulates all conversation-related state and logic
  */
 export function useConversationState() {
+  const config = useConfiguration();
   const [state, setState] = useState<ConversationState>({
     status: "disconnected",
     isRecording: false,
@@ -134,6 +136,13 @@ export function useConversationState() {
       setState(prev => ({ ...prev, error: null, status: "connecting" }));
       console.log("Starting conversation...");
 
+      // Pre-validate configuration
+      if (!config.isConfigured) {
+        throw new Error(
+          "Please configure your ElevenLabs credentials before starting a conversation"
+        );
+      }
+
       const hasPermission =
         await conversationService.requestMicrophonePermission();
       if (!hasPermission) {
@@ -151,7 +160,22 @@ export function useConversationState() {
       const conversationId = await conversation.startSession({ signedUrl });
       console.log("Conversation started with ID:", conversationId);
     } catch (error) {
-      console.error("Failed to start conversation:", error);
+      // Enhanced error handling
+      if (error instanceof Error) {
+        const isConfigError =
+          error.message.includes("AGENT_ID") ||
+          error.message.includes("ELEVENLABS_API_KEY") ||
+          error.message.includes("Configuration error") ||
+          error.message.includes("configure your ElevenLabs credentials");
+
+        if (isConfigError) {
+          console.warn("Configuration error (expected):", error.message);
+        } else {
+          console.error("Failed to start conversation:", error);
+        }
+      } else {
+        console.error("Unknown error starting conversation:", error);
+      }
 
       const errorMessage =
         error instanceof Error
@@ -164,7 +188,7 @@ export function useConversationState() {
         error: errorMessage,
       }));
     }
-  }, [conversation]);
+  }, [conversation, config.isConfigured]);
 
   const stopConversation = useCallback(async () => {
     try {
