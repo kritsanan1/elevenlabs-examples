@@ -18,6 +18,7 @@ interface ConfigStatus {
 export function ConfigurationStatus() {
   const [status, setStatus] = useState<ConfigStatus | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showSetup, setShowSetup] = useState(false);
 
   useEffect(() => {
     checkConfiguration();
