@@ -37,9 +37,7 @@ export class ConversationService {
    */
   async getSignedUrl(): Promise<string> {
     try {
-      console.log("Making request to /api/signed-url");
       const response = await fetch(`${this.baseUrl}/api/signed-url`);
-      console.log("Response status:", response.status, response.statusText);
 
       if (!response.ok) {
         const errorData: ApiError = await response.json();
@@ -58,7 +56,6 @@ export class ConversationService {
       }
 
       const data: SignedUrlResponse = await response.json();
-      console.log("API response data:", data);
 
       if (!data.signedUrl) {
         throw new Error("No signed URL received from server");
