@@ -7,3 +7,15 @@ channel = "stable-25_05"
 [deployment]
 run = ["sh", "-c", "cd examples/conversational-ai/nextjs && pnpm run start"]
 build = ["sh", "-c", "cd examples/conversational-ai/nextjs && pnpm install --legacy-peer-deps && pnpm run build"]
+
+[workflows]
+runButton = "Run NextJS App"
+
+[[workflows.workflow]]
+name = "Run NextJS App"
+author = 46091431
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd examples/conversational-ai/nextjs && pnpm install --legacy-peer-deps && pnpm run dev"
