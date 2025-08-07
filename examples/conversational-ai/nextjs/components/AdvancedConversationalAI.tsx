@@ -491,7 +491,7 @@ export function AdvancedConversationalAI() {
         });
         setError(error.message);
       } else {
-        console.error("Unknown error:", error);
+        console.warn("Unknown error:", error);
         setError(
           "An unexpected error occurred while starting the conversation"
         );
