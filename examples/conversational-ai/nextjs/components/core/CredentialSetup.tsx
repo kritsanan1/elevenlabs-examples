@@ -151,11 +151,30 @@ export function CredentialSetup({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <Card className="w-full max-w-lg max-h-[90vh] overflow-y-auto">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            🔑 Configure ElevenLabs Credentials
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              🔑 Configure ElevenLabs Credentials
+            </CardTitle>
+            {hasStored && (
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded">
+                  ✅ Stored
+                </span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearStoredCredentials}
+                  className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
+                  title="Clear stored credentials"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              </div>
+            )}
+          </div>
           <p className="text-sm text-gray-600">
             Enter your ElevenLabs credentials to start using the conversational AI demo.
+            {hasStored && " (Credentials loaded from secure storage)"}
           </p>
         </CardHeader>
         
