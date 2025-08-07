@@ -32,10 +32,25 @@ async function requestMicrophonePermission() {
 
 async function getSignedUrl(): Promise<string> {
   try {
-    const response = await fetch("/api/signed-url");
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+    const response = await fetch("/api/signed-url", {
+      signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
-      const errorData = await response.json();
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch {
+        errorData = { error: `HTTP ${response.status}: ${response.statusText}` };
+      }
 
       // Use warning level for expected configuration errors (400)
       if (response.status === 400) {
