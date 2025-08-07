@@ -19,11 +19,11 @@ async function requestMicrophonePermission() {
   } catch (error) {
     console.error("Microphone permission denied:", error);
     // Provide more specific error information
-    if (error.name === 'NotAllowedError') {
+    if (error.name === "NotAllowedError") {
       console.error("User denied microphone access");
-    } else if (error.name === 'NotFoundError') {
+    } else if (error.name === "NotFoundError") {
       console.error("No microphone found");
-    } else if (error.name === 'NotSupportedError') {
+    } else if (error.name === "NotSupportedError") {
       console.error("HTTPS required for microphone access");
     }
     return false;
@@ -38,7 +38,7 @@ async function getSignedUrl(): Promise<string> {
     const response = await fetch("/api/signed-url", {
       signal: controller.signal,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
@@ -49,7 +49,9 @@ async function getSignedUrl(): Promise<string> {
       try {
         errorData = await response.json();
       } catch {
-        errorData = { error: `HTTP ${response.status}: ${response.statusText}` };
+        errorData = {
+          error: `HTTP ${response.status}: ${response.statusText}`,
+        };
       }
 
       // Use warning level for expected configuration errors (400)
@@ -98,9 +100,14 @@ async function getSignedUrl(): Promise<string> {
 
     // Better error handling with detailed logging
     if (error instanceof Error) {
-      if (error.name === 'AbortError') {
-        throw new Error("Request timeout - server is taking too long to respond");
-      } else if (error.message.includes("fetch") || error.name === 'TypeError') {
+      if (error.name === "AbortError") {
+        throw new Error(
+          "Request timeout - server is taking too long to respond"
+        );
+      } else if (
+        error.message.includes("fetch") ||
+        error.name === "TypeError"
+      ) {
         throw new Error(
           "Network error - unable to connect to the server. Please check your internet connection."
         );

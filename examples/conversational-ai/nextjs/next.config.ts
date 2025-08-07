@@ -4,8 +4,8 @@ const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
     serverActions: {
-      allowedOrigins: ['*']
-    }
+      allowedOrigins: ["*"],
+    },
   },
   // Improve development experience
   onDemandEntries: {
@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: false,
-  }
+  },
 };
 
 export default nextConfig;
