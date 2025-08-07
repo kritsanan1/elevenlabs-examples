@@ -185,6 +185,12 @@ export function ConfigurationStatus() {
 
           <div className="flex flex-wrap gap-2">
             <Button
+              onClick={() => setShowOnboarding(true)}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 text-xs h-8"
+            >
+              🎯 Guided Setup
+            </Button>
+            <Button
               onClick={() => setShowSetup(true)}
               className="bg-amber-600 text-white hover:bg-amber-700 text-xs h-8"
             >
