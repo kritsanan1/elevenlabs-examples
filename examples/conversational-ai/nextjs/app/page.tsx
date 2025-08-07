@@ -1,5 +1,4 @@
 import { ConvAI } from "@/components/ConvAI";
-import { ConfigurationStatus } from "@/components/core/ConfigurationStatus";
 
 export default function Home() {
   return (
