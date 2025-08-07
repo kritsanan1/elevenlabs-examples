@@ -233,6 +233,12 @@ export function ConfigurationStatus() {
         onClose={() => setShowSetup(false)}
         onCredentialsUpdated={handleSetupComplete}
       />
+
+      <OnboardingWizard
+        isVisible={showOnboarding}
+        onComplete={handleOnboardingComplete}
+        onClose={() => setShowOnboarding(false)}
+      />
     </Card>
   );
 }
