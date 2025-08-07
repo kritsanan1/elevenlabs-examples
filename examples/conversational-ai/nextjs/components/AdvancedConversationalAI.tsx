@@ -777,6 +777,14 @@ export function AdvancedConversationalAI() {
           </CardContent>
         </Card>
       )}
+
+      {/* Configuration Popup */}
+      <ConfigurationPopup
+        isVisible={configPopup.isPopupVisible}
+        onClose={configPopup.hidePopup}
+        title="Configuration Required"
+        description="Set up ElevenLabs credentials to access advanced features"
+      />
     </div>
   );
 }
