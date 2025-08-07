@@ -1,0 +1,9 @@
+run = "cd examples/conversational-ai/nextjs && npm run dev"
+modules = ["nodejs-20"]
+
+[nix]
+channel = "stable-25_05"
+
+[deployment]
+run = ["sh", "-c", "cd examples/conversational-ai/nextjs && pnpm run start"]
+build = ["sh", "-c", "cd examples/conversational-ai/nextjs && pnpm install --legacy-peer-deps && pnpm run build"]
