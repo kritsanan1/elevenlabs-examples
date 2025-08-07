@@ -7,7 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useConversation } from "@elevenlabs/react";
 import { cn } from "@/lib/utils";
 import { useConfiguration } from "@/hooks/useConfiguration";
+import { useConfigurationPopup } from "@/hooks/useConfigurationPopup";
 import { ConfigurationStatus } from "@/components/core/ConfigurationStatus";
+import { ConfigurationPopup } from "@/components/core/ConfigurationPopup";
 
 async function requestMicrophonePermission() {
   try {
