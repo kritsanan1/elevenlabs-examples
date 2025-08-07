@@ -143,10 +143,21 @@ export function ConvAI() {
         }
       } else {
         console.error("Unknown error type:", typeof error, error);
-        const errorDetails =
-          typeof error === "object" && error !== null
-            ? JSON.stringify(error)
-            : String(error);
+        // Better error serialization for objects
+        let errorDetails = String(error);
+        if (typeof error === "object" && error !== null) {
+          try {
+            // Try to extract meaningful properties from the error object
+            const errorProps = Object.getOwnPropertyNames(error);
+            if (errorProps.length > 0) {
+              errorDetails = errorProps.map(prop => `${prop}: ${error[prop]}`).join(', ');
+            } else {
+              errorDetails = error.toString();
+            }
+          } catch (e) {
+            errorDetails = "Unknown error object";
+          }
+        }
         setError(`An unexpected error occurred: ${errorDetails}`);
       }
     }
