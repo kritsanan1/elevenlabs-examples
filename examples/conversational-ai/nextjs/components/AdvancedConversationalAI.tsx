@@ -324,9 +324,7 @@ async function requestMicrophonePermission() {
 
 async function getSignedUrl(): Promise<string> {
   try {
-    console.log("Making request to /api/signed-url");
     const response = await fetch("/api/signed-url");
-    console.log("Response status:", response.status, response.statusText);
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -355,7 +353,6 @@ async function getSignedUrl(): Promise<string> {
     }
 
     const data = await response.json();
-    console.log("API response data:", data);
 
     if (!data.signedUrl) {
       throw new Error("No signed URL received from server");
@@ -434,12 +431,10 @@ export function AdvancedConversationalAI() {
 
   const conversation = useConversation({
     onConnect: () => {
-      console.log("Successfully connected to conversation");
       setError(null);
       setIsRecording(true);
     },
     onDisconnect: () => {
-      console.log("Disconnected from conversation");
       setIsRecording(false);
     },
     onError: error => {
@@ -462,7 +457,6 @@ export function AdvancedConversationalAI() {
       setIsRecording(false);
     },
     onMessage: message => {
-      console.log(message);
       // Add message to conversation history
       const newMessage: ConversationMessage = {
         id: Date.now().toString(),
@@ -485,7 +479,6 @@ export function AdvancedConversationalAI() {
   async function startConversation() {
     try {
       setError(null);
-      console.log("Starting conversation...");
 
       // Pre-validate configuration
       if (!config.isConfigured) {
@@ -500,15 +493,9 @@ export function AdvancedConversationalAI() {
         setError("Microphone permission is required for voice conversations");
         return;
       }
-      console.log("Microphone permission granted");
 
-      console.log("Fetching signed URL...");
       const signedUrl = await getSignedUrl();
-      console.log("Got signed URL:", signedUrl ? "✓" : "✗");
-
-      console.log("Starting conversation session...");
       const conversationId = await conversation.startSession({ signedUrl });
-      console.log("Conversation started with ID:", conversationId);
     } catch (error) {
       // Enhanced error handling with better user messages
       if (error instanceof Error) {
