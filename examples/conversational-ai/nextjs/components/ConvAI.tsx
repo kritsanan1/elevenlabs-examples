@@ -228,6 +228,12 @@ export function ConvAI() {
                           ElevenLabs credentials:
                         </p>
                         <div className="flex flex-wrap gap-2">
+                          <Button
+                            onClick={configPopup.showPopup}
+                            className="h-6 px-2 py-1 bg-amber-600 text-white text-xs hover:bg-amber-700"
+                          >
+                            ⚙️ Setup Required
+                          </Button>
                           <a
                             href="https://elevenlabs.io/docs/conversational-ai/docs/agent-setup"
                             target="_blank"
