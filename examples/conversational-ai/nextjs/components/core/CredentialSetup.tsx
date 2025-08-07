@@ -5,8 +5,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, Save, TestTube, ExternalLink, Copy, Check, Trash2 } from "lucide-react";
-import { saveCredentials, loadCredentials, clearCredentials, hasStoredCredentials } from "@/lib/credentialStorage";
+import {
+  Eye,
+  EyeOff,
+  Save,
+  TestTube,
+  ExternalLink,
+  Copy,
+  Check,
+  Trash2,
+} from "lucide-react";
+import {
+  saveCredentials,
+  loadCredentials,
+  clearCredentials,
+  hasStoredCredentials,
+} from "@/lib/credentialStorage";
 
 interface CredentialSetupProps {
   isVisible: boolean;
@@ -18,14 +32,14 @@ interface CredentialSetupProps {
  * Interactive credential setup component
  * Allows users to configure their ElevenLabs credentials through the UI
  */
-export function CredentialSetup({ 
-  isVisible, 
-  onClose, 
-  onCredentialsUpdated 
+export function CredentialSetup({
+  isVisible,
+  onClose,
+  onCredentialsUpdated,
 }: CredentialSetupProps) {
   const [credentials, setCredentials] = useState({
     agentId: "",
-    apiKey: ""
+    apiKey: "",
   });
   const [showApiKey, setShowApiKey] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +59,7 @@ export function CredentialSetup({
       if (stored) {
         setCredentials({
           agentId: stored.agentId || "",
-          apiKey: stored.apiKey || ""
+          apiKey: stored.apiKey || "",
         });
       }
       setHasStored(hasStoredCredentials());
@@ -64,19 +78,20 @@ export function CredentialSetup({
     setValidationResults(prev => ({
       ...prev,
       [field]: "testing",
-      [`${field}Error`]: undefined
+      [`${field}Error`]: undefined,
     }));
 
     try {
       // For agent ID testing, we need both credentials
-      const testData = field === "agentId"
-        ? { agentId: credentials.agentId, apiKey: credentials.apiKey }
-        : { [field]: credentials[field] };
+      const testData =
+        field === "agentId"
+          ? { agentId: credentials.agentId, apiKey: credentials.apiKey }
+          : { [field]: credentials[field] };
 
       const response = await fetch("/api/test-credentials", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(testData)
+        body: JSON.stringify(testData),
       });
 
       const result = await response.json();
@@ -85,13 +100,13 @@ export function CredentialSetup({
       setValidationResults(prev => ({
         ...prev,
         [field]: isValid ? "valid" : "invalid",
-        [`${field}Error`]: result.error
+        [`${field}Error`]: result.error,
       }));
     } catch (error) {
       setValidationResults(prev => ({
         ...prev,
         [field]: "invalid",
-        [`${field}Error`]: "Network error - please check your connection"
+        [`${field}Error`]: "Network error - please check your connection",
       }));
     }
   };
@@ -109,11 +124,14 @@ export function CredentialSetup({
           await fetch("/api/save-credentials", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(credentials)
+            body: JSON.stringify(credentials),
           });
         } catch (backendError) {
           // Backend save failed, but local save succeeded
-          console.warn("Backend sync failed, but credentials saved locally:", backendError);
+          console.warn(
+            "Backend sync failed, but credentials saved locally:",
+            backendError
+          );
         }
 
         onCredentialsUpdated();
@@ -173,11 +191,12 @@ export function CredentialSetup({
             )}
           </div>
           <p className="text-sm text-gray-600">
-            Enter your ElevenLabs credentials to start using the conversational AI demo.
+            Enter your ElevenLabs credentials to start using the conversational
+            AI demo.
             {hasStored && " (Credentials loaded from secure storage)"}
           </p>
         </CardHeader>
-        
+
         <CardContent className="space-y-6">
           {/* Agent ID Section */}
           <div className="space-y-3">
@@ -194,16 +213,16 @@ export function CredentialSetup({
                 Create Agent <ExternalLink className="h-3 w-3" />
               </a>
             </div>
-            
+
             <div className="flex gap-2">
               <Input
                 id="agentId"
                 placeholder="your-agent-id-here"
                 value={credentials.agentId}
-                onChange={(e) => handleInputChange("agentId", e.target.value)}
+                onChange={e => handleInputChange("agentId", e.target.value)}
                 className={`flex-1 ${
-                  validationResults.agentId === "valid" 
-                    ? "border-green-500" 
+                  validationResults.agentId === "valid"
+                    ? "border-green-500"
                     : validationResults.agentId === "invalid"
                       ? "border-red-500"
                       : ""
@@ -233,16 +252,22 @@ export function CredentialSetup({
             </div>
 
             {validationResults.agentId && (
-              <div className={`text-xs flex items-center gap-1 ${
-                validationResults.agentId === "valid" ? "text-green-600" : "text-red-600"
-              }`}>
+              <div
+                className={`text-xs flex items-center gap-1 ${
+                  validationResults.agentId === "valid"
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
                 {validationResults.agentId === "valid" ? (
                   "✅ Valid agent ID"
                 ) : (
                   <div>
                     <div>❌ Invalid agent ID</div>
                     {validationResults.agentIdError && (
-                      <div className="text-red-500 mt-1">{validationResults.agentIdError}</div>
+                      <div className="text-red-500 mt-1">
+                        {validationResults.agentIdError}
+                      </div>
                     )}
                   </div>
                 )}
@@ -250,13 +275,17 @@ export function CredentialSetup({
             )}
 
             <div className="bg-blue-50 border border-blue-200 rounded p-3 text-xs">
-              <p className="font-medium text-blue-800">How to get your Agent ID:</p>
+              <p className="font-medium text-blue-800">
+                How to get your Agent ID:
+              </p>
               <ol className="list-decimal list-inside mt-1 space-y-1 text-blue-700">
                 <li>Go to ElevenLabs Conversational AI</li>
                 <li>Create or select an existing agent</li>
                 <li>Copy the agent ID from the URL or settings</li>
               </ol>
-              <p className="mt-2 text-blue-600 font-medium">💡 Note: API key is required to test Agent ID</p>
+              <p className="mt-2 text-blue-600 font-medium">
+                💡 Note: API key is required to test Agent ID
+              </p>
             </div>
           </div>
 
@@ -275,7 +304,7 @@ export function CredentialSetup({
                 Get API Key <ExternalLink className="h-3 w-3" />
               </a>
             </div>
-            
+
             <div className="flex gap-2">
               <div className="relative flex-1">
                 <Input
@@ -283,10 +312,10 @@ export function CredentialSetup({
                   type={showApiKey ? "text" : "password"}
                   placeholder="sk_..."
                   value={credentials.apiKey}
-                  onChange={(e) => handleInputChange("apiKey", e.target.value)}
+                  onChange={e => handleInputChange("apiKey", e.target.value)}
                   className={`pr-10 ${
-                    validationResults.apiKey === "valid" 
-                      ? "border-green-500" 
+                    validationResults.apiKey === "valid"
+                      ? "border-green-500"
                       : validationResults.apiKey === "invalid"
                         ? "border-red-500"
                         : ""
@@ -298,14 +327,21 @@ export function CredentialSetup({
                   className="absolute right-1 top-1 h-6 w-6 p-0"
                   onClick={() => setShowApiKey(!showApiKey)}
                 >
-                  {showApiKey ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                  {showApiKey ? (
+                    <EyeOff className="h-3 w-3" />
+                  ) : (
+                    <Eye className="h-3 w-3" />
+                  )}
                 </Button>
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => testCredential("apiKey")}
-                disabled={!credentials.apiKey.trim() || validationResults.apiKey === "testing"}
+                disabled={
+                  !credentials.apiKey.trim() ||
+                  validationResults.apiKey === "testing"
+                }
               >
                 {validationResults.apiKey === "testing" ? (
                   <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
@@ -316,16 +352,22 @@ export function CredentialSetup({
             </div>
 
             {validationResults.apiKey && (
-              <div className={`text-xs flex items-center gap-1 ${
-                validationResults.apiKey === "valid" ? "text-green-600" : "text-red-600"
-              }`}>
+              <div
+                className={`text-xs flex items-center gap-1 ${
+                  validationResults.apiKey === "valid"
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
                 {validationResults.apiKey === "valid" ? (
                   "✅ Valid API key"
                 ) : (
                   <div>
                     <div>❌ Invalid API key</div>
                     {validationResults.apiKeyError && (
-                      <div className="text-red-500 mt-1">{validationResults.apiKeyError}</div>
+                      <div className="text-red-500 mt-1">
+                        {validationResults.apiKeyError}
+                      </div>
                     )}
                   </div>
                 )}
@@ -333,7 +375,9 @@ export function CredentialSetup({
             )}
 
             <div className="bg-green-50 border border-green-200 rounded p-3 text-xs">
-              <p className="font-medium text-green-800">How to get your API Key:</p>
+              <p className="font-medium text-green-800">
+                How to get your API Key:
+              </p>
               <ol className="list-decimal list-inside mt-1 space-y-1 text-green-700">
                 <li>Sign in to your ElevenLabs account</li>
                 <li>Go to your Profile settings</li>
@@ -348,7 +392,9 @@ export function CredentialSetup({
               🔒 Security & Storage
             </p>
             <div className="text-xs text-purple-700 space-y-1">
-              <p>• Credentials are encoded and stored locally in your browser</p>
+              <p>
+                • Credentials are encoded and stored locally in your browser
+              </p>
               <p>• Data expires automatically after 7 days</p>
               <p>• Use the trash icon to clear stored credentials anytime</p>
               <p>• For production use, consider secure backend storage</p>
@@ -372,9 +418,18 @@ export function CredentialSetup({
                   variant="ghost"
                   size="sm"
                   className="h-6 w-6 p-0"
-                  onClick={() => copyToClipboard(`AGENT_ID=${credentials.agentId || "your-agent-id-here"}`, "agentId")}
+                  onClick={() =>
+                    copyToClipboard(
+                      `AGENT_ID=${credentials.agentId || "your-agent-id-here"}`,
+                      "agentId"
+                    )
+                  }
                 >
-                  {copied === "agentId" ? <Check className="h-3 w-3 text-green-600" /> : <Copy className="h-3 w-3" />}
+                  {copied === "agentId" ? (
+                    <Check className="h-3 w-3 text-green-600" />
+                  ) : (
+                    <Copy className="h-3 w-3" />
+                  )}
                 </Button>
               </div>
               <div className="flex items-center gap-2">
@@ -385,9 +440,18 @@ export function CredentialSetup({
                   variant="ghost"
                   size="sm"
                   className="h-6 w-6 p-0"
-                  onClick={() => copyToClipboard(`ELEVENLABS_API_KEY=${credentials.apiKey || "your-api-key-here"}`, "apiKey")}
+                  onClick={() =>
+                    copyToClipboard(
+                      `ELEVENLABS_API_KEY=${credentials.apiKey || "your-api-key-here"}`,
+                      "apiKey"
+                    )
+                  }
                 >
-                  {copied === "apiKey" ? <Check className="h-3 w-3 text-green-600" /> : <Copy className="h-3 w-3" />}
+                  {copied === "apiKey" ? (
+                    <Check className="h-3 w-3 text-green-600" />
+                  ) : (
+                    <Copy className="h-3 w-3" />
+                  )}
                 </Button>
               </div>
             </div>
@@ -395,11 +459,7 @@ export function CredentialSetup({
 
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
-            <Button
-              variant="outline"
-              onClick={onClose}
-              className="flex-1"
-            >
+            <Button variant="outline" onClick={onClose} className="flex-1">
               Cancel
             </Button>
             <Button

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const apiKey = req.headers.get("xi-api-key");
-    
+
     if (!apiKey) {
       return NextResponse.json(
         { error: "API key is required" },
@@ -21,39 +21,41 @@ export async function GET(req: NextRequest) {
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       return NextResponse.json(
-        { 
+        {
           error: "Failed to fetch agents",
-          details: errorData.detail || response.statusText
+          details: errorData.detail || response.statusText,
         },
         { status: response.status }
       );
     }
 
     const data = await response.json();
-    
+
     // Transform the data to match our interface
     const transformedAgents = (data.agents || []).map((agent: any) => ({
       id: agent.agent_id,
       name: agent.name || "Unnamed Agent",
-      description: agent.system_prompt?.substring(0, 100) + "..." || "No description available",
+      description:
+        agent.system_prompt?.substring(0, 100) + "..." ||
+        "No description available",
       voice: {
         id: agent.voice_id,
         name: agent.voice_id, // ElevenLabs voice ID
         category: "Custom",
-        accent: "Default"
+        accent: "Default",
       },
-      personality: agent.system_prompt?.substring(0, 50) + "..." || "Default personality",
+      personality:
+        agent.system_prompt?.substring(0, 50) + "..." || "Default personality",
       language: agent.language || "English",
       isActive: true,
       createdAt: agent.created_at || new Date().toISOString(),
-      conversationCount: 0 // This would need to be tracked separately
+      conversationCount: 0, // This would need to be tracked separately
     }));
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       agents: transformedAgents,
-      total: transformedAgents.length
+      total: transformedAgents.length,
     });
-    
   } catch (error) {
     console.error("Error fetching agents:", error);
     return NextResponse.json(

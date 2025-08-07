@@ -5,17 +5,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { 
-  ChevronRight, 
-  ChevronLeft, 
-  Check, 
-  ExternalLink, 
-  Eye, 
+import {
+  ChevronRight,
+  ChevronLeft,
+  Check,
+  ExternalLink,
+  Eye,
   EyeOff,
   Sparkles,
   Key,
   Mic,
-  Play
+  Play,
 } from "lucide-react";
 
 interface OnboardingWizardProps {
@@ -24,7 +24,7 @@ interface OnboardingWizardProps {
   onClose: () => void;
 }
 
-type WizardStep = 
+type WizardStep =
   | "welcome"
   | "account"
   | "api-key"
@@ -37,51 +37,57 @@ const STEPS: { id: WizardStep; title: string; description: string }[] = [
   {
     id: "welcome",
     title: "Welcome to ElevenLabs AI",
-    description: "Let's set up your conversational AI in just a few steps"
+    description: "Let's set up your conversational AI in just a few steps",
   },
   {
     id: "account",
     title: "ElevenLabs Account",
-    description: "Ensure you have an ElevenLabs account"
+    description: "Ensure you have an ElevenLabs account",
   },
   {
     id: "api-key",
     title: "Get Your API Key",
-    description: "Find and copy your API key"
+    description: "Find and copy your API key",
   },
   {
     id: "agent-creation",
     title: "Create an AI Agent",
-    description: "Set up your conversational AI agent"
+    description: "Set up your conversational AI agent",
   },
   {
     id: "agent-id",
     title: "Get Agent ID",
-    description: "Copy your agent's unique identifier"
+    description: "Copy your agent's unique identifier",
   },
   {
     id: "testing",
     title: "Test Configuration",
-    description: "Verify everything works correctly"
+    description: "Verify everything works correctly",
   },
   {
     id: "complete",
     title: "Setup Complete!",
-    description: "You're ready to start conversations"
-  }
+    description: "You're ready to start conversations",
+  },
 ];
 
 /**
  * Step-by-step onboarding wizard for ElevenLabs setup
  */
-export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingWizardProps) {
+export function OnboardingWizard({
+  isVisible,
+  onComplete,
+  onClose,
+}: OnboardingWizardProps) {
   const [currentStep, setCurrentStep] = useState<WizardStep>("welcome");
   const [credentials, setCredentials] = useState({
     apiKey: "",
-    agentId: ""
+    agentId: "",
   });
   const [showApiKey, setShowApiKey] = useState(false);
-  const [completedSteps, setCompletedSteps] = useState<Set<WizardStep>>(new Set());
+  const [completedSteps, setCompletedSteps] = useState<Set<WizardStep>>(
+    new Set()
+  );
 
   if (!isVisible) return null;
 
@@ -119,18 +125,22 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
           <div className="text-center space-y-6">
             <div className="text-6xl">🎙️</div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">Welcome to ElevenLabs Conversational AI</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Welcome to ElevenLabs Conversational AI
+              </h3>
               <p className="text-gray-600">
-                This wizard will help you set up your credentials and create your first AI conversation. 
-                The process takes about 5 minutes.
+                This wizard will help you set up your credentials and create
+                your first AI conversation. The process takes about 5 minutes.
               </p>
             </div>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-blue-800">
-                <strong>What you'll need:</strong><br />
-                • An ElevenLabs account (free or paid)<br />
-                • About 5 minutes of your time<br />
-                • A microphone for testing
+                <strong>What you'll need:</strong>
+                <br />
+                • An ElevenLabs account (free or paid)
+                <br />
+                • About 5 minutes of your time
+                <br />• A microphone for testing
               </p>
             </div>
           </div>
@@ -141,23 +151,32 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
           <div className="space-y-6">
             <div className="text-center">
               <div className="text-4xl mb-4">👤</div>
-              <h3 className="text-xl font-semibold mb-2">ElevenLabs Account Required</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                ElevenLabs Account Required
+              </h3>
               <p className="text-gray-600">
-                You'll need an ElevenLabs account to use the conversational AI features.
+                You'll need an ElevenLabs account to use the conversational AI
+                features.
               </p>
             </div>
-            
+
             <div className="space-y-4">
               <div className="border rounded-lg p-4">
-                <h4 className="font-medium mb-2">✅ Already have an account?</h4>
-                <p className="text-sm text-gray-600 mb-3">Great! You can continue to the next step.</p>
+                <h4 className="font-medium mb-2">
+                  ✅ Already have an account?
+                </h4>
+                <p className="text-sm text-gray-600 mb-3">
+                  Great! You can continue to the next step.
+                </p>
                 <Button variant="outline" size="sm" onClick={nextStep}>
                   I have an account
                 </Button>
               </div>
-              
+
               <div className="border rounded-lg p-4">
-                <h4 className="font-medium mb-2">🆕 Need to create an account?</h4>
+                <h4 className="font-medium mb-2">
+                  🆕 Need to create an account?
+                </h4>
                 <p className="text-sm text-gray-600 mb-3">
                   Sign up for free at ElevenLabs and return to continue setup.
                 </p>
@@ -187,7 +206,9 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
 
             <div className="space-y-4">
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <h4 className="font-medium text-yellow-800 mb-2">📋 Steps to get your API key:</h4>
+                <h4 className="font-medium text-yellow-800 mb-2">
+                  📋 Steps to get your API key:
+                </h4>
                 <ol className="list-decimal list-inside text-sm text-yellow-700 space-y-1">
                   <li>Go to your ElevenLabs profile settings</li>
                   <li>Find the "API" section</li>
@@ -205,7 +226,12 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
                       type={showApiKey ? "text" : "password"}
                       placeholder="sk_..."
                       value={credentials.apiKey}
-                      onChange={(e) => setCredentials(prev => ({ ...prev, apiKey: e.target.value }))}
+                      onChange={e =>
+                        setCredentials(prev => ({
+                          ...prev,
+                          apiKey: e.target.value,
+                        }))
+                      }
                     />
                     <Button
                       variant="ghost"
@@ -213,7 +239,11 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
                       className="absolute right-1 top-1 h-6 w-6 p-0"
                       onClick={() => setShowApiKey(!showApiKey)}
                     >
-                      {showApiKey ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                      {showApiKey ? (
+                        <EyeOff className="h-3 w-3" />
+                      ) : (
+                        <Eye className="h-3 w-3" />
+                      )}
                     </Button>
                   </div>
                   <a
@@ -235,15 +265,20 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
           <div className="space-y-6">
             <div className="text-center">
               <Sparkles className="mx-auto h-12 w-12 text-purple-600 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Create Your AI Agent</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Create Your AI Agent
+              </h3>
               <p className="text-gray-600">
-                An AI agent defines the personality and voice of your conversational AI.
+                An AI agent defines the personality and voice of your
+                conversational AI.
               </p>
             </div>
 
             <div className="space-y-4">
               <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                <h4 className="font-medium text-purple-800 mb-2">🤖 Creating your agent:</h4>
+                <h4 className="font-medium text-purple-800 mb-2">
+                  🤖 Creating your agent:
+                </h4>
                 <ol className="list-decimal list-inside text-sm text-purple-700 space-y-1">
                   <li>Go to ElevenLabs Conversational AI</li>
                   <li>Click "Create Agent" or "New Agent"</li>
@@ -266,8 +301,9 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
 
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                 <p className="text-sm text-gray-600">
-                  💡 <strong>Tip:</strong> Start with a simple agent for testing. You can always 
-                  create more sophisticated agents later with custom prompts and behaviors.
+                  💡 <strong>Tip:</strong> Start with a simple agent for
+                  testing. You can always create more sophisticated agents later
+                  with custom prompts and behaviors.
                 </p>
               </div>
             </div>
@@ -287,7 +323,9 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
 
             <div className="space-y-4">
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <h4 className="font-medium text-green-800 mb-2">📋 Finding your Agent ID:</h4>
+                <h4 className="font-medium text-green-800 mb-2">
+                  📋 Finding your Agent ID:
+                </h4>
                 <ol className="list-decimal list-inside text-sm text-green-700 space-y-1">
                   <li>Go to your agent in ElevenLabs</li>
                   <li>Look at the URL or agent settings</li>
@@ -303,7 +341,12 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
                     id="wizardAgentId"
                     placeholder="your-agent-id-here"
                     value={credentials.agentId}
-                    onChange={(e) => setCredentials(prev => ({ ...prev, agentId: e.target.value }))}
+                    onChange={e =>
+                      setCredentials(prev => ({
+                        ...prev,
+                        agentId: e.target.value,
+                      }))
+                    }
                   />
                   <a
                     href="https://elevenlabs.io/app/conversational-ai"
@@ -324,7 +367,9 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
           <div className="space-y-6">
             <div className="text-center">
               <Play className="mx-auto h-12 w-12 text-blue-600 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Test Your Configuration</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Test Your Configuration
+              </h3>
               <p className="text-gray-600">
                 Let's verify that your credentials work correctly.
               </p>
@@ -334,10 +379,9 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
               <div className="border rounded-lg p-4">
                 <h4 className="font-medium mb-2">🔑 API Key</h4>
                 <p className="text-sm text-gray-600 mb-2">
-                  {credentials.apiKey ? 
-                    `${credentials.apiKey.substring(0, 8)}...` : 
-                    "Not provided"
-                  }
+                  {credentials.apiKey
+                    ? `${credentials.apiKey.substring(0, 8)}...`
+                    : "Not provided"}
                 </p>
                 <div className="text-xs text-gray-500">
                   {credentials.apiKey ? "✅ Ready to test" : "❌ Required"}
@@ -347,10 +391,9 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
               <div className="border rounded-lg p-4">
                 <h4 className="font-medium mb-2">🤖 Agent ID</h4>
                 <p className="text-sm text-gray-600 mb-2">
-                  {credentials.agentId ? 
-                    `${credentials.agentId.substring(0, 20)}...` : 
-                    "Not provided"
-                  }
+                  {credentials.agentId
+                    ? `${credentials.agentId.substring(0, 20)}...`
+                    : "Not provided"}
                 </p>
                 <div className="text-xs text-gray-500">
                   {credentials.agentId ? "✅ Ready to test" : "❌ Required"}
@@ -379,23 +422,30 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
             <div>
               <h3 className="text-xl font-semibold mb-2">Setup Complete!</h3>
               <p className="text-gray-600">
-                Your ElevenLabs conversational AI is now configured and ready to use.
+                Your ElevenLabs conversational AI is now configured and ready to
+                use.
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="border rounded-lg p-4">
                 <h4 className="font-medium mb-2">✅ API Key Configured</h4>
-                <p className="text-sm text-gray-600">Connected to ElevenLabs services</p>
+                <p className="text-sm text-gray-600">
+                  Connected to ElevenLabs services
+                </p>
               </div>
               <div className="border rounded-lg p-4">
                 <h4 className="font-medium mb-2">✅ Agent Ready</h4>
-                <p className="text-sm text-gray-600">AI personality is set up</p>
+                <p className="text-sm text-gray-600">
+                  AI personality is set up
+                </p>
               </div>
             </div>
 
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h4 className="font-medium text-green-800 mb-2">🚀 What's next?</h4>
+              <h4 className="font-medium text-green-800 mb-2">
+                🚀 What's next?
+              </h4>
               <ul className="text-sm text-green-700 space-y-1">
                 <li>• Click "Start Conversation" to test your setup</li>
                 <li>• Grant microphone permission when prompted</li>
@@ -417,7 +467,8 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg">
-              Step {currentStepIndex + 1} of {STEPS.length}: {STEPS[currentStepIndex].title}
+              Step {currentStepIndex + 1} of {STEPS.length}:{" "}
+              {STEPS[currentStepIndex].title}
             </CardTitle>
             <Button
               variant="ghost"
@@ -428,23 +479,25 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
               ✕
             </Button>
           </div>
-          
+
           {/* Progress bar */}
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
+            <div
               className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${((currentStepIndex + 1) / STEPS.length) * 100}%` }}
+              style={{
+                width: `${((currentStepIndex + 1) / STEPS.length) * 100}%`,
+              }}
             />
           </div>
-          
+
           <p className="text-sm text-gray-600">
             {STEPS[currentStepIndex].description}
           </p>
         </CardHeader>
-        
+
         <CardContent className="space-y-6">
           {renderStepContent()}
-          
+
           {/* Navigation buttons */}
           <div className="flex justify-between pt-6 border-t">
             <Button
@@ -456,7 +509,7 @@ export function OnboardingWizard({ isVisible, onComplete, onClose }: OnboardingW
               <ChevronLeft className="h-4 w-4" />
               Previous
             </Button>
-            
+
             <div className="flex gap-2">
               {currentStep === "complete" ? (
                 <Button

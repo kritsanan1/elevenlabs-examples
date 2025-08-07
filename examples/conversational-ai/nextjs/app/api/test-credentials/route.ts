@@ -19,11 +19,14 @@ async function testApiKey(apiKey: string): Promise<boolean> {
 async function testAgentId(agentId: string, apiKey: string): Promise<boolean> {
   try {
     // Test agent ID by trying to get agent details
-    const response = await fetch(`https://api.elevenlabs.io/v1/convai/agents/${agentId}`, {
-      headers: {
-        "xi-api-key": apiKey,
-      },
-    });
+    const response = await fetch(
+      `https://api.elevenlabs.io/v1/convai/agents/${agentId}`,
+      {
+        headers: {
+          "xi-api-key": apiKey,
+        },
+      }
+    );
 
     return response.ok;
   } catch (error) {
@@ -39,24 +42,34 @@ export async function POST(req: NextRequest) {
 
     // Basic format validation first
     if (agentId) {
-      const isValidFormat = agentId.length > 10 && !agentId.includes("your-agent-id-here");
+      const isValidFormat =
+        agentId.length > 10 && !agentId.includes("your-agent-id-here");
       if (!isValidFormat) {
-        return NextResponse.json({
-          valid: false,
-          field: "agentId",
-          error: "Invalid agent ID format"
-        }, { status: 400 });
+        return NextResponse.json(
+          {
+            valid: false,
+            field: "agentId",
+            error: "Invalid agent ID format",
+          },
+          { status: 400 }
+        );
       }
     }
 
     if (apiKey) {
-      const isValidFormat = apiKey.startsWith("sk_") && apiKey.length > 20 && !apiKey.includes("your-api-key-here");
+      const isValidFormat =
+        apiKey.startsWith("sk_") &&
+        apiKey.length > 20 &&
+        !apiKey.includes("your-api-key-here");
       if (!isValidFormat) {
-        return NextResponse.json({
-          valid: false,
-          field: "apiKey",
-          error: "Invalid API key format"
-        }, { status: 400 });
+        return NextResponse.json(
+          {
+            valid: false,
+            field: "apiKey",
+            error: "Invalid API key format",
+          },
+          { status: 400 }
+        );
       }
     }
 
@@ -67,7 +80,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         valid: isValid,
         field: "apiKey",
-        error: isValid ? undefined : "API key authentication failed"
+        error: isValid ? undefined : "API key authentication failed",
       });
     }
 
@@ -75,27 +88,29 @@ export async function POST(req: NextRequest) {
       // Test both API key and agent ID
       const apiKeyValid = await testApiKey(apiKey);
       if (!apiKeyValid) {
-        return NextResponse.json({
-          valid: false,
-          field: "apiKey",
-          error: "API key authentication failed"
-        }, { status: 400 });
+        return NextResponse.json(
+          {
+            valid: false,
+            field: "apiKey",
+            error: "API key authentication failed",
+          },
+          { status: 400 }
+        );
       }
 
       const agentIdValid = await testAgentId(agentId, apiKey);
       return NextResponse.json({
         valid: agentIdValid,
         field: "agentId",
-        error: agentIdValid ? undefined : "Agent ID not found or inaccessible"
+        error: agentIdValid ? undefined : "Agent ID not found or inaccessible",
       });
     }
 
     // If we get here, basic validation passed but need both credentials for full test
     return NextResponse.json({
       valid: true,
-      message: "Provide both credentials for full validation"
+      message: "Provide both credentials for full validation",
     });
-
   } catch (error) {
     console.error("Error testing credentials:", error);
     return NextResponse.json(

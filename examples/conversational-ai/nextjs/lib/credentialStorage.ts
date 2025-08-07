@@ -33,11 +33,14 @@ function decode(value: string): string {
 /**
  * Save credentials to localStorage
  */
-export function saveCredentials(credentials: { agentId?: string; apiKey?: string }): boolean {
+export function saveCredentials(credentials: {
+  agentId?: string;
+  apiKey?: string;
+}): boolean {
   try {
     const data: StoredCredentials = {
       ...credentials,
-      lastUpdated: Date.now()
+      lastUpdated: Date.now(),
     };
 
     // Encode sensitive data
@@ -50,7 +53,7 @@ export function saveCredentials(credentials: { agentId?: string; apiKey?: string
 
     const storageData = {
       version: STORAGE_VERSION,
-      data: encode(JSON.stringify(data))
+      data: encode(JSON.stringify(data)),
     };
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(storageData));
@@ -64,7 +67,10 @@ export function saveCredentials(credentials: { agentId?: string; apiKey?: string
 /**
  * Load credentials from localStorage
  */
-export function loadCredentials(): { agentId?: string; apiKey?: string } | null {
+export function loadCredentials(): {
+  agentId?: string;
+  apiKey?: string;
+} | null {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) return null;
@@ -77,7 +83,7 @@ export function loadCredentials(): { agentId?: string; apiKey?: string } | null 
     }
 
     const data: StoredCredentials = JSON.parse(decode(storageData.data));
-    
+
     // Check if data is too old (7 days)
     const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
     if (Date.now() - data.lastUpdated > maxAge) {
@@ -87,7 +93,7 @@ export function loadCredentials(): { agentId?: string; apiKey?: string } | null 
 
     // Decode sensitive data
     const credentials: { agentId?: string; apiKey?: string } = {};
-    
+
     if (data.agentId) {
       credentials.agentId = decode(data.agentId);
     }
@@ -129,7 +135,10 @@ export function hasStoredCredentials(): boolean {
 /**
  * Update only specific credentials
  */
-export function updateCredentials(updates: { agentId?: string; apiKey?: string }): boolean {
+export function updateCredentials(updates: {
+  agentId?: string;
+  apiKey?: string;
+}): boolean {
   const existing = loadCredentials() || {};
   return saveCredentials({ ...existing, ...updates });
 }

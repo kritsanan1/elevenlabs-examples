@@ -15,7 +15,7 @@ import {
   Globe,
   User,
   Volume2,
-  RefreshCw
+  RefreshCw,
 } from "lucide-react";
 
 interface Agent {
@@ -47,12 +47,12 @@ interface AgentSelectorProps {
 /**
  * Agent selection component with voice preview
  */
-export function AgentSelector({ 
-  isVisible, 
-  selectedAgentId, 
-  onAgentSelect, 
+export function AgentSelector({
+  isVisible,
+  selectedAgentId,
+  onAgentSelect,
   onClose,
-  apiKey 
+  apiKey,
 }: AgentSelectorProps) {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -65,53 +65,56 @@ export function AgentSelector({
     {
       id: "agent_1",
       name: "Professional Assistant",
-      description: "A professional and helpful AI assistant for business conversations",
+      description:
+        "A professional and helpful AI assistant for business conversations",
       voice: {
         id: "sarah",
         name: "Sarah",
         category: "Professional",
-        accent: "American"
+        accent: "American",
       },
       personality: "Professional, helpful, and articulate",
       language: "English (US)",
       isActive: true,
       createdAt: "2024-01-15",
       lastUsed: "2024-01-20",
-      conversationCount: 42
+      conversationCount: 42,
     },
     {
-      id: "agent_2", 
+      id: "agent_2",
       name: "Creative Storyteller",
-      description: "An imaginative AI that specializes in creative storytelling and brainstorming",
+      description:
+        "An imaginative AI that specializes in creative storytelling and brainstorming",
       voice: {
         id: "bella",
         name: "Bella",
         category: "Creative",
-        accent: "British"
+        accent: "British",
       },
       personality: "Creative, imaginative, and inspiring",
       language: "English (UK)",
       isActive: true,
       createdAt: "2024-01-10",
       lastUsed: "2024-01-18",
-      conversationCount: 28
+      conversationCount: 28,
     },
     {
       id: "agent_3",
       name: "Technical Expert",
-      description: "A knowledgeable AI for technical discussions and problem-solving",
+      description:
+        "A knowledgeable AI for technical discussions and problem-solving",
       voice: {
         id: "adam",
         name: "Adam",
         category: "Technical",
-        accent: "Canadian"
+        accent: "Canadian",
       },
       personality: "Analytical, precise, and knowledgeable",
       language: "English (CA)",
       isActive: false,
       createdAt: "2024-01-05",
-      conversationCount: 15
-    }
+      conversationCount: 15,
+    },
   ];
 
   useEffect(() => {
@@ -123,7 +126,7 @@ export function AgentSelector({
   const loadAgents = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       if (!apiKey) {
         // Use mock data when no API key
@@ -134,8 +137,8 @@ export function AgentSelector({
       // In real implementation, fetch from ElevenLabs API
       const response = await fetch("/api/agents", {
         headers: {
-          "xi-api-key": apiKey
-        }
+          "xi-api-key": apiKey,
+        },
       });
 
       if (response.ok) {
@@ -153,15 +156,16 @@ export function AgentSelector({
     }
   };
 
-  const filteredAgents = agents.filter(agent =>
-    agent.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    agent.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    agent.voice.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredAgents = agents.filter(
+    agent =>
+      agent.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      agent.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      agent.voice.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const previewVoice = async (agent: Agent) => {
     setPreviewingAgent(agent.id);
-    
+
     // Simulate voice preview - in real app, use ElevenLabs TTS
     setTimeout(() => {
       setPreviewingAgent(null);
@@ -198,9 +202,10 @@ export function AgentSelector({
               </Button>
             </div>
           </div>
-          
+
           <p className="text-sm text-gray-600">
-            Choose an AI agent to start your conversation. Each agent has a unique personality and voice.
+            Choose an AI agent to start your conversation. Each agent has a
+            unique personality and voice.
           </p>
 
           {/* Search bar */}
@@ -209,12 +214,12 @@ export function AgentSelector({
             <Input
               placeholder="Search agents by name, description, or voice..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               className="pl-10"
             />
           </div>
         </CardHeader>
-        
+
         <CardContent className="flex-1 overflow-y-auto">
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
@@ -232,7 +237,9 @@ export function AgentSelector({
             <div className="text-center py-8">
               <User className="mx-auto h-12 w-12 text-gray-400 mb-4" />
               <p className="text-gray-600 mb-4">
-                {searchQuery ? "No agents match your search" : "No agents found"}
+                {searchQuery
+                  ? "No agents match your search"
+                  : "No agents found"}
               </p>
               {!apiKey && (
                 <p className="text-sm text-gray-500">
@@ -242,12 +249,12 @@ export function AgentSelector({
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredAgents.map((agent) => (
-                <Card 
+              {filteredAgents.map(agent => (
+                <Card
                   key={agent.id}
                   className={`cursor-pointer transition-all hover:shadow-md ${
-                    selectedAgentId === agent.id 
-                      ? "ring-2 ring-blue-500 bg-blue-50" 
+                    selectedAgentId === agent.id
+                      ? "ring-2 ring-blue-500 bg-blue-50"
                       : "hover:bg-gray-50"
                   }`}
                   onClick={() => onAgentSelect(agent)}
@@ -256,7 +263,9 @@ export function AgentSelector({
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-semibold text-lg">{agent.name}</h3>
+                          <h3 className="font-semibold text-lg">
+                            {agent.name}
+                          </h3>
                           {!agent.isActive && (
                             <span className="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded">
                               Inactive
@@ -266,7 +275,9 @@ export function AgentSelector({
                             <Star className="h-4 w-4 text-blue-500 fill-current" />
                           )}
                         </div>
-                        <p className="text-sm text-gray-600 mb-3">{agent.description}</p>
+                        <p className="text-sm text-gray-600 mb-3">
+                          {agent.description}
+                        </p>
                       </div>
                     </div>
 
@@ -275,13 +286,17 @@ export function AgentSelector({
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <Volume2 className="h-4 w-4 text-gray-500" />
-                          <span className="font-medium text-sm">{agent.voice.name}</span>
-                          <span className="text-xs text-gray-500">({agent.voice.accent})</span>
+                          <span className="font-medium text-sm">
+                            {agent.voice.name}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            ({agent.voice.accent})
+                          </span>
                         </div>
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={(e) => {
+                          onClick={e => {
                             e.stopPropagation();
                             previewVoice(agent);
                           }}
@@ -295,7 +310,9 @@ export function AgentSelector({
                           )}
                         </Button>
                       </div>
-                      <p className="text-xs text-gray-600">{agent.personality}</p>
+                      <p className="text-xs text-gray-600">
+                        {agent.personality}
+                      </p>
                     </div>
 
                     {/* Metadata */}
@@ -330,16 +347,15 @@ export function AgentSelector({
         <div className="border-t p-4 bg-gray-50">
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-600">
-              {filteredAgents.length} agent{filteredAgents.length !== 1 ? 's' : ''} available
+              {filteredAgents.length} agent
+              {filteredAgents.length !== 1 ? "s" : ""} available
             </div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={onClose}>
                 Cancel
               </Button>
               {selectedAgentId && (
-                <Button onClick={onClose}>
-                  Start Conversation
-                </Button>
+                <Button onClick={onClose}>Start Conversation</Button>
               )}
             </div>
           </div>
