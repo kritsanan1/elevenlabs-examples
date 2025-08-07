@@ -2,13 +2,13 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 env:
-  NODE_VERSION: '18'
-  CACHE_KEY: 'node-modules'
+  NODE_VERSION: "18"
+  CACHE_KEY: "node-modules"
 
 jobs:
   # =============================================
@@ -17,26 +17,26 @@ jobs:
   validate:
     name: 🔍 Environment Validation
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
-        
+
       - name: 📋 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: 'examples/conversational-ai/nextjs/package-lock.json'
-          
+          cache: "npm"
+          cache-dependency-path: "examples/conversational-ai/nextjs/package-lock.json"
+
       - name: 📦 Install Dependencies
         working-directory: examples/conversational-ai/nextjs
         run: npm ci
-        
+
       - name: 🔍 Validate Package Lock
         working-directory: examples/conversational-ai/nextjs
         run: npm audit --audit-level=high
-        
+
       - name: 📋 Check Environment Template
         working-directory: examples/conversational-ai/nextjs
         run: |
@@ -53,30 +53,30 @@ jobs:
     name: 🧹 Code Quality
     runs-on: ubuntu-latest
     needs: validate
-    
+
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
-        
+
       - name: 📋 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: 'examples/conversational-ai/nextjs/package-lock.json'
-          
+          cache: "npm"
+          cache-dependency-path: "examples/conversational-ai/nextjs/package-lock.json"
+
       - name: 📦 Install Dependencies
         working-directory: examples/conversational-ai/nextjs
         run: npm ci
-        
+
       - name: 🧹 Run ESLint
         working-directory: examples/conversational-ai/nextjs
         run: npm run lint
-        
+
       - name: 🔍 TypeScript Check
         working-directory: examples/conversational-ai/nextjs
         run: npx tsc --noEmit
-        
+
       - name: 🎨 Check Prettier Format
         working-directory: examples/conversational-ai/nextjs
         run: |
@@ -93,26 +93,26 @@ jobs:
     name: 🔒 Security Scan
     runs-on: ubuntu-latest
     needs: validate
-    
+
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
-        
+
       - name: 📋 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: 'examples/conversational-ai/nextjs/package-lock.json'
-          
+          cache: "npm"
+          cache-dependency-path: "examples/conversational-ai/nextjs/package-lock.json"
+
       - name: 📦 Install Dependencies
         working-directory: examples/conversational-ai/nextjs
         run: npm ci
-        
+
       - name: 🔒 Security Audit
         working-directory: examples/conversational-ai/nextjs
         run: npm audit --audit-level=moderate
-        
+
       - name: 🕵️ Check for Secrets
         uses: trufflesecurity/trufflehog@main
         with:
@@ -130,29 +130,29 @@ jobs:
     strategy:
       matrix:
         node-version: [18, 20]
-        
+
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
-        
+
       - name: 📋 Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-          cache-dependency-path: 'examples/conversational-ai/nextjs/package-lock.json'
-          
+          cache: "npm"
+          cache-dependency-path: "examples/conversational-ai/nextjs/package-lock.json"
+
       - name: 📦 Install Dependencies
         working-directory: examples/conversational-ai/nextjs
         run: npm ci
-        
+
       - name: 🏗️ Build Application
         working-directory: examples/conversational-ai/nextjs
         run: npm run build
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY || 'test-key-for-build' }}
           AGENT_ID: ${{ secrets.AGENT_ID || 'test-agent-for-build' }}
-          
+
       - name: 📊 Analyze Bundle Size
         working-directory: examples/conversational-ai/nextjs
         run: |
@@ -163,7 +163,7 @@ jobs:
             echo "❌ Build failed - .next directory not found"
             exit 1
           fi
-          
+
       - name: 💾 Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -178,22 +178,22 @@ jobs:
     name: 🧪 Run Tests
     runs-on: ubuntu-latest
     needs: validate
-    
+
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
-        
+
       - name: 📋 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: 'examples/conversational-ai/nextjs/package-lock.json'
-          
+          cache: "npm"
+          cache-dependency-path: "examples/conversational-ai/nextjs/package-lock.json"
+
       - name: 📦 Install Dependencies
         working-directory: examples/conversational-ai/nextjs
         run: npm ci
-        
+
       - name: 🧪 Run Unit Tests
         working-directory: examples/conversational-ai/nextjs
         run: |
@@ -205,7 +205,7 @@ jobs:
             echo "⚠️ No test framework found, skipping tests"
             echo "Consider adding Jest or Vitest for testing"
           fi
-          
+
       - name: 📊 Upload Coverage Reports
         uses: codecov/codecov-action@v3
         if: always()
@@ -221,28 +221,28 @@ jobs:
     name: 🔗 Integration Tests
     runs-on: ubuntu-latest
     needs: build
-    
+
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
-        
+
       - name: 📋 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: 'examples/conversational-ai/nextjs/package-lock.json'
-          
+          cache: "npm"
+          cache-dependency-path: "examples/conversational-ai/nextjs/package-lock.json"
+
       - name: 📦 Install Dependencies
         working-directory: examples/conversational-ai/nextjs
         run: npm ci
-        
+
       - name: 💾 Download Build Artifacts
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts-node-18
           path: examples/conversational-ai/nextjs/.next/
-          
+
       - name: 🚀 Start Application
         working-directory: examples/conversational-ai/nextjs
         run: |
@@ -253,12 +253,12 @@ jobs:
           PORT: 3000
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY || 'test-key' }}
           AGENT_ID: ${{ secrets.AGENT_ID || 'test-agent' }}
-          
+
       - name: 🔍 Health Check
         run: |
           max_attempts=10
           attempt=1
-          
+
           while [ $attempt -le $max_attempts ]; do
             echo "Health check attempt $attempt/$max_attempts"
             
@@ -275,13 +275,13 @@ jobs:
             sleep 5
             attempt=$((attempt + 1))
           done
-          
+
       - name: 🧪 Run API Tests
         working-directory: examples/conversational-ai/nextjs
         run: |
           # Test API endpoints
           echo "Testing API endpoints..."
-          
+
           # Test signed-url endpoint (should return 400 without valid credentials)
           status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/signed-url)
           if [ "$status" = "400" ]; then
@@ -289,7 +289,7 @@ jobs:
           else
             echo "❌ API endpoint returned unexpected status: $status"
           fi
-          
+
       - name: 🛑 Stop Application
         if: always()
         working-directory: examples/conversational-ai/nextjs
@@ -307,40 +307,40 @@ jobs:
     runs-on: ubuntu-latest
     needs: [lint, security, build, test, integration]
     if: github.ref == 'refs/heads/main'
-    
+
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
-        
+
       - name: 📋 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: 'examples/conversational-ai/nextjs/package-lock.json'
-          
+          cache: "npm"
+          cache-dependency-path: "examples/conversational-ai/nextjs/package-lock.json"
+
       - name: 📦 Install Dependencies
         working-directory: examples/conversational-ai/nextjs
         run: npm ci
-        
+
       - name: 💾 Download Build Artifacts
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts-node-18
           path: examples/conversational-ai/nextjs/.next/
-          
+
       - name: 🔍 Production Build Validation
         working-directory: examples/conversational-ai/nextjs
         run: |
           echo "🔍 Validating production build..."
-          
+
           # Check if critical files exist
           critical_files=(
             ".next/BUILD_ID"
             ".next/static"
             ".next/server"
           )
-          
+
           for file in "${critical_files[@]}"; do
             if [ -e "$file" ]; then
               echo "✅ $file exists"
@@ -349,21 +349,21 @@ jobs:
               exit 1
             fi
           done
-          
+
           echo "✅ Production build validation complete"
-          
+
       - name: 📊 Bundle Analysis
         working-directory: examples/conversational-ai/nextjs
         run: |
           echo "📊 Analyzing bundle size..."
-          
+
           # Calculate total bundle size
           total_size=$(du -sh .next/static | cut -f1)
           echo "Total static assets size: $total_size"
-          
+
           # Check for oversized chunks
           find .next/static/chunks -name "*.js" -size +1M -exec echo "⚠️ Large chunk found: {} $(du -h {} | cut -f1)" \;
-          
+
       - name: 🎯 Deployment Summary
         run: |
           echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
@@ -384,44 +384,44 @@ jobs:
     runs-on: ubuntu-latest
     needs: [lint, security, build, test, integration]
     if: always()
-    
+
     steps:
       - name: 📊 Generate Summary
         run: |
           echo "## 🔄 CI/CD Pipeline Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           # Check job results
           if [ "${{ needs.lint.result }}" = "success" ]; then
             echo "✅ **Code Quality**: Passed" >> $GITHUB_STEP_SUMMARY
           else
             echo "❌ **Code Quality**: Failed" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           if [ "${{ needs.security.result }}" = "success" ]; then
             echo "✅ **Security Scan**: Passed" >> $GITHUB_STEP_SUMMARY
           else
             echo "❌ **Security Scan**: Failed" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           if [ "${{ needs.build.result }}" = "success" ]; then
             echo "✅ **Build**: Successful" >> $GITHUB_STEP_SUMMARY
           else
             echo "❌ **Build**: Failed" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           if [ "${{ needs.test.result }}" = "success" ]; then
             echo "✅ **Tests**: Passed" >> $GITHUB_STEP_SUMMARY
           else
             echo "❌ **Tests**: Failed" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           if [ "${{ needs.integration.result }}" = "success" ]; then
             echo "✅ **Integration**: Passed" >> $GITHUB_STEP_SUMMARY
           else
             echo "❌ **Integration**: Failed" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "📋 **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "📝 **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY

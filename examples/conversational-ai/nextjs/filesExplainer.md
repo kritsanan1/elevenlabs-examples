@@ -134,17 +134,20 @@ public/                                       📁 Static assets
 ## Statistics Summary
 
 ### File Distribution
+
 - **Total Files**: 47 source files
 - **TypeScript/TSX**: 35 files (74%)
 - **Configuration**: 8 files (17%)
 - **Documentation**: 4 files (9%)
 
 ### Complexity Distribution
+
 - **🟢 Simple**: 24 files (51%)
 - **🟡 Moderate**: 17 files (36%)
 - **🔴 Complex**: 6 files (13%)
 
 ### Component Architecture
+
 - **Pages**: 4 route components
 - **Core Components**: 8 foundational components
 - **UI Components**: 5 reusable components
@@ -153,23 +156,27 @@ public/                                       📁 Static assets
 ## Key Architectural Patterns
 
 ### 1. **Layered Architecture**
+
 - **Presentation Layer**: React components and pages
 - **Business Logic Layer**: Custom hooks and services
 - **Data Layer**: API routes and storage utilities
 
 ### 2. **Component Hierarchy**
+
 - **Atomic**: UI components (button, input, card)
 - **Molecular**: Core components (status, controls)
 - **Organisms**: Feature components (conversation, wizard)
 - **Templates**: Page layouts and routing
 
 ### 3. **Separation of Concerns**
+
 - **State Management**: Custom hooks (useConfiguration, useConversationState)
 - **API Integration**: Services (ConversationService)
 - **Utilities**: Pure functions (credentialStorage, utils)
 - **Types**: Centralized type definitions
 
 ### 4. **Modern React Patterns**
+
 - **Server Components**: App Router with RSC
 - **Client Components**: Interactive features with "use client"
 - **Custom Hooks**: Reusable stateful logic
@@ -178,6 +185,7 @@ public/                                       📁 Static assets
 ## Development Guidelines
 
 ### File Naming Conventions
+
 - **Components**: PascalCase (e.g., `ConversationInterface.tsx`)
 - **Hooks**: camelCase with "use" prefix (e.g., `useConfiguration.ts`)
 - **Services**: PascalCase with "Service" suffix (e.g., `ConversationService.ts`)
@@ -185,12 +193,14 @@ public/                                       📁 Static assets
 - **Types**: camelCase (e.g., `conversation.ts`)
 
 ### Import Organization
+
 1. **React/Next.js imports**
 2. **External library imports**
 3. **Internal imports** (using `@/` alias)
 4. **Type-only imports** (last)
 
 ### Component Structure
+
 ```typescript
 "use client"; // If client-side features needed
 

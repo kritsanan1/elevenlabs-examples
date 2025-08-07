@@ -280,7 +280,11 @@ export function ConvAI() {
                   isDisabled ||
                   (conversation !== null && conversation.status === "connected")
                 }
-                onClick={config.isConfigured ? startConversation : configPopup.showPopup}
+                onClick={
+                  config.isConfigured
+                    ? startConversation
+                    : configPopup.showPopup
+                }
                 title={
                   !config.isConfigured
                     ? "Click to configure your ElevenLabs credentials"

@@ -38,7 +38,10 @@ export function ConfigurationPopup({
   const [showSetup, setShowSetup] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAgentSelector, setShowAgentSelector] = useState(false);
-  const [selectedAgent, setSelectedAgent] = useState<{ id: string; name: string } | null>(null);
+  const [selectedAgent, setSelectedAgent] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
   const [internalVisible, setInternalVisible] = useState(isVisible);
 
   useEffect(() => {
@@ -149,7 +152,7 @@ export function ConfigurationPopup({
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div
           className="bg-white rounded-lg shadow-2xl max-w-md w-full mx-auto transform transition-all duration-300 scale-100"
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50">
@@ -158,7 +161,9 @@ export function ConfigurationPopup({
                 <AlertTriangle className="h-5 w-5 text-amber-600" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-amber-800">{title}</h3>
+                <h3 className="text-lg font-semibold text-amber-800">
+                  {title}
+                </h3>
                 <p className="text-sm text-amber-600">{description}</p>
               </div>
             </div>
@@ -219,25 +224,31 @@ export function ConfigurationPopup({
                     <div className="flex items-center gap-2">
                       <div
                         className={
-                          status?.agentIdConfigured ? "text-green-500" : "text-red-500"
+                          status?.agentIdConfigured
+                            ? "text-green-500"
+                            : "text-red-500"
                         }
                       >
                         {status?.agentIdConfigured ? "✅" : "❌"}
                       </div>
                       <span className="text-sm text-amber-700">
-                        Agent ID {status?.agentIdConfigured ? "configured" : "missing"}
+                        Agent ID{" "}
+                        {status?.agentIdConfigured ? "configured" : "missing"}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div
                         className={
-                          status?.apiKeyConfigured ? "text-green-500" : "text-red-500"
+                          status?.apiKeyConfigured
+                            ? "text-green-500"
+                            : "text-red-500"
                         }
                       >
                         {status?.apiKeyConfigured ? "✅" : "❌"}
                       </div>
                       <span className="text-sm text-amber-700">
-                        API Key {status?.apiKeyConfigured ? "configured" : "missing"}
+                        API Key{" "}
+                        {status?.apiKeyConfigured ? "configured" : "missing"}
                       </span>
                     </div>
                   </div>
