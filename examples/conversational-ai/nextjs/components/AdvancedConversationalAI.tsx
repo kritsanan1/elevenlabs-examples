@@ -21,7 +21,9 @@ import {
 } from "lucide-react";
 import { VoiceCommandPanel } from "./VoiceCommandPanel";
 import { useConfiguration } from "@/hooks/useConfiguration";
+import { useConfigurationPopup } from "@/hooks/useConfigurationPopup";
 import { ConfigurationStatus } from "@/components/core/ConfigurationStatus";
+import { ConfigurationPopup } from "@/components/core/ConfigurationPopup";
 
 // Types
 interface ConversationAnalytics {
