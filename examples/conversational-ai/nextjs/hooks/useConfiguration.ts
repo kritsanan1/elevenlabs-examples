@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { loadCredentials } from "@/lib/credentialStorage";
 
 interface ConfigStatus {
   isConfigured: boolean;
