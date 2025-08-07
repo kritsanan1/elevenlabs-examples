@@ -310,6 +310,14 @@ export function ConvAI() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Configuration Popup */}
+      <ConfigurationPopup
+        isVisible={configPopup.isPopupVisible}
+        onClose={configPopup.hidePopup}
+        title="Setup Required"
+        description="Configure ElevenLabs credentials to start conversations"
+      />
     </div>
   );
 }
