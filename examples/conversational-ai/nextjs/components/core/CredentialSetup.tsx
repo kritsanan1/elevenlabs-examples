@@ -96,28 +96,43 @@ export function CredentialSetup({
     }
   };
 
-  const saveCredentials = async () => {
+  const saveCredentialsToStorage = async () => {
     setIsLoading(true);
-    
-    try {
-      // Save credentials to backend/local storage
-      const response = await fetch("/api/save-credentials", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(credentials)
-      });
 
-      if (response.ok) {
+    try {
+      // Save to localStorage first
+      const saved = saveCredentials(credentials);
+
+      if (saved) {
+        // Optionally sync with backend for additional persistence
+        try {
+          await fetch("/api/save-credentials", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(credentials)
+          });
+        } catch (backendError) {
+          // Backend save failed, but local save succeeded
+          console.warn("Backend sync failed, but credentials saved locally:", backendError);
+        }
+
         onCredentialsUpdated();
         onClose();
       } else {
-        console.error("Failed to save credentials");
+        console.error("Failed to save credentials to local storage");
       }
     } catch (error) {
       console.error("Error saving credentials:", error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const clearStoredCredentials = () => {
+    clearCredentials();
+    setCredentials({ agentId: "", apiKey: "" });
+    setHasStored(false);
+    setValidationResults({});
   };
 
   const copyToClipboard = async (text: string, type: string) => {
