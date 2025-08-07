@@ -1,5 +1,6 @@
 import { ConvAI } from "@/components/ConvAI";
 import { ConfigurationStatus } from "@/components/core/ConfigurationStatus";
+import { MicrophoneTest } from "@/components/MicrophoneTest";
 
 export default function Home() {
   return (
@@ -57,6 +58,7 @@ export default function Home() {
           </div>
         </div>
         <ConfigurationStatus />
+        <MicrophoneTest />
         <ConvAI />
       </main>
     </div>
