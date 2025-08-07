@@ -33,7 +33,8 @@ export function ConfigurationStatus() {
           agentIdConfigured: true,
           apiKeyConfigured: true,
         });
-      } else {
+      } else if (response.status === 400) {
+        // Expected response when credentials are not configured
         // Parse the error to determine what's missing
         const agentIdConfigured = !data.error?.includes("AGENT_ID");
         const apiKeyConfigured = !data.error?.includes("ELEVENLABS_API_KEY");
@@ -44,10 +45,19 @@ export function ConfigurationStatus() {
           apiKeyConfigured,
           error: data.error,
         });
+      } else {
+        // Unexpected error (500, etc.)
+        console.error("Unexpected configuration check error:", data);
+        setStatus({
+          isConfigured: false,
+          agentIdConfigured: false,
+          apiKeyConfigured: false,
+          error: data.error || "Configuration check failed",
+        });
       }
     } catch (error) {
-      // Log as info since this is expected when configuration is incomplete
-      console.info("Configuration check result:", error);
+      // Network or other unexpected errors
+      console.error("Configuration check network error:", error);
       setStatus({
         isConfigured: false,
         agentIdConfigured: false,
@@ -164,7 +174,7 @@ export function ConfigurationStatus() {
               onClick={checkConfiguration}
               className="inline-flex items-center gap-1 px-3 py-2 bg-white text-amber-600 border border-amber-300 rounded text-xs hover:bg-amber-50 transition-colors"
             >
-              ��� Recheck
+              🔄 Recheck
             </button>
           </div>
         </div>
