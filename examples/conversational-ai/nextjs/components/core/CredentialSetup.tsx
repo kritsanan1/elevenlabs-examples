@@ -45,25 +45,38 @@ export function CredentialSetup({
   };
 
   const testCredential = async (field: "agentId" | "apiKey") => {
-    setValidationResults(prev => ({ ...prev, [field]: "testing" }));
-    
+    setValidationResults(prev => ({
+      ...prev,
+      [field]: "testing",
+      [`${field}Error`]: undefined
+    }));
+
     try {
-      // Simulate credential testing - in real app this would call the API
+      // For agent ID testing, we need both credentials
+      const testData = field === "agentId"
+        ? { agentId: credentials.agentId, apiKey: credentials.apiKey }
+        : { [field]: credentials[field] };
+
       const response = await fetch("/api/test-credentials", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          [field]: credentials[field]
-        })
+        body: JSON.stringify(testData)
       });
 
-      const isValid = response.ok;
-      setValidationResults(prev => ({ 
-        ...prev, 
-        [field]: isValid ? "valid" : "invalid" 
+      const result = await response.json();
+      const isValid = result.valid;
+
+      setValidationResults(prev => ({
+        ...prev,
+        [field]: isValid ? "valid" : "invalid",
+        [`${field}Error`]: result.error
       }));
     } catch (error) {
-      setValidationResults(prev => ({ ...prev, [field]: "invalid" }));
+      setValidationResults(prev => ({
+        ...prev,
+        [field]: "invalid",
+        [`${field}Error`]: "Network error - please check your connection"
+      }));
     }
   };
 
