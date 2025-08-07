@@ -206,6 +206,7 @@ export function CredentialSetup({
                 <li>Create or select an existing agent</li>
                 <li>Copy the agent ID from the URL or settings</li>
               </ol>
+              <p className="mt-2 text-blue-600 font-medium">💡 Note: API key is required to test Agent ID</p>
             </div>
           </div>
 
