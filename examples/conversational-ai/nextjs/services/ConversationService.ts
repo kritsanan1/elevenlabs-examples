@@ -43,7 +43,14 @@ export class ConversationService {
 
       if (!response.ok) {
         const errorData: ApiError = await response.json();
-        console.error("API error response:", errorData);
+
+        // Use warning level for expected configuration errors (400)
+        if (response.status === 400) {
+          console.warn("Configuration issue (expected when not configured):", errorData);
+        } else {
+          console.error("API error response:", errorData);
+        }
+
         throw this.createSpecificError(response.status, errorData);
       }
 
