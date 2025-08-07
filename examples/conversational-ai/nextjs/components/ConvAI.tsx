@@ -97,12 +97,16 @@ async function getSignedUrl(): Promise<string> {
     }
 
     // Better error handling with detailed logging
-    if (error instanceof TypeError && error.message.includes("fetch")) {
-      throw new Error(
-        "Network error - unable to connect to the server. Please check your internet connection."
-      );
-    } else if (error instanceof Error) {
-      throw error;
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        throw new Error("Request timeout - server is taking too long to respond");
+      } else if (error.message.includes("fetch") || error.name === 'TypeError') {
+        throw new Error(
+          "Network error - unable to connect to the server. Please check your internet connection."
+        );
+      } else {
+        throw error;
+      }
     } else {
       // Convert any non-Error objects to proper Error with details
       const errorMsg =
