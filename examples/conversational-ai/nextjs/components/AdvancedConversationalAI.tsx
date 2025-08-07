@@ -333,7 +333,10 @@ async function getSignedUrl(): Promise<string> {
 
       // Use warning level for expected configuration errors (400)
       if (response.status === 400) {
-        console.warn("Configuration issue (expected when not configured):", errorData);
+        console.warn(
+          "Configuration issue (expected when not configured):",
+          errorData
+        );
         throw new Error(
           errorData.error ||
             "Configuration error - please check your ElevenLabs credentials"
@@ -344,7 +347,8 @@ async function getSignedUrl(): Promise<string> {
           throw new Error(errorData.error || "Server error - please try again");
         } else {
           throw new Error(
-            errorData.error || `HTTP ${response.status}: Failed to get signed URL`
+            errorData.error ||
+              `HTTP ${response.status}: Failed to get signed URL`
           );
         }
       }
@@ -360,10 +364,11 @@ async function getSignedUrl(): Promise<string> {
     return data.signedUrl;
   } catch (error) {
     // Use warning level for expected configuration errors
-    const isConfigError = error instanceof Error &&
+    const isConfigError =
+      error instanceof Error &&
       (error.message.includes("AGENT_ID") ||
-       error.message.includes("ELEVENLABS_API_KEY") ||
-       error.message.includes("Configuration error"));
+        error.message.includes("ELEVENLABS_API_KEY") ||
+        error.message.includes("Configuration error"));
 
     if (isConfigError) {
       console.warn("Configuration error (expected):", error);
@@ -484,7 +489,9 @@ export function AdvancedConversationalAI() {
 
       // Pre-validate configuration
       if (!config.isConfigured) {
-        setError("Please configure your ElevenLabs credentials before starting a conversation");
+        setError(
+          "Please configure your ElevenLabs credentials before starting a conversation"
+        );
         return;
       }
 
@@ -673,8 +680,7 @@ export function AdvancedConversationalAI() {
                   ? "Checking configuration..."
                   : !config.isConfigured
                     ? "Configure to start"
-                    : "Start Conversation"
-                }
+                    : "Start Conversation"}
               </Button>
 
               <Button

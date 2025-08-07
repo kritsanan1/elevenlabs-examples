@@ -138,7 +138,9 @@ export function useConversationState() {
 
       // Pre-validate configuration
       if (!config.isConfigured) {
-        throw new Error("Please configure your ElevenLabs credentials before starting a conversation");
+        throw new Error(
+          "Please configure your ElevenLabs credentials before starting a conversation"
+        );
       }
 
       const hasPermission =

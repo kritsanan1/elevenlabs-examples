@@ -27,10 +27,13 @@ async function getSignedUrl(): Promise<string> {
 
     if (!response.ok) {
       const errorData = await response.json();
-      
+
       // Use warning level for expected configuration errors (400)
       if (response.status === 400) {
-        console.warn("Configuration issue (expected when not configured):", errorData);
+        console.warn(
+          "Configuration issue (expected when not configured):",
+          errorData
+        );
         throw new Error(
           errorData.error ||
             "Configuration error - please check your ElevenLabs credentials"
@@ -41,7 +44,8 @@ async function getSignedUrl(): Promise<string> {
           throw new Error(errorData.error || "Server error - please try again");
         } else {
           throw new Error(
-            errorData.error || `HTTP ${response.status}: Failed to get signed URL`
+            errorData.error ||
+              `HTTP ${response.status}: Failed to get signed URL`
           );
         }
       }
@@ -57,11 +61,12 @@ async function getSignedUrl(): Promise<string> {
     return data.signedUrl;
   } catch (error) {
     // Use warning level for expected configuration errors
-    const isConfigError = error instanceof Error && 
-      (error.message.includes("AGENT_ID") || 
-       error.message.includes("ELEVENLABS_API_KEY") ||
-       error.message.includes("Configuration error"));
-    
+    const isConfigError =
+      error instanceof Error &&
+      (error.message.includes("AGENT_ID") ||
+        error.message.includes("ELEVENLABS_API_KEY") ||
+        error.message.includes("Configuration error"));
+
     if (isConfigError) {
       console.warn("Configuration error (expected):", error);
     } else {
@@ -114,7 +119,9 @@ export function ConvAI() {
 
       // Pre-validate configuration
       if (!config.isConfigured) {
-        setError("Please configure your ElevenLabs credentials before starting a conversation");
+        setError(
+          "Please configure your ElevenLabs credentials before starting a conversation"
+        );
         return;
       }
 
@@ -135,7 +142,7 @@ export function ConvAI() {
     } catch (error) {
       // Enhanced error handling with better user messages
       if (error instanceof Error) {
-        const isConfigError = 
+        const isConfigError =
           error.message.includes("AGENT_ID") ||
           error.message.includes("ELEVENLABS_API_KEY") ||
           error.message.includes("Configuration error");
@@ -172,7 +179,9 @@ export function ConvAI() {
             // Try to extract meaningful properties from the error object
             const errorProps = Object.getOwnPropertyNames(error);
             if (errorProps.length > 0) {
-              errorDetails = errorProps.map(prop => `${prop}: ${error[prop]}`).join(', ');
+              errorDetails = errorProps
+                .map(prop => `${prop}: ${error[prop]}`)
+                .join(", ");
             } else {
               errorDetails = error.toString();
             }
@@ -196,7 +205,7 @@ export function ConvAI() {
     <div className="space-y-4">
       {/* Always show configuration status */}
       <ConfigurationStatus />
-      
+
       <div className={"flex justify-center items-center gap-x-4"}>
         <Card className={"rounded-3xl"}>
           <CardContent>
@@ -224,8 +233,8 @@ export function ConvAI() {
                     error.includes("configure your ElevenLabs credentials") ? (
                       <div className="mt-3 space-y-2">
                         <p className="text-red-600 text-xs">
-                          To use this demo, you need to configure your ElevenLabs
-                          credentials:
+                          To use this demo, you need to configure your
+                          ElevenLabs credentials:
                         </p>
                         <div className="flex flex-wrap gap-2">
                           <a
@@ -271,30 +280,31 @@ export function ConvAI() {
                 className={"rounded-full"}
                 size={"lg"}
                 disabled={
-                  isDisabled || 
+                  isDisabled ||
                   (conversation !== null && conversation.status === "connected")
                 }
                 onClick={startConversation}
                 title={
-                  !config.isConfigured 
+                  !config.isConfigured
                     ? "Please configure your ElevenLabs credentials first"
                     : conversation.status === "connected"
                       ? "Conversation is already active"
                       : "Start a new conversation"
                 }
               >
-                {config.isLoading 
+                {config.isLoading
                   ? "Checking configuration..."
                   : !config.isConfigured
                     ? "Configure to start"
-                    : "Start conversation"
-                }
+                    : "Start conversation"}
               </Button>
               <Button
                 variant={"outline"}
                 className={"rounded-full"}
                 size={"lg"}
-                disabled={conversation === null || conversation.status !== "connected"}
+                disabled={
+                  conversation === null || conversation.status !== "connected"
+                }
                 onClick={stopConversation}
               >
                 End conversation

@@ -68,7 +68,8 @@ export function ConfigurationStatus() {
       }
     } catch (error) {
       // Only log network errors or actual unexpected errors
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       console.warn("Configuration check issue:", errorMessage);
       setStatus({
         isConfigured: false,

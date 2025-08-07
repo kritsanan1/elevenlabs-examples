@@ -46,7 +46,10 @@ export class ConversationService {
 
         // Use warning level for expected configuration errors (400)
         if (response.status === 400) {
-          console.warn("Configuration issue (expected when not configured):", errorData);
+          console.warn(
+            "Configuration issue (expected when not configured):",
+            errorData
+          );
         } else {
           console.error("API error response:", errorData);
         }
@@ -64,10 +67,11 @@ export class ConversationService {
       return data.signedUrl;
     } catch (error) {
       // Use warning level for expected configuration errors
-      const isConfigError = error instanceof Error &&
+      const isConfigError =
+        error instanceof Error &&
         (error.message.includes("AGENT_ID") ||
-         error.message.includes("ELEVENLABS_API_KEY") ||
-         error.message.includes("Configuration error"));
+          error.message.includes("ELEVENLABS_API_KEY") ||
+          error.message.includes("Configuration error"));
 
       if (isConfigError) {
         console.warn("Configuration error (expected):", error);
