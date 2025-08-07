@@ -51,7 +51,7 @@ async function getSignedUrl(): Promise<string> {
 
     return data.signedUrl;
   } catch (error) {
-    console.error("Error in getSignedUrl:", error);
+    console.warn("Error in getSignedUrl:", error);
 
     // Better error handling with detailed logging
     if (error instanceof TypeError && error.message.includes("fetch")) {
