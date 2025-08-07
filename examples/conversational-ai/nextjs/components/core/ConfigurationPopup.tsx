@@ -38,7 +38,7 @@ export function ConfigurationPopup({
   const [showSetup, setShowSetup] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAgentSelector, setShowAgentSelector] = useState(false);
-  const [selectedAgent, setSelectedAgent] = useState<any>(null);
+  const [selectedAgent, setSelectedAgent] = useState<{ id: string; name: string } | null>(null);
   const [internalVisible, setInternalVisible] = useState(isVisible);
 
   useEffect(() => {
