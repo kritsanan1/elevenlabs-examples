@@ -93,6 +93,12 @@ export function ConfigurationStatus() {
     setShowSetup(false);
   };
 
+  const handleOnboardingComplete = () => {
+    // Refresh configuration status after onboarding
+    checkConfiguration();
+    setShowOnboarding(false);
+  };
+
   if (isLoading) {
     return (
       <Card className="mb-4 border-blue-200 bg-blue-50">
