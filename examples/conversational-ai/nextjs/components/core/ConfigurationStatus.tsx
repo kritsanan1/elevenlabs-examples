@@ -22,6 +22,8 @@ export function ConfigurationStatus() {
   const [isLoading, setIsLoading] = useState(true);
   const [showSetup, setShowSetup] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showAgentSelector, setShowAgentSelector] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState<any>(null);
 
   useEffect(() => {
     checkConfiguration();
