@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, Save, Test, ExternalLink, Copy, Check, Trash2 } from "lucide-react";
+import { Eye, EyeOff, Save, TestTube, ExternalLink, Copy, Check, Trash2 } from "lucide-react";
 import { saveCredentials, loadCredentials, clearCredentials, hasStoredCredentials } from "@/lib/credentialStorage";
 
 interface CredentialSetupProps {
