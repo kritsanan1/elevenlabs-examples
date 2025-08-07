@@ -111,7 +111,7 @@ export function ConvAI() {
       const conversationId = await conversation.startSession({ signedUrl });
       console.log("Conversation started with ID:", conversationId);
     } catch (error) {
-      console.error("Failed to start conversation:", error);
+      console.warn("Failed to start conversation:", error);
 
       // Enhanced error handling with better user messages
       if (error instanceof Error) {
