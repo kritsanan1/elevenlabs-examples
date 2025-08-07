@@ -28,6 +28,8 @@ import {
   Command,
 } from "lucide-react";
 import { VoiceCommandPanel } from "./VoiceCommandPanel";
+import { useConfiguration } from "@/hooks/useConfiguration";
+import { ConfigurationStatus } from "@/components/core/ConfigurationStatus";
 
 // Types
 interface ConversationAnalytics {
@@ -328,20 +330,23 @@ async function getSignedUrl(): Promise<string> {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("API error response:", errorData);
 
-      // Provide more specific error messages
+      // Use warning level for expected configuration errors (400)
       if (response.status === 400) {
+        console.warn("Configuration issue (expected when not configured):", errorData);
         throw new Error(
           errorData.error ||
             "Configuration error - please check your ElevenLabs credentials"
         );
-      } else if (response.status === 500) {
-        throw new Error(errorData.error || "Server error - please try again");
       } else {
-        throw new Error(
-          errorData.error || `HTTP ${response.status}: Failed to get signed URL`
-        );
+        console.error("API error response:", errorData);
+        if (response.status === 500) {
+          throw new Error(errorData.error || "Server error - please try again");
+        } else {
+          throw new Error(
+            errorData.error || `HTTP ${response.status}: Failed to get signed URL`
+          );
+        }
       }
     }
 
@@ -354,7 +359,18 @@ async function getSignedUrl(): Promise<string> {
 
     return data.signedUrl;
   } catch (error) {
-    console.warn("Error in getSignedUrl:", error);
+    // Use warning level for expected configuration errors
+    const isConfigError = error instanceof Error &&
+      (error.message.includes("AGENT_ID") ||
+       error.message.includes("ELEVENLABS_API_KEY") ||
+       error.message.includes("Configuration error"));
+
+    if (isConfigError) {
+      console.warn("Configuration error (expected):", error);
+    } else {
+      console.error("Unexpected error in getSignedUrl:", error);
+    }
+
     if (error instanceof Error) {
       throw error;
     } else {
@@ -365,6 +381,7 @@ async function getSignedUrl(): Promise<string> {
 
 export function AdvancedConversationalAI() {
   const [error, setError] = React.useState<string | null>(null);
+  const config = useConfiguration();
   const [isRecording, setIsRecording] = useState(false);
   const [visualizerMode, setVisualizerMode] = useState<
     "orb" | "waveform" | "spectrum"
@@ -465,6 +482,12 @@ export function AdvancedConversationalAI() {
       setError(null);
       console.log("Starting conversation...");
 
+      // Pre-validate configuration
+      if (!config.isConfigured) {
+        setError("Please configure your ElevenLabs credentials before starting a conversation");
+        return;
+      }
+
       const hasPermission = await requestMicrophonePermission();
       if (!hasPermission) {
         setError("Microphone permission is required for voice conversations");
@@ -480,18 +503,21 @@ export function AdvancedConversationalAI() {
       const conversationId = await conversation.startSession({ signedUrl });
       console.log("Conversation started with ID:", conversationId);
     } catch (error) {
-      console.warn("Failed to start conversation:", error);
-
-      // More detailed error handling
+      // Enhanced error handling with better user messages
       if (error instanceof Error) {
-        console.warn("Error details:", {
-          message: error.message,
-          name: error.name,
-          stack: error.stack,
-        });
+        const isConfigError =
+          error.message.includes("AGENT_ID") ||
+          error.message.includes("ELEVENLABS_API_KEY") ||
+          error.message.includes("Configuration error");
+
+        if (isConfigError) {
+          console.warn("Configuration error (expected):", error.message);
+        } else {
+          console.error("Failed to start conversation:", error);
+        }
         setError(error.message);
       } else {
-        console.warn("Unknown error:", error);
+        console.error("Unknown error:", error);
         setError(
           "An unexpected error occurred while starting the conversation"
         );
@@ -520,8 +546,13 @@ export function AdvancedConversationalAI() {
     URL.revokeObjectURL(url);
   };
 
+  // Determine if conversation controls should be disabled
+  const isDisabled = !config.isConfigured || config.isLoading;
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
+      {/* Always show configuration status */}
+      <ConfigurationStatus />
       {/* Main Conversation Interface */}
       <Card className="rounded-3xl">
         <CardContent className="p-6">
@@ -534,7 +565,9 @@ export function AdvancedConversationalAI() {
                 ? conversation.isSpeaking
                   ? `${selectedPersona.avatar} Agent is speaking`
                   : "🎤 Agent is listening"
-                : "💭 Ready to connect"}
+                : config.isConfigured
+                  ? "💭 Ready to connect"
+                  : "⚙️ Configuration required"}
             </CardTitle>
           </CardHeader>
 
@@ -546,7 +579,8 @@ export function AdvancedConversationalAI() {
                   <p className="text-red-700 text-sm font-medium">{error}</p>
                   {error.includes("AGENT_ID") ||
                   error.includes("ELEVENLABS_API_KEY") ||
-                  error.includes("Configuration error") ? (
+                  error.includes("Configuration error") ||
+                  error.includes("configure your ElevenLabs credentials") ? (
                     <div className="mt-3 space-y-2">
                       <p className="text-red-600 text-xs">
                         To experience all advanced features, configure your
@@ -618,16 +652,29 @@ export function AdvancedConversationalAI() {
           <div className="flex flex-col gap-4 text-center">
             <div className="flex justify-center gap-3">
               <Button
-                variant="default"
+                variant={config.isConfigured ? "default" : "secondary"}
                 className="rounded-full"
                 size="lg"
                 disabled={
-                  conversation !== null && conversation.status === "connected"
+                  isDisabled ||
+                  (conversation !== null && conversation.status === "connected")
                 }
                 onClick={startConversation}
+                title={
+                  !config.isConfigured
+                    ? "Please configure your ElevenLabs credentials first"
+                    : conversation.status === "connected"
+                      ? "Conversation is already active"
+                      : "Start a new conversation"
+                }
               >
                 <Mic className="h-5 w-5 mr-2" />
-                Start Conversation
+                {config.isLoading
+                  ? "Checking configuration..."
+                  : !config.isConfigured
+                    ? "Configure to start"
+                    : "Start Conversation"
+                }
               </Button>
 
               <Button
