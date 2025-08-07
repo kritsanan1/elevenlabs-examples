@@ -130,11 +130,28 @@ export function ConfigurationStatus() {
     return (
       <Card className="mb-4 border-green-200 bg-green-50">
         <CardContent className="pt-4">
-          <div className="flex items-center gap-2">
-            <div className="text-green-500 text-lg">✅</div>
-            <span className="text-green-700 text-sm font-medium">
-              Configuration verified - ready to start conversations!
-            </span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="text-green-500 text-lg">✅</div>
+              <div>
+                <span className="text-green-700 text-sm font-medium">
+                  Configuration verified - ready to start conversations!
+                </span>
+                {selectedAgent && (
+                  <div className="text-xs text-green-600 mt-1">
+                    Selected Agent: {selectedAgent.name}
+                  </div>
+                )}
+              </div>
+            </div>
+            <Button
+              onClick={() => setShowAgentSelector(true)}
+              variant="outline"
+              size="sm"
+              className="text-green-700 border-green-300 hover:bg-green-100"
+            >
+              🤖 Select Agent
+            </Button>
           </div>
         </CardContent>
       </Card>
