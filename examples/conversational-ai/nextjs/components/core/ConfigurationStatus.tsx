@@ -221,6 +221,15 @@ export function ConfigurationStatus() {
             >
               🚀 Quick Setup
             </Button>
+            {status.agentIdConfigured && status.apiKeyConfigured && (
+              <Button
+                onClick={() => setShowAgentSelector(true)}
+                variant="outline"
+                className="text-amber-700 border-amber-300 hover:bg-amber-50 text-xs h-8"
+              >
+                🤖 Browse Agents
+              </Button>
+            )}
             <a
               href="https://elevenlabs.io/docs/conversational-ai/docs/agent-setup"
               target="_blank"
