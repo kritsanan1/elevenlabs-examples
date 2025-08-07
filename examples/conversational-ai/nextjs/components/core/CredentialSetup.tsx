@@ -31,6 +31,8 @@ export function CredentialSetup({
   const [validationResults, setValidationResults] = useState<{
     agentId?: "valid" | "invalid" | "testing";
     apiKey?: "valid" | "invalid" | "testing";
+    agentIdError?: string;
+    apiKeyError?: string;
   }>({});
   const [copied, setCopied] = useState<string | null>(null);
 
