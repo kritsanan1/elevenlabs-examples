@@ -227,7 +227,7 @@ export function CredentialSetup({
                 {validationResults.agentId === "testing" ? (
                   <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
                 ) : (
-                  <Test className="h-4 w-4" />
+                  <TestTube className="h-4 w-4" />
                 )}
               </Button>
             </div>
