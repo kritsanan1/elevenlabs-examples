@@ -342,6 +342,19 @@ export function CredentialSetup({
             </div>
           </div>
 
+          {/* Security Notice */}
+          <div className="bg-purple-50 border border-purple-200 rounded p-3">
+            <p className="font-medium text-purple-800 text-sm mb-2">
+              🔒 Security & Storage
+            </p>
+            <div className="text-xs text-purple-700 space-y-1">
+              <p>• Credentials are encoded and stored locally in your browser</p>
+              <p>• Data expires automatically after 7 days</p>
+              <p>• Use the trash icon to clear stored credentials anytime</p>
+              <p>• For production use, consider secure backend storage</p>
+            </div>
+          </div>
+
           {/* Environment Variable Instructions */}
           <div className="bg-amber-50 border border-amber-200 rounded p-3">
             <p className="font-medium text-amber-800 text-sm mb-2">
