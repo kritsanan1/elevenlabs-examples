@@ -29,6 +29,7 @@ export function CredentialSetup({
   });
   const [showApiKey, setShowApiKey] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasStored, setHasStored] = useState(false);
   const [validationResults, setValidationResults] = useState<{
     agentId?: "valid" | "invalid" | "testing";
     apiKey?: "valid" | "invalid" | "testing";
