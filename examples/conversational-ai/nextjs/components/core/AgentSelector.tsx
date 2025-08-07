@@ -186,7 +186,7 @@ export function AgentSelector({
                 onClick={loadAgents}
                 disabled={isLoading}
               >
-                <Refresh className="h-4 w-4" />
+                <RefreshCw className="h-4 w-4" />
               </Button>
               <Button
                 variant="ghost"
